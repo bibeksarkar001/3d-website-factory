@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vanta GT. The electric coupe that drives through light.</title>
+<meta name="description" content="Vanta GT, a two-door electric coupe. A fictional brand made to demo 3D Website Factory.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500&family=Red+Hat+Mono:wght@400;500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* the run: one 650vh track, five chapters, one stage */
+  #run { height:650vh; position:relative; }
+  #run .stick { position:sticky; top:0; height:100svh; overflow:hidden; }
+  #run-car { position:absolute; inset:0; }
+  #run .shade { position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(90deg, rgb(14 26 54 / .95), rgb(14 26 54 / .86) 30%, rgb(14 26 54 / 0) 50%),   /* keeps the tunnel off the copy */
+      linear-gradient(270deg, rgb(14 26 54 / .9), rgb(14 26 54 / 0) 16%),                                        /* and off the chapter list */
+      linear-gradient(0deg, rgb(8 17 42 / .9), rgb(8 17 42 / 0) 30%); }
+  .chapter { position:absolute; left:max(24px, (100vw - 1280px) / 2); top:18svh; width:min(560px, 100% - 48px); pointer-events:none; }
+  .chapter h1, .chapter h2 { font-size:clamp(2.6rem, 5.4vw, 5.2rem); }
+  .chapter p { margin-top:22px; }
+  .chapter .btn { pointer-events:auto; margin-top:30px; }
+  .chapter p, .chapter .btn { opacity:0; transform:translateY(14px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .chapter.on p, .chapter.on .btn { opacity:1; transform:none; transition-delay:.25s; }
+  .chapter:not(.on) { visibility:hidden; transition:visibility 0s .9s; }
+  .chapter.on { visibility:visible; }
+  /* chapter index on the right, a line fills as you go */
+  .index { position:absolute; right:max(24px, (100vw - 1280px) / 2); top:30%; transform:translateY(-50%); list-style:none; padding:0 0 0 18px; display:grid; gap:14px; }
+  .index::before, .index i { content:""; position:absolute; left:0; top:4px; bottom:4px; width:1px; background:var(--line); }
+  .index i { background:var(--copper); transform-origin:top; transform:scaleY(var(--p, 0)); }
+  .index li { font:400 13px "Red Hat Mono", monospace; color:var(--haze); transition:color .4s, transform .5s var(--ease); }
+  .index li.on { color:var(--frost); transform:translateX(4px); }
+  /* the stat bar: four numbers along the bottom, each counts up in its chapter */
+  .stats { position:absolute; left:0; right:0; bottom:0; padding:0 max(24px, (100vw - 1280px) / 2) 30px; display:grid; grid-template-columns:repeat(4, 1fr); }
+  .stat { padding:18px 20px 0 0; border-top:1px solid var(--line); position:relative; }
+  .stat::before { content:""; position:absolute; left:0; top:-1px; height:1px; width:calc(var(--p, 0) * 100%); background:var(--copper); }
+  .stat b { display:block; font:600 clamp(1.6rem, 3.4vw, 3rem) "Unbounded", sans-serif; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .stat b small { font-size:.45em; font-weight:500; color:var(--haze); margin-left:6px; letter-spacing:0; }
+  .speedo { position:absolute; right:max(24px, (100vw - 1280px) / 2); top:96px; text-align:right; }
+  .speedo b { font:500 15px "Red Hat Mono", monospace; color:var(--frost); font-variant-numeric:tabular-nums; }
+
+  /* spec sheet */
+  #specs { padding:20vh 0 16vh; }
+  #specs .wrap { display:grid; grid-template-columns:1.1fr 1fr; gap:6vw; align-items:center; }
+  #specs h2 { font-size:clamp(2.2rem, 4.4vw, 4rem); margin-bottom:28px; }
+  .profile { width:100%; overflow:visible; }
+  .profile path, .profile circle { fill:none; stroke:var(--frost); stroke-width:1.4; stroke-linecap:round; }
+  .profile .acc { stroke:var(--copper); stroke-width:2; }
+  .profile .dim { stroke:var(--haze); stroke-width:1; stroke-dasharray:3 5; }
+  .profile text { fill:var(--haze); font:400 12px "Red Hat Mono", monospace; }
+  .sheet { width:100%; border-collapse:collapse; }
+  .sheet th, .sheet td { padding:15px 0; border-bottom:1px solid var(--line); text-align:left; vertical-align:baseline; }
+  .sheet th { font:400 13px "Red Hat Mono", monospace; color:var(--haze); font-weight:400; width:44%; }
+  .sheet td { font-size:1.05rem; }
+  .sheet td b { font:600 1.5rem "Unbounded", sans-serif; letter-spacing:-.02em; margin-right:6px; font-variant-numeric:tabular-nums; }
+  .sheet tr { transition:background .2s; }
+  .sheet tr:hover { background:rgb(238 242 250 / .03); }
+
+  /* configurator */
+  #configure { background:var(--deep); padding:14vh 0; }
+  #configure .wrap { display:grid; grid-template-columns:1.5fr 1fr; gap:4vw; align-items:center; }
+  #studio-car { height:min(72vh, 680px); cursor:grab; touch-action:pan-y; }
+  #studio-car:active { cursor:grabbing; }
+  #configure h2 { font-size:clamp(2rem, 3.8vw, 3.4rem); margin-bottom:12px; }
+  .opt { margin-top:34px; }
+  .opt .mono { margin-bottom:12px; display:flex; justify-content:space-between; }
+  .opt .mono span { color:var(--frost); }
+  .swatches { display:flex; gap:12px; flex-wrap:wrap; }
+  .sw { width:52px; height:52px; border-radius:50%; border:0; cursor:pointer; background:var(--c); position:relative; transition:transform .3s var(--ease);
+        box-shadow:inset 0 -8px 14px rgb(0 0 0 / .35), inset 0 6px 10px rgb(255 255 255 / .25); }
+  .sw::after { content:""; position:absolute; inset:-6px; border-radius:50%; box-shadow:0 0 0 1px var(--frost); opacity:0; transform:scale(.85); transition:opacity .3s, transform .4s var(--ease); }
+  .sw:hover { transform:translateY(-3px); }
+  .sw[aria-pressed="true"]::after { opacity:1; transform:none; }
+  .seg { display:inline-flex; border-radius:999px; box-shadow:inset 0 0 0 1px var(--line); padding:4px; }
+  .seg button { border:0; background:none; color:var(--haze); font:500 15px "Schibsted Grotesk", sans-serif; padding:10px 18px; border-radius:999px; cursor:pointer; transition:background .25s, color .25s; }
+  .seg button[aria-pressed="true"] { background:var(--frost); color:var(--night); }
+  .summary { margin:40px 0 24px; padding-top:20px; border-top:1px solid var(--line); }
+
+  /* faq */
+  #faq { padding:18vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:1fr 1.4fr; gap:6vw; }
+  #faq h2 { font-size:clamp(2rem, 3.8vw, 3.4rem); position:sticky; top:120px; }
+  details { border-bottom:1px solid var(--line); }
+  summary { list-style:none; cursor:pointer; padding:26px 40px 26px 0; font:500 1.2rem "Schibsted Grotesk", sans-serif; position:relative; transition:color .2s; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:22px; font:400 26px "Red Hat Mono", monospace; color:var(--copper); transition:transform .4s var(--ease); }
+  details[open] summary::after { transform:rotate(45deg); }
+  summary:hover { color:var(--copper); }
+  details p { color:var(--haze); padding:0 40px 26px 0; max-width:60ch; }
+
+  /* test drive */
+  #drive { padding:16vh 0; position:relative; overflow:hidden; border-top:1px solid var(--line); }
+  #drive .wrap { display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:start; }
+  #drive h2 { font-size:clamp(2.4rem, 5vw, 4.6rem); }
+  #drive form { display:grid; grid-template-columns:1fr 1fr; gap:28px 24px; }
+  #drive form .full { grid-column:1 / -1; }
+  #drive .done { display:none; }
+  #drive.sent form { display:none; }
+  #drive.sent .done { display:block; }
+  .done h3 { font-size:2rem; margin-bottom:14px; }
+  .lines { position:absolute; inset:auto 0 0; height:40%; pointer-events:none; opacity:.5; }
+
+  @media (max-width:860px) {
+    .chapter { top:96px; }
+    .chapter h1, .chapter h2 { font-size:2.3rem; }
+    .chapter p { font-size:1rem; margin-top:14px; }
+    #run .shade { background:linear-gradient(180deg, rgb(14 26 54 / .85), rgb(14 26 54 / 0) 50%), linear-gradient(0deg, rgb(8 17 42 / .92), rgb(8 17 42 / 0) 34%); }
+    .index { display:none; }
+    .speedo { top:auto; bottom:190px; }
+    .stats { grid-template-columns:1fr 1fr; gap:0 16px; padding-bottom:18px; }
+    .stat { padding-top:10px; padding-bottom:10px; }
+    .stat b { font-size:1.5rem; }
+    #specs .wrap, #configure .wrap, #faq .wrap, #drive .wrap { grid-template-columns:1fr; }
+    #studio-car { height:52vh; }
+    #faq h2 { position:static; }
+    #drive form { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">VANTA</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">GT</a></li>
+      <li><a href="design.html">Design</a></li>
+      <li><a href="charging.html">Charging</a></li>
+      <li><a href="#configure">Configure</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="#drive">Book a test drive</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="run" aria-label="The Vanta GT drives through a tunnel of light">
+  <div class="stick">
+    <div id="run-car" class="f-3d" style="position:absolute;inset:0" data-title="The Vanta GT driving through a tunnel of light"></div>
+    <div class="shade"></div>
+
+    <div class="chapter" data-from="0" data-to="0.13">
+      <h1 class="split">Quiet until <span class="dim">you ask.</span></h1>
+      <p class="lede">A low electric coupe, waiting at the mouth of the tunnel. Scroll to drive.</p>
+    </div>
+    <div class="chapter" data-from="0.13" data-to="0.36">
+      <h2 class="split">Three seconds. <span class="dim">One breath.</span></h2>
+      <p class="lede">Two motors, all four wheels. 0 to 100 km/h in 3.1 s.</p>
+    </div>
+    <div class="chapter" data-from="0.36" data-to="0.58">
+      <h2 class="split">The light can't <span class="dim">keep up.</span></h2>
+      <p class="lede">Up to 480 km on a charge, so the long way home stays on the table.</p>
+    </div>
+    <div class="chapter" data-from="0.58" data-to="0.74">
+      <h2 class="split">Out the far side, <span class="dim">topped up.</span></h2>
+      <p class="lede">An 800-volt system. 10 to 80 % in 18 minutes on a fast charger.</p>
+    </div>
+    <div class="chapter" data-from="0.74" data-to="1.01">
+      <h2 class="split">Vanta GT. <span class="dim">Walk round it.</span></h2>
+      <p class="lede">Two doors, 2+2 seats, full-width light bars front and rear.</p>
+      <a class="btn" href="#drive">Book a test drive <span class="arr">→</span></a>
+    </div>
+
+    <ol class="index" aria-hidden="true"><i></i>
+      <li>01 Standstill</li><li>02 Launch</li><li>03 Full speed</li><li>04 Out</li><li>05 Reveal</li>
+    </ol>
+    <div class="speedo mono" aria-hidden="true"><b id="kmh">000</b> km/h</div>
+
+    <div class="stats">
+      <div class="stat" data-from="0.13" data-to="0.33"><b data-to="3.1" data-dec="1">0.0<small>s</small></b><span class="mono">0 to 100 km/h</span></div>
+      <div class="stat" data-from="0.36" data-to="0.56"><b data-to="480">0<small>km</small></b><span class="mono">range, WLTP</span></div>
+      <div class="stat" data-from="0.58" data-to="0.72"><b data-to="18">0<small>min</small></b><span class="mono">10 to 80 % charge</span></div>
+      <div class="stat" data-from="0.74" data-to="0.92"><b data-to="250">0<small>km/h</small></b><span class="mono">top speed, limited</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="specs">
+  <div class="wrap">
+    <svg class="profile" viewBox="0 0 640 230" role="img" aria-label="Side profile drawing of the Vanta GT">
+      <path class="draw" pathLength="1" d="M28 170 C20 150 22 120 34 108 C80 100 150 96 214 94 C262 70 300 52 352 50 C400 50 450 72 506 106 C560 114 600 124 614 142 C620 156 618 166 606 172 L548 172 A52 52 0 0 0 444 172 L198 172 A52 52 0 0 0 94 172 Z"/>
+      <path class="draw" pathLength="1" d="M226 96 C268 76 302 62 350 60 C392 60 430 78 470 102"/>
+      <circle class="draw" pathLength="1" cx="146" cy="176" r="40"/><circle class="draw" pathLength="1" cx="496" cy="176" r="40"/>
+      <path class="draw acc" pathLength="1" d="M612 140 L618 150"/><path class="draw acc" pathLength="1" d="M30 112 L28 128"/>
+      <path class="dim" d="M146 222 L496 222"/><text x="270" y="214">wheelbase</text>
+      <path class="dim" d="M628 50 L628 172"/>
+    </svg>
+    <div>
+      <h2 data-reveal>The numbers, <span class="dim">plainly.</span></h2>
+      <table class="sheet">
+        <tr><th>Drive</th><td>Two motors, all-wheel drive</td></tr>
+        <tr><th>0 to 100 km/h</th><td><b data-count="3.1" data-dec="1">3.1</b>s</td></tr>
+        <tr><th>Range, WLTP</th><td>up to <b data-count="480">480</b>km</td></tr>
+        <tr><th>Battery</th><td><b data-count="92">92</b>kWh, under the floor</td></tr>
+        <tr><th>Charging, 10 to 80 %</th><td><b data-count="18">18</b>min at 800 V</td></tr>
+        <tr><th>Top speed</th><td><b data-count="250">250</b>km/h, limited</td></tr>
+        <tr><th>Kerb weight</th><td><b data-count="1890">1,890</b>kg</td></tr>
+        <tr><th>Seats</th><td>2+2</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="configure">
+  <div class="wrap">
+    <div id="studio-car" class="f-3d" data-title="The Vanta GT on a turntable in the chosen paint"></div>
+    <div>
+      <h2 data-reveal>Make it <span class="dim">yours.</span></h2>
+      <p class="lede" data-reveal>Pick a paint and a wheel. The car changes as you click.</p>
+      <div class="opt">
+        <div class="mono">Paint <span id="paint-name">Copper Flare</span></div>
+        <div class="swatches" role="group" aria-label="Paint">
+          <button class="sw" style="--c:#b04a22" data-paint="copper" data-name="Copper Flare" aria-pressed="true" aria-label="Copper Flare"></button>
+          <button class="sw" style="--c:#dfe4ea" data-paint="arctic" data-name="Arctic" aria-pressed="false" aria-label="Arctic"></button>
+          <button class="sw" style="--c:#2f343c" data-paint="graphite" data-name="Graphite" aria-pressed="false" aria-label="Graphite"></button>
+          <button class="sw" style="--c:#1f6b4f" data-paint="green" data-name="Signal Green" aria-pressed="false" aria-label="Signal Green"></button>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="mono">21-inch wheels</div>
+        <div class="seg" role="group" aria-label="Wheel finish">
+          <button data-rims="black" aria-pressed="true">Satin black</button><button data-rims="polished" aria-pressed="false">Polished</button>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="mono">Light bars</div>
+        <div class="seg" role="group" aria-label="Light bars">
+          <button data-lights="1" aria-pressed="true">On</button><button data-lights="0" aria-pressed="false">Off</button>
+        </div>
+      </div>
+      <p class="summary mono">Your GT: <span id="spec-line">Copper Flare, satin black wheels</span></p>
+      <a class="btn" href="#drive" id="spec-cta">Test drive this spec <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 data-reveal>Before you <span class="dim">drive it.</span></h2>
+    <div>
+      <details><summary>How far does it go on a charge?</summary><p>Up to 480 km on the WLTP cycle, from a 92 kWh battery that sits under the floor.</p></details>
+      <details><summary>How quickly does it charge?</summary><p>The GT runs on an 800-volt system. On a fast charger it goes from 10 to 80 % in 18 minutes.</p></details>
+      <details><summary>How many people fit?</summary><p>Two doors and 2+2 seats: two up front, two smaller seats behind.</p></details>
+      <details><summary>Which colours and wheels can I choose?</summary><p>Four paints: Copper Flare, Arctic, Graphite and Signal Green. The 21-inch ten-spoke wheels come in satin black or polished.</p></details>
+      <details><summary>Is Vanta a real car?</summary><p>No. Vanta is a fictional brand, made to demo 3D Website Factory. Every 3D object on this page is built in code.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="drive">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Take the long <span class="dim">way round.</span></h2>
+      <p class="lede" style="margin-top:22px">Tell us where you are. We will find you a car and a road.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="f-mail">Email</label><input id="f-mail" name="email" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="f-city">City</label><input id="f-city" name="city" required autocomplete="address-level2"></div>
+        <div class="field"><label for="f-paint">Paint</label><select id="f-paint" name="paint"><option>Copper Flare</option><option>Arctic</option><option>Graphite</option><option>Signal Green</option></select></div>
+        <div class="full"><button class="btn" type="submit">Book a test drive <span class="arr">→</span></button></div>
+      </form>
+      <div class="done" role="status" aria-live="polite"><h3>You're on the list.</h3><p class="lede">This is a demo, so nothing was sent. In a real launch, this is where we would call you back.</p></div>
+    </div>
+  </div>
+  <svg class="lines" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 300 L720 40 L1440 300" fill="none" stroke="#ff8a50" stroke-width="1" pathLength="1" class="road"/>
+    <path d="M0 300 L720 40 L1440 300" fill="none" stroke="#9fb0d4" stroke-width="1" stroke-dasharray="6 14" transform="translate(0 0) scale(1 1)" opacity=".4"/>
+  </svg>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">VANTA</div><p class="mono" style="margin-top:20px">Electric GT. Two doors, two motors.</p></div>
+      <div><h4>The car</h4><ul><li><a href="index.html">Vanta GT</a></li><li><a href="design.html">Design</a></li><li><a href="charging.html">Charging</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="#configure">Configure</a></li><li><a href="#specs">Specifications</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Drive</h4><ul><li><a href="#drive">Book a test drive</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Vanta is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Figures are part of the fictional brief.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/run.js"></script>
+<script type="module" src="3d/studio.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

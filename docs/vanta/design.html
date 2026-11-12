@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vanta GT design. Low, wide, two doors.</title>
+<meta name="description" content="The Vanta GT design: a low 2+2 coupe, full-width light bars and 21-inch ten-spoke wheels. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500&family=Red+Hat+Mono:wght@400;500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .page-head { padding:22vh 0 10vh; display:grid; grid-template-columns:1.1fr 1fr; gap:4vw; align-items:end; }
+  .page-head h1 { font-size:clamp(2.8rem, 6.4vw, 6rem); }
+  .page-head .lede { margin-top:24px; }
+  section.band { padding:18vh 0; border-top:1px solid var(--line); }
+  .pick { display:flex; gap:10px; flex-wrap:wrap; }
+  .pick button { all:unset; cursor:pointer; padding:11px 18px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--line); font-size:15px; transition:box-shadow .2s, color .2s; }
+  .pick button:hover { box-shadow:inset 0 0 0 1px var(--frost); }
+  .pick button[aria-pressed="true"] { box-shadow:inset 0 0 0 1px var(--copper); color:var(--copper); }
+  .pick button:focus-visible { outline:2px solid var(--copper); outline-offset:3px; }
+  .facts { list-style:none; padding:0; border-top:1px solid var(--line); }
+  .facts li { display:grid; grid-template-columns:1fr auto; gap:24px; padding:16px 0; border-bottom:1px solid var(--line); }
+  .facts li span:first-child { color:var(--haze); }
+  .cta { padding:18vh 0; text-align:center; display:grid; justify-items:center; gap:28px; }
+  .cta h2 { font-size:clamp(2.2rem, 5vw, 4.4rem); max-width:16ch; }
+  @media (max-width:860px) { .page-head { grid-template-columns:1fr; padding-top:16vh; } }
+
+  #wheel-sec { display:grid; grid-template-columns:1fr 1.2fr; gap:4vw; align-items:center; padding:6vh 0 14vh; }
+  #wheel { height:min(78vh, 720px); }
+  #wheel-sec h2 { font-size:clamp(2rem, 3.8vw, 3.4rem); margin-bottom:20px; }
+  #wheel-sec .lede { margin-bottom:30px; }
+  .bars { display:grid; gap:56px; }
+  .bar { position:relative; height:120px; border-radius:2px; overflow:hidden; background:var(--deep); }
+  .bar i { position:absolute; left:8%; right:8%; top:50%; height:6px; translate:0 -50%; border-radius:999px; transform-origin:center; transform:scaleX(0); transition:transform 1.4s var(--ease); }
+  .bar.front i { background:#fff6ea; box-shadow:0 0 18px 2px rgb(255 246 234 / .55); }
+  .bar.rear i { background:#ff3b2a; box-shadow:0 0 18px 2px rgb(255 59 42 / .5); }
+  .bar.lit i, .f-still .bar i { transform:none; }
+  .bar span { position:absolute; left:20px; bottom:14px; }
+  .lights { display:grid; grid-template-columns:1fr 1.3fr; gap:4vw; align-items:center; }
+  .lights h2, .shape h2 { font-size:clamp(2rem, 3.8vw, 3.4rem); margin-bottom:18px; }
+  .shape { display:grid; grid-template-columns:1fr 1.3fr; gap:4vw; align-items:center; }
+  .shape svg { width:100%; height:auto; overflow:visible; }
+  @media (max-width:860px) { #wheel-sec, .lights, .shape { grid-template-columns:1fr; } #wheel { height:52vh; order:-1; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">VANTA</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">GT</a></li>
+      <li><a href="design.html" aria-current="page">Design</a></li>
+      <li><a href="charging.html">Charging</a></li>
+      <li><a href="index.html#configure">Configure</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#drive">Book a test drive</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <h1 class="split">Low, wide, <span class="dim">two doors.</span></h1>
+  <p class="lede">A 2+2 coupe that sits low over 21-inch wheels, with a battery flat under the floor.</p>
+</section>
+
+<section id="wheel-sec" class="wrap">
+  <div>
+    <p class="mono" style="margin-bottom:18px">21 inch · ten spokes</p>
+    <h2 class="split">Ten spokes, two finishes.</h2>
+    <p class="lede">Satin black or polished, both on the same 21-inch wheel.</p>
+    <div class="pick" role="group" aria-label="Wheel finish">
+      <button type="button" data-finish="black" aria-pressed="true">Satin black</button>
+      <button type="button" data-finish="polished" aria-pressed="false">Polished</button>
+    </div>
+  </div>
+  <div id="wheel" class="f-3d" data-title="The Vanta GT's 21-inch ten-spoke wheel, tilting toward the cursor and rolling as you scroll"></div>
+</section>
+
+<section class="band"><div class="wrap lights">
+  <div>
+    <h2 class="split">Light, edge to edge.</h2>
+    <p class="lede">One light bar runs the full width of the nose, another the full width of the tail.</p>
+  </div>
+  <div class="bars">
+    <div class="bar front"><i></i><span class="mono">Front</span></div>
+    <div class="bar rear"><i></i><span class="mono">Rear</span></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap shape">
+  <div>
+    <h2 class="split">The battery sits flat.</h2>
+    <p class="lede">92 kWh under the floor, between the axles. It is why the car can sit this low.</p>
+  </div>
+  <svg viewBox="0 0 640 200" aria-hidden="true">
+    <path class="draw" pathLength="1" d="M20 150 C 60 148, 70 120, 120 112 C 200 98, 250 70, 330 66 C 410 62, 470 84, 540 104 C 590 118, 615 132, 620 150" fill="none" stroke="#eef2fa" stroke-width="2"/>
+    <path class="draw" pathLength="1" d="M20 150 L 620 150" fill="none" stroke="#9fb0d4" stroke-width="1"/>
+    <rect x="170" y="134" width="300" height="12" rx="2" fill="#ff8a50" opacity=".9"/>
+    <circle class="draw" pathLength="1" cx="130" cy="150" r="38" fill="none" stroke="#eef2fa" stroke-width="2"/>
+    <circle class="draw" pathLength="1" cx="510" cy="150" r="38" fill="none" stroke="#eef2fa" stroke-width="2"/>
+    <text x="320" y="186" text-anchor="middle" font-family="Red Hat Mono, monospace" font-size="13" fill="#9fb0d4">92 kWh battery, under the floor</text>
+  </svg>
+</div></section>
+
+<section class="cta wrap">
+  <h2 class="split">See it in your colour.</h2>
+  <a class="btn" href="index.html#configure">Configure your GT <span class="arr">→</span></a>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">VANTA</div><p class="mono" style="margin-top:20px">Electric GT. Two doors, two motors.</p></div>
+      <div><h4>The car</h4><ul><li><a href="index.html">Vanta GT</a></li><li><a href="design.html">Design</a></li><li><a href="charging.html">Charging</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#configure">Configure</a></li><li><a href="index.html#specs">Specifications</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Drive</h4><ul><li><a href="index.html#drive">Book a test drive</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Vanta is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Figures are part of the fictional brief.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/wheel.js"></script>
+<script src="motion.js" defer></script>
+<script>addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".bar").forEach(b=>new IntersectionObserver(([e],o)=>{if(e.isIntersecting){b.classList.add("lit");o.disconnect();}},{threshold:.6}).observe(b)));</script>
+</body>
+</html>

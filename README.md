@@ -15,11 +15,11 @@ An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other cod
 
 | [![Stride: a running shoe built in code](docs/previews/stride.jpg)](https://bibeksarkar001.github.io/3d-website-factory/stride/) | [![Ristretto: an espresso cup on a deep red page](docs/previews/ristretto.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ristretto/) |
 | **Stride.** A running shoe that comes apart into its six layers as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/stride/) | **Ristretto.** An espresso bar. One shot pours into the cup as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ristretto/) |
-| [![Promptly: four 3D coach characters](docs/previews/promptly.jpg)](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | |
-| **Promptly.** Four 3D coaches whose eyes follow you, hop as your streak grows, and cheer when you sign up. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | |
+| [![Promptly: four 3D coach characters](docs/previews/promptly.jpg)](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | [![Vanta: an electric coupe in a tunnel of light](docs/previews/vanta.jpg)](https://bibeksarkar001.github.io/3d-website-factory/vanta/) |
+| **Promptly.** Four 3D coaches whose eyes follow you, hop as your streak grows, and cheer when you sign up. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | **Vanta.** An electric coupe that drives through a tunnel of light as you scroll, then lets you pick its paint and wheels. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/vanta/) |
 
 Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
-All seven brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+All eight brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
 
 ## What it does
 

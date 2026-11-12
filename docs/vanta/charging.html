@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vanta GT charging. 10 to 80 % in 18 minutes.</title>
+<meta name="description" content="How the Vanta GT charges: an 800-volt system, 10 to 80 % in 18 minutes on a fast charger. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500&family=Red+Hat+Mono:wght@400;500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .page-head { padding:22vh 0 10vh; display:grid; grid-template-columns:1.1fr 1fr; gap:4vw; align-items:end; }
+  .page-head h1 { font-size:clamp(2.8rem, 6.4vw, 6rem); }
+  .page-head .lede { margin-top:24px; }
+  section.band { padding:18vh 0; border-top:1px solid var(--line); }
+  .pick { display:flex; gap:10px; flex-wrap:wrap; }
+  .pick button { all:unset; cursor:pointer; padding:11px 18px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--line); font-size:15px; transition:box-shadow .2s, color .2s; }
+  .pick button:hover { box-shadow:inset 0 0 0 1px var(--frost); }
+  .pick button[aria-pressed="true"] { box-shadow:inset 0 0 0 1px var(--copper); color:var(--copper); }
+  .pick button:focus-visible { outline:2px solid var(--copper); outline-offset:3px; }
+  .facts { list-style:none; padding:0; border-top:1px solid var(--line); }
+  .facts li { display:grid; grid-template-columns:1fr auto; gap:24px; padding:16px 0; border-bottom:1px solid var(--line); }
+  .facts li span:first-child { color:var(--haze); }
+  .cta { padding:18vh 0; text-align:center; display:grid; justify-items:center; gap:28px; }
+  .cta h2 { font-size:clamp(2.2rem, 5vw, 4.4rem); max-width:16ch; }
+  @media (max-width:860px) { .page-head { grid-template-columns:1fr; padding-top:16vh; } }
+
+  #charge { height:300vh; position:relative; }
+  #charge .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1fr 1.3fr; gap:4vw; align-items:center; }
+  .read { display:grid; gap:6px; }
+  .read b { font:600 clamp(4rem, 10vw, 8.6rem)/.9 "Unbounded", sans-serif; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
+  .read b small { font-size:.32em; color:var(--haze); font-weight:500; margin-left:8px; letter-spacing:0; }
+  .read .min { font:500 1.3rem "Red Hat Mono", monospace; color:var(--haze); font-variant-numeric:tabular-nums; }
+  .steps { list-style:none; padding:0; margin-top:34px; display:grid; gap:0; border-top:1px solid var(--line); }
+  .step { padding:14px 0; border-bottom:1px solid var(--line); color:var(--haze); transition:color .4s var(--ease), padding .4s var(--ease); }
+  .step.on { color:var(--frost); padding-left:10px; box-shadow:inset 2px 0 0 var(--copper); }
+  .graph svg { width:100%; height:auto; overflow:visible; }
+  .graph .axis { font:400 12px "Red Hat Mono", monospace; fill:#9fb0d4; }
+  .f-still #charge { height:auto; } .f-still #charge .stick { position:relative; height:auto; padding:10vh 0; }
+  @media (max-width:860px) { #charge .stick { grid-template-columns:1fr; align-content:center; gap:18px; } .steps { margin-top:14px; } .step { padding:9px 0; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">VANTA</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">GT</a></li>
+      <li><a href="design.html">Design</a></li>
+      <li><a href="charging.html" aria-current="page">Charging</a></li>
+      <li><a href="index.html#configure">Configure</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#drive">Book a test drive</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <h1 class="split">A coffee stop, <span class="dim">not a lunch break.</span></h1>
+  <p class="lede">An 800-volt system takes the battery from 10 to 80 % in 18 minutes on a fast charger.</p>
+</section>
+
+<section id="charge" aria-label="The charge from 10 to 80 percent, drawn as you scroll">
+  <div class="stick wrap">
+    <div>
+      <div class="read"><b><span id="pct">10</span><small>%</small></b><span class="min"><span id="min">0</span> min on a fast charger</span></div>
+      <ol class="steps">
+        <li class="step">Plug in at 10 %.</li>
+        <li class="step">800 volts. The power goes in fast.</li>
+        <li class="step">92 kWh fills under the floor.</li>
+        <li class="step">80 % at 18 minutes. Back on the road.</li>
+      </ol>
+    </div>
+    <div class="graph">
+      <svg viewBox="0 0 640 400" aria-hidden="true">
+        <path d="M60 40 V 340 H 620" fill="none" stroke="rgb(238 242 250 / .14)" stroke-width="1"/>
+        <text class="axis" x="52" y="344" text-anchor="end">10 %</text>
+        <text class="axis" x="52" y="44" text-anchor="end">80 %</text>
+        <text class="axis" x="60" y="368">0 min</text>
+        <text class="axis" x="620" y="368" text-anchor="end">18 min</text>
+        <path id="fill" d="M60 340 C 200 200, 360 90, 620 40 L 620 340 Z" fill="rgb(255 138 80 / .12)"/>
+        <path id="curve" pathLength="1" stroke-dasharray="1" d="M60 340 C 200 200, 360 90, 620 40" fill="none" stroke="#ff8a50" stroke-width="3" stroke-linecap="round"/>
+        <circle id="dot" cx="60" cy="340" r="8" fill="#ff8a50"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="band"><div class="wrap">
+  <ul class="facts">
+    <li><span>Charge, fast charger</span><span>10 to 80 % in 18 min</span></li>
+    <li><span>System voltage</span><span>800 V</span></li>
+    <li><span>Battery</span><span>92 kWh, under the floor</span></li>
+    <li><span>Range</span><span>up to 480 km (WLTP)</span></li>
+  </ul>
+</div></section>
+
+<section class="cta wrap">
+  <h2 class="split">Feel the 3.1 seconds.</h2>
+  <a class="btn" href="index.html#drive">Book a test drive <span class="arr">→</span></a>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">VANTA</div><p class="mono" style="margin-top:20px">Electric GT. Two doors, two motors.</p></div>
+      <div><h4>The car</h4><ul><li><a href="index.html">Vanta GT</a></li><li><a href="design.html">Design</a></li><li><a href="charging.html">Charging</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#configure">Configure</a></li><li><a href="index.html#specs">Specifications</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Drive</h4><ul><li><a href="index.html#drive">Book a test drive</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Vanta is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Figures are part of the fictional brief.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>
