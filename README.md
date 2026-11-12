@@ -13,8 +13,13 @@ An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other cod
 | [![Guild: a dot globe under a serif masthead](docs/previews/guild.jpg)](https://bibeksarkar001.github.io/3d-website-factory/guild/) | [![Sieve: a vortex of light particles](docs/previews/sieve.jpg)](https://bibeksarkar001.github.io/3d-website-factory/sieve/) |
 | **Guild.** A community site styled as an annual report. A dot globe turns as you scroll and member dots glow in. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/guild/) | **Sieve.** A data tool. You scroll through a vortex of light particles until they settle into one bar chart. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/sieve/) |
 
+| [![Stride: a running shoe built in code](docs/previews/stride.jpg)](https://bibeksarkar001.github.io/3d-website-factory/stride/) | [![Ristretto: an espresso cup on a deep red page](docs/previews/ristretto.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ristretto/) |
+| **Stride.** A running shoe that comes apart into its six layers as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/stride/) | **Ristretto.** An espresso bar. One shot pours into the cup as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ristretto/) |
+| [![Promptly: four 3D coach characters](docs/previews/promptly.jpg)](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | |
+| **Promptly.** Four 3D coaches whose eyes follow you, hop as your streak grows, and cheer when you sign up. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | |
+
 Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
-All four brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+All seven brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
 
 ## What it does
 

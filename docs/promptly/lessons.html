@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promptly lessons. Sixty lessons, five units.</title>
+<meta name="description" content="The five Promptly units: what each teaches, twelve lessons at a time. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .units { list-style:none; padding:0 0 16vh; display:grid; gap:18px; counter-reset:u; }
+  .units li { display:grid; grid-template-columns:90px 1fr 1.1fr; gap:28px; align-items:center; padding:28px 30px; border:3px solid var(--ink);
+              border-radius:28px; background:var(--white); box-shadow:4px 4px 0 var(--ink); transition:transform .3s var(--spring); }
+  .units li:hover { transform:translate(-2px, -2px) rotate(-.4deg); }
+  .units li:nth-child(even) { background:var(--sky); }
+  .units .num { font:800 3.4rem/1 "Unbounded", sans-serif; letter-spacing:-.04em; }
+  .units h2 { font-size:1.6rem; }
+  .units .meta { font-weight:600; margin-top:6px; }
+  .units .bar { height:16px; border:3px solid var(--ink); border-radius:999px; overflow:hidden; background:var(--white); }
+  .units .bar b { display:block; height:100%; width:100%; background:var(--tomato); transform-origin:left; transform:scaleX(0); transition:transform 1.2s var(--ease); }
+  .units li:nth-child(2) .bar b { background:var(--cobalt); } .units li:nth-child(3) .bar b { background:var(--mint); }
+  .units li:nth-child(4) .bar b { background:var(--pink); } .units li:nth-child(5) .bar b { background:var(--sun); }
+  .units li.f-in .bar b, .f-still .units .bar b { transform:none; }
+  .units .bar + p { margin-top:10px; font-size:.98rem; }
+  @media (max-width:860px) { .units li { grid-template-columns:56px 1fr; } .units li > div:last-child { grid-column:1 / -1; } .units .num { font-size:2.4rem; } }
+</style>
+</head>
+<body>
+<header class="sub">
+<nav class="nav"><div class="wrap">
+    <a class="logo" href="index.html">Promptly <i aria-hidden="true"><b style="background:var(--tomato)"></b><b style="background:var(--cobalt)"></b><b style="background:var(--mint)"></b><b style="background:var(--pink)"></b></i></a>
+    <div class="links"><a href="lessons.html" aria-current="page">Lessons</a><a href="how.html">How a lesson works</a><a href="index.html#faq">Questions</a><a class="btn" href="index.html#start">Start a lesson</a></div>
+  </div></nav>
+</header>
+<main>
+
+<section class="page-head wrap">
+  <div>
+    <h1>Sixty lessons. Five units.</h1>
+    <p>Twelve lessons a unit, one a day. Each one is a real task in the AI assistant you already use.</p>
+  </div>
+  <div class="f-3d cast-solo" data-who="2" data-title="Pip, the green coach who asks why, waving now and then"></div>
+</section>
+<section class="wrap">
+  <ol class="units">
+    <li data-reveal><span class="num">1</span><div><h2>First words</h2><p class="meta">Lessons 1 to 12</p></div><div><div class="bar"><b></b></div><p>How to ask so the answer is useful.</p></div></li>
+    <li data-reveal><span class="num">2</span><div><h2>Your notes</h2><p class="meta">Lessons 13 to 24</p></div><div><div class="bar"><b></b></div><p>Summaries and first drafts from your own notes.</p></div></li>
+    <li data-reveal><span class="num">3</span><div><h2>Trust, but check</h2><p class="meta">Lessons 25 to 36</p></div><div><div class="bar"><b></b></div><p>Spot the confident wrong answer.</p></div></li>
+    <li data-reveal><span class="num">4</span><div><h2>Plans and lists</h2><p class="meta">Lessons 37 to 48</p></div><div><div class="bar"><b></b></div><p>A messy list in, a plan out.</p></div></li>
+    <li data-reveal><span class="num">5</span><div><h2>Your own toolkit</h2><p class="meta">Lessons 49 to 60</p></div><div><div class="bar"><b></b></div><p>The prompts you saved, ready to reuse.</p></div></li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="on-dark">
+  <div class="wrap">
+    <div class="cols">
+      <div><a class="logo" href="index.html">Promptly <i aria-hidden="true"><b style="background:var(--tomato)"></b><b style="background:var(--cobalt)"></b><b style="background:var(--mint)"></b><b style="background:var(--pink)"></b></i></a><p class="tag">Get good at AI, five minutes a day.</p></div>
+      <div><h4>Learn</h4><ul><li><a href="lessons.html">All 60 lessons</a></li><li><a href="how.html">How a lesson works</a></li><li><a href="index.html#path">The five units</a></li></ul></div>
+      <div><h4>Your habit</h4><ul><li><a href="index.html#week">Streaks</a></li><li><a href="index.html#start">Pick a coach</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Start</h4><ul><li><a href="index.html#start">Today's five minutes</a></li></ul></div>
+    </div>
+    <div class="small"><span>Promptly is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Dot, Block, Pip and Puck say hi.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/scenes.js"></script>
+<script src="pages.js" defer></script>
+</body>
+</html>

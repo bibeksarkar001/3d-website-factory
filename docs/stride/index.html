@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stride. Fresh legs at kilometre thirty.</title>
+<meta name="description" content="Stride is a carbon-plated running shoe for long runs and race day, shown layer by layer. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* the story: one 3D stage pinned across a 720vh track, five chapters */
+  #story { height:720vh; position:relative; }
+  #story .stick { position:sticky; top:0; height:100svh; overflow:hidden; }
+  #story-shoe { position:absolute; inset:0; pointer-events:none; }
+  .huge { position:absolute; left:50%; top:52%; transform:translate(-50%,-50%); font:800 clamp(6rem, 24vw, 26rem)/.8 "Unbounded", sans-serif; letter-spacing:-.06em; color:var(--lime-2); white-space:nowrap; pointer-events:none; user-select:none; }
+  .chap { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); top:50%; transform:translateY(-50%); width:min(500px, 38vw); opacity:0; visibility:hidden; transition:opacity .5s var(--ease), visibility .5s; }
+  .chap.on { opacity:1; visibility:visible; }
+  .chap h1, .chap h2 { font-size:clamp(2.4rem, 4.4vw, 4.2rem); }
+  .chap em { font-style:normal; color:var(--cobalt); }
+  #specs h2 em, #join h2 em { font-style:normal; color:var(--cobalt); }
+  .chap p { margin-top:22px; font-size:1.15rem; max-width:34ch; color:var(--moss); }
+  .chap .btn { margin-top:30px; }
+  .chap .w > span { transform:translateY(105%); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 50ms); }
+  .chap.on .w > span { transform:none; }
+  .stat { display:flex; align-items:baseline; gap:12px; margin-top:26px; }
+  .stat b { font:800 clamp(3.4rem, 7vw, 6rem)/1 "Unbounded", sans-serif; letter-spacing:-.05em; color:var(--cobalt); }
+  .stat span { max-width:16ch; font-weight:500; line-height:1.3; }
+  /* exploded view index */
+  .index { list-style:none; padding:0; margin-top:28px; display:grid; gap:0; counter-reset:n; }
+  .index li { display:grid; grid-template-columns:44px 1fr; align-items:baseline; padding:9px 0; border-top:1px solid var(--rule); color:var(--muted); transition:color .4s var(--ease), padding .4s var(--ease); }
+  .index li::before { counter-increment:n; content:"0" counter(n); font:500 13px "Unbounded", sans-serif; }
+  .index li b { font-weight:700; }
+  .index li small { display:block; grid-column:2; max-height:0; overflow:hidden; opacity:0; font-size:15px; transition:max-height .5s var(--ease), opacity .5s; color:var(--moss); }
+  .index li.on { color:var(--ink); }
+  .index li.now { padding:14px 0; }
+  .index li.now::before { color:var(--coral); color:var(--cobalt); }
+  .index li.now small { max-height:80px; opacity:1; }
+  /* stack dimensions */
+  .dims { display:flex; gap:28px; margin-top:28px; }
+  .dims div { border-left:3px solid var(--cobalt); padding-left:14px; }
+  .dims b { display:block; font:800 2.4rem/1 "Unbounded", sans-serif; letter-spacing:-.04em; }
+  .dims span { font-size:14px; font-weight:500; color:var(--moss); }
+  .progress { position:absolute; right:max(24px, calc((100% - var(--wrap)) / 2)); bottom:32px; display:flex; gap:6px; align-items:center; font:500 13px "Unbounded", sans-serif; }
+  .progress i { width:28px; height:3px; background:var(--rule); position:relative; overflow:hidden; border-radius:2px; }
+  .progress i::after { content:""; position:absolute; inset:0; background:var(--ink); transform:scaleX(var(--k, 0)); transform-origin:left; }
+  .scrollcue { position:absolute; left:50%; bottom:28px; transform:translateX(-50%); font-weight:500; font-size:14px; display:flex; gap:10px; align-items:center; transition:opacity .4s; }
+  .scrollcue i { width:2px; height:28px; background:var(--ink); transform-origin:top; animation:cue 1.6s var(--ease) infinite; }
+  @keyframes cue { 0% { transform:scaleY(0); } 50% { transform:scaleY(1); transform-origin:top; } 51% { transform-origin:bottom; } 100% { transform:scaleY(0); transform-origin:bottom; } }
+
+  /* specs: a spec sheet, not cards */
+  #specs { background:var(--paper); padding:140px 0; }
+  #specs .head { display:flex; justify-content:space-between; align-items:end; gap:40px; flex-wrap:wrap; margin-bottom:64px; }
+  #specs h2 { font-size:clamp(2.4rem, 5.6vw, 5rem); max-width:12ch; }
+  #specs .head p { max-width:34ch; color:var(--muted); }
+  .sheet { display:grid; grid-template-columns:repeat(4, 1fr); border-top:2px solid var(--ink); }
+  .sheet > div { padding:28px 24px 32px 0; border-bottom:1px solid var(--rule); transition:background .3s; }
+  .sheet > div + div { padding-left:24px; border-left:1px solid var(--rule); }
+  .sheet b { display:block; font:800 clamp(2.6rem, 5vw, 4.4rem)/1 "Unbounded", sans-serif; letter-spacing:-.05em; }
+  .sheet b small { font-size:.4em; letter-spacing:0; margin-left:4px; }
+  .sheet span { display:block; margin-top:10px; color:var(--muted); font-size:16px; max-width:22ch; }
+  .sheet > div:hover { background:var(--lime); }
+  .rows { margin-top:56px; display:grid; grid-template-columns:1fr 1fr; gap:0 64px; }
+  .rows div { display:flex; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid var(--rule); }
+  .rows dt { color:var(--muted); } .rows dd { font-weight:700; text-align:right; }
+
+  /* colourways */
+  #colours { background:var(--cobalt); color:var(--paper); min-height:100svh; display:grid; grid-template-columns:1fr 1.25fr; align-items:center; position:relative; overflow:hidden; transition:background .8s var(--ease); }
+  #colours[data-c="coral"] { background:#ff6a4b; color:var(--ink); }
+  #colours[data-c="chalk"] { background:#2b3a26; }
+  #colours .copy { padding:120px 0 120px max(24px, calc((100vw - var(--wrap)) / 2)); }
+  #colours h2 { font-size:clamp(2.4rem, 5vw, 4.4rem); }
+  #colours p { margin-top:20px; max-width:30ch; opacity:.9; }
+  .swatches { display:flex; gap:12px; margin-top:36px; flex-wrap:wrap; }
+  .swatches button { font:inherit; font-weight:700; display:flex; align-items:center; gap:10px; padding:10px 18px 10px 10px; border-radius:999px; border:2px solid currentColor; background:transparent; color:inherit; cursor:pointer; transition:background .2s, color .2s, transform .25s var(--ease); }
+  .swatches button i { width:26px; height:26px; border-radius:50%; background:var(--sw); box-shadow:inset 0 0 0 2px rgb(255 255 255 / .5); }
+  .swatches button[aria-pressed="true"] { background:var(--paper); color:var(--ink); }
+  #colours[data-c="coral"] .swatches button[aria-pressed="true"] { background:var(--ink); color:var(--paper); }
+  #colour-shoe { height:min(86svh, 760px); }
+  #colours .name { position:absolute; right:24px; bottom:20px; font:800 clamp(3rem, 12vw, 11rem)/.8 "Unbounded", sans-serif; letter-spacing:-.06em; opacity:.14; pointer-events:none; }
+
+  /* FAQ */
+  #faq { padding:140px 0; display:grid; grid-template-columns:1fr 1.5fr; gap:64px; }
+  #faq h2 { font-size:clamp(2.2rem, 4.6vw, 4rem); position:sticky; top:120px; align-self:start; }
+  details { border-top:2px solid var(--ink); }
+  details:last-child { border-bottom:2px solid var(--ink); }
+  summary { list-style:none; cursor:pointer; padding:24px 0; font:500 1.3rem/1.3 "Unbounded", sans-serif; letter-spacing:-.02em; display:flex; justify-content:space-between; gap:24px; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; transition:transform .3s var(--ease); }
+  details[open] summary::after { transform:rotate(45deg); }
+  details p { padding:0 0 26px; max-width:56ch; color:var(--moss); }
+
+  /* join */
+  #join { background:var(--coral); padding:140px 0; }
+  #join h2 { font-size:clamp(2.6rem, 7vw, 6.4rem); max-width:13ch; margin-bottom:24px; }
+  #join p { max-width:40ch; margin-bottom:36px; font-size:1.15rem; }
+  #join .waitlist input, #join .waitlist select { background:var(--paper); }
+
+  .f-still #story { height:auto; }
+  .f-still #story .stick { position:relative; height:auto; overflow:visible; display:grid; padding:120px 0 60px; gap:48px; }
+  .f-still #story-shoe { position:relative; inset:auto; height:80svh; order:9; }
+  .f-still .chap { position:relative; left:auto; top:auto; transform:none; opacity:1; visibility:visible; width:auto; padding:0 24px; max-width:640px; margin-inline:auto; }
+  .f-still .chap .w > span { transform:none; }
+  .f-still .huge, .f-still .progress, .f-still .scrollcue { display:none; }
+  .f-still .index li small { max-height:none; opacity:1; }
+
+  @media (max-width:820px) {
+    .chap { top:92px; transform:none; width:auto; right:24px; }
+    .chap h1, .chap h2 { font-size:clamp(2rem, 9vw, 2.8rem); }
+    .chap p { font-size:1rem; margin-top:12px; }
+    .stat b { font-size:3rem; }
+    .index { margin-top:14px; } .index li { padding:5px 0; font-size:15px; } .index li small { display:none; }
+    .huge { top:62%; }
+    .sheet { grid-template-columns:1fr 1fr; }
+    .sheet > div:nth-child(3) { padding-left:0; border-left:0; }
+    .rows { grid-template-columns:1fr; }
+    #colours { grid-template-columns:1fr; }
+    #colours .copy { padding:96px 24px 0; }
+    #colour-shoe { height:52svh; }
+    #faq { grid-template-columns:1fr; gap:24px; }
+    #faq h2 { position:static; }
+  }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i></i>Stride</a>
+    <button class="menu" aria-expanded="false" aria-controls="links">Menu</button>
+    <nav class="links" id="links" aria-label="Main">
+      <a href="#story">Story</a>
+      <a href="tech.html">Tech</a>
+      <a href="#colours">Colours</a>
+      <a href="about.html">About</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn coral" href="#join">Join the first drop</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="story" aria-label="The Stride story">
+  <div class="stick">
+    <div class="huge" aria-hidden="true">STRIDE</div>
+    <div id="story-shoe" class="f-3d" style="position:absolute" data-title="The Stride shoe, floating, then splitting into six layers"></div>
+
+    <div class="chap on" data-from="0" data-to="0.14">
+      <h1 data-split>Fresh legs at <em>kilometre thirty.</em></h1>
+      <p>Stride is a carbon-plated trainer with a deep foam stack, built for long runs and race day.</p>
+      <a class="btn" href="#join">Join the first drop</a>
+    </div>
+    <div class="chap" data-from="0.14" data-to="0.3">
+      <h2 data-split>Every landing <em>hits hard.</em></h2>
+      <div class="stat"><b data-n="2.5">0.0×</b><span>your body weight goes through each foot, every stride</span></div>
+      <p>Over a marathon that is around thirty thousand landings. The shoe takes the first part of every one.</p>
+    </div>
+    <div class="chap" data-from="0.3" data-to="0.67">
+      <h2 data-split>Six layers, <em>one job each.</em></h2>
+      <ol class="index">
+        <li data-at="0.36"><b>Knit upper</b><small>One piece of engineered knit. Stretch where the foot spreads, firm at the heel.</small></li>
+        <li data-at="0.41"><b>Lacing cage</b><small>Five straps a side tie the laces to the sole, so the knit can stay soft.</small></li>
+        <li data-at="0.46"><b>Carbon plate</b><small>Full length and curved. It stiffens the forefoot and tips you onto the toe.</small></li>
+        <li data-at="0.51"><b>Foam midsole</b><small>Nitrogen-infused foam: most of the stack, light and quick to spring back.</small></li>
+        <li data-at="0.56"><b>Cushion pod</b><small>A firmer layer under the soft one, so the shoe stays steady when you land.</small></li>
+        <li data-at="0.61"><b>Outsole</b><small>Thin rubber with a shallow lug, thicker where heels wear first.</small></li>
+      </ol>
+    </div>
+    <div class="chap" data-from="0.67" data-to="0.84">
+      <h2 data-split>Tall at the heel, <em>low at the toe.</em></h2>
+      <div class="dims">
+        <div><b data-n="36">0</b><span>mm heel stack</span></div>
+        <div><b data-n="28">0</b><span>mm forefoot</span></div>
+        <div><b data-n="8">0</b><span>mm drop</span></div>
+      </div>
+      <p>A deep stack where you land, a thinner one where you push off.</p>
+    </div>
+    <div class="chap" data-from="0.84" data-to="1.01">
+      <h2 data-split>Land on the heel. <em>Roll off the toe.</em></h2>
+      <p>The curved plate and the rocker under the forefoot turn each landing into the next push.</p>
+      <a class="btn" href="tech.html">See how it is built</a>
+    </div>
+
+    <div class="progress" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="scrollcue" aria-hidden="true"><i></i>Scroll to take it apart</div>
+  </div>
+</section>
+
+<section id="specs">
+  <div class="wrap">
+    <div class="head">
+      <h2 data-split>The numbers, <em>plainly.</em></h2>
+      <p>Measured on a men's US 9. Every size gets the same plate, the same foam and the same 8 mm drop.</p>
+    </div>
+    <div class="sheet">
+      <div><b><span data-count="236">236</span><small>g</small></b><span>a single shoe, men's US 9</span></div>
+      <div><b><span data-count="36">36</span><small>mm</small></b><span>heel stack, foam plus plate</span></div>
+      <div><b><span data-count="8">8</span><small>mm</small></b><span>heel-to-toe drop</span></div>
+      <div><b><span data-count="1">1</span><small>plate</small></b><span>carbon, full length, curved under the forefoot</span></div>
+    </div>
+    <dl class="rows">
+      <div><dt>Best for</dt><dd>Long runs, tempo, race day</dd></div>
+      <div><dt>Upper</dt><dd>Engineered knit, padded collar</dd></div>
+      <div><dt>Midsole</dt><dd>Nitrogen-infused foam over a firmer pod</dd></div>
+      <div><dt>Outsole</dt><dd>Rubber, shallow lug</dd></div>
+      <div><dt>Fit</dt><dd>True to size, roomy toe box</dd></div>
+      <div><dt>Sizes</dt><dd>Men's US 7 to 13, women's US 5 to 11</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="colours" data-c="cobalt" aria-label="Colourways">
+  <div class="copy">
+    <h2 data-split>Pick your colour.</h2>
+    <p id="cw-line">Cobalt knit, chalk cage, coral pod. The one you see first.</p>
+    <div class="swatches" role="group" aria-label="Colourway">
+      <button aria-pressed="true" data-c="cobalt" style="--sw:#2443d6"><i></i>Cobalt</button>
+      <button aria-pressed="false" data-c="coral" style="--sw:#ff5a3a"><i></i>Coral</button>
+      <button aria-pressed="false" data-c="chalk" style="--sw:#ecebe4"><i></i>Chalk</button>
+    </div>
+  </div>
+  <div id="colour-shoe" class="f-3d" data-title="The Stride shoe in the chosen colourway, turning toward the cursor"></div>
+  <div class="name" aria-hidden="true" id="cw-name">Cobalt</div>
+</section>
+
+<section id="faq" class="wrap">
+  <h2 data-split>Before you run in them.</h2>
+  <div>
+    <details><summary>Is a carbon plate only for racing?</summary><p>No. Stride is built as a daily trainer for long and steady runs that also works on race day. The plate is curved and slightly softer than a racing flat's, so easy kilometres feel fine.</p></details>
+    <details><summary>How does it fit?</summary><p>True to size, with a roomy toe box. If you are between sizes, go up half a size for marathon distances; feet swell late in a long run.</p></details>
+    <details><summary>How long does the foam last?</summary><p>Plan on roughly 500 to 700 km, like most high-stack trainers. The firmer pod underneath helps the soft foam keep its shape for longer.</p></details>
+    <details><summary>Can I run on trails?</summary><p>Light gravel and park paths, yes. The shallow lug is made for road; for mud or rock you will want a trail shoe.</p></details>
+    <details><summary>When can I get a pair?</summary><p>The first pairs go to people on the list below. We will email you once, when your size is ready.</p></details>
+  </div>
+</section>
+
+<section id="join">
+  <div class="wrap">
+    <h2 data-split>Be first to the start line.</h2>
+    <p>Leave your email and size. One email when your pair is ready, nothing else.</p>
+    <form class="waitlist" data-waitlist novalidate>
+      <label class="sr" for="em">Email</label><input id="em" type="email" required placeholder="you@example.com" autocomplete="email">
+      <label class="sr" for="sz">Size</label>
+      <select id="sz" required><option value="">Size</option><option>US 7</option><option>US 8</option><option>US 9</option><option>US 10</option><option>US 11</option><option>US 12</option><option>US 13</option></select>
+      <button class="btn" type="submit">Join the first drop</button>
+      <p class="ok" tabindex="-1" hidden>You are on the list. We will email you when your size is ready.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <div class="big">Run<br>long.</div>
+      <div><h4>Shoe</h4><ul><li><a href="index.html#story">Story</a></li><li><a href="index.html#specs">Specs</a></li><li><a href="index.html#colours">Colours</a></li><li><a href="tech.html">Tech</a></li></ul></div>
+      <div><h4>Stride</h4><ul><li><a href="about.html">About</a></li><li><a href="about.html#principles">How we test</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Stay close</h4><ul><li><a href="index.html#join">Join the first drop</a></li><li><a href="#top" onclick="scrollTo({top:0});return false">Back to top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Stride is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>© <span data-year></span> Stride</span></div>
+  </div>
+</footer>
+
+<script src="site.js" defer></script>
+<script type="module" src="3d/story.js"></script>
+<script type="module" src="3d/colours.js"></script>
+</body>
+</html>

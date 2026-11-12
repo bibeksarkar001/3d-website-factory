@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How a Promptly lesson works. Four steps, five minutes.</title>
+<meta name="description" content="A Promptly lesson step by step: read, try, check, save. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .how { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; padding:4vh 0 16vh; }
+  .card { background:var(--white); border:3px solid var(--ink); border-radius:28px; box-shadow:6px 6px 0 var(--ink); padding:30px; }
+  .card h2 { font-size:1.4rem; margin-bottom:18px; }
+  .check { list-style:none; padding:0; display:grid; gap:10px; }
+  .check li { display:grid; grid-template-columns:40px 1fr auto; gap:14px; align-items:center; padding:14px 16px; border-radius:20px;
+              transition:background .4s var(--ease), transform .4s var(--spring); }
+  .check li.on { background:var(--sun); transform:translateX(6px); }
+  .check .box { width:34px; height:34px; border:3px solid var(--ink); border-radius:10px; display:grid; place-items:center; transition:background .3s; }
+  .check li.done .box { background:var(--mint); }
+  .check path { stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .35s var(--ease); }
+  .check li.done path { stroke-dashoffset:0; }
+  .check b { font:700 1rem "Unbounded", sans-serif; }
+  .check em { font-style:normal; font-weight:600; font-variant-numeric:tabular-nums; }
+  .card .bar { margin-top:20px; height:14px; border:3px solid var(--ink); border-radius:999px; overflow:hidden; }
+  .card .bar b { display:block; height:100%; background:var(--cobalt); transform-origin:left; }
+  .steps-text { display:grid; gap:34px; }
+  .steps-text h3 { font-size:1.35rem; margin-bottom:6px; }
+  .steps-text p { max-width:40ch; }
+  @media (max-width:860px) { .how { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header class="sub">
+<nav class="nav"><div class="wrap">
+    <a class="logo" href="index.html">Promptly <i aria-hidden="true"><b style="background:var(--tomato)"></b><b style="background:var(--cobalt)"></b><b style="background:var(--mint)"></b><b style="background:var(--pink)"></b></i></a>
+    <div class="links"><a href="lessons.html">Lessons</a><a href="how.html" aria-current="page">How a lesson works</a><a href="index.html#faq">Questions</a><a class="btn" href="index.html#start">Start a lesson</a></div>
+  </div></nav>
+</header>
+<main>
+
+<section class="page-head wrap">
+  <div>
+    <h1>Four steps. About five minutes.</h1>
+    <p>Block likes a checklist, so here is the lesson as one.</p>
+  </div>
+  <div class="f-3d cast-solo" data-who="1" data-title="Block, the blue coach who likes checklists, waving now and then"></div>
+</section>
+<section class="how wrap">
+  <div class="card" data-reveal>
+    <h2>Today's lesson</h2>
+    <ol class="check" id="checklist">
+      <li><span class="box"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#1c1840" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Read the task</b><em>0:30</em></li>
+      <li><span class="box"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#1c1840" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Try it</b><em>3:00</em></li>
+      <li><span class="box"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#1c1840" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Check one thing</b><em>1:00</em></li>
+      <li><span class="box"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#1c1840" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Save the prompt</b><em>0:30</em></li>
+    </ol>
+    <div class="bar" aria-hidden="true"><b id="checkbar"></b></div>
+  </div>
+  <div class="steps-text">
+    <div data-reveal><h3>1. Read the task</h3><p>One real task, the kind you would do at work anyway. Thirty seconds to read it.</p></div>
+    <div data-reveal><h3>2. Try it</h3><p>Do it in the AI assistant you already use. You have three minutes.</p></div>
+    <div data-reveal><h3>3. Check one thing</h3><p>The lesson names one thing to check in the answer. A minute to see if it holds up.</p></div>
+    <div data-reveal><h3>4. Save the prompt</h3><p>Keep the prompt that worked. It goes into your toolkit to reuse.</p></div>
+    <div data-reveal><a class="btn" href="index.html#start">Start today's five minutes</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="on-dark">
+  <div class="wrap">
+    <div class="cols">
+      <div><a class="logo" href="index.html">Promptly <i aria-hidden="true"><b style="background:var(--tomato)"></b><b style="background:var(--cobalt)"></b><b style="background:var(--mint)"></b><b style="background:var(--pink)"></b></i></a><p class="tag">Get good at AI, five minutes a day.</p></div>
+      <div><h4>Learn</h4><ul><li><a href="lessons.html">All 60 lessons</a></li><li><a href="how.html">How a lesson works</a></li><li><a href="index.html#path">The five units</a></li></ul></div>
+      <div><h4>Your habit</h4><ul><li><a href="index.html#week">Streaks</a></li><li><a href="index.html#start">Pick a coach</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Start</h4><ul><li><a href="index.html#start">Today's five minutes</a></li></ul></div>
+    </div>
+    <div class="small"><span>Promptly is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Dot, Block, Pip and Puck say hi.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/scenes.js"></script>
+<script src="pages.js" defer></script>
+</body>
+</html>

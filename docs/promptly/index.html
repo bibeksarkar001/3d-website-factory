@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promptly. Get good at AI, five minutes a day.</title>
+<meta name="description" content="Promptly teaches you to use the AI assistant you already have, one five-minute task a day. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* 1. hero */
+  .hero { min-height:100svh; display:grid; grid-template-rows:auto 1fr; padding-top:110px; position:relative; overflow:hidden; }
+  .hero .top { display:grid; grid-template-columns:1.5fr 1fr; gap:40px; align-items:end; }
+  .hero h1 { font-size:clamp(2.5rem, 5.6vw, 5.2rem); }
+  .hero h1 .w { display:inline-block; }
+  .hero h1 span.two { color:var(--cobalt); }
+  .hero .side { display:grid; gap:24px; justify-items:start; padding-bottom:8px; }
+  .hero .side p { font-size:1.15rem; max-width:30ch; }
+  #cast-hero { height:max(44vh, 340px); margin-top:2vh; cursor:pointer; }
+  .blob { position:absolute; border-radius:50%; z-index:-1; will-change:transform; }
+
+  /* 2. five minutes */
+  #five { height:240vh; background:var(--cobalt); color:var(--white); }
+  #five .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:5vw; }
+  #five h2 { font-size:clamp(2rem, 3.8vw, 3.4rem); margin-bottom:34px; }
+  .clock { position:relative; width:min(460px, 80vw); aspect-ratio:1; justify-self:center; }
+  .clock svg { width:100%; height:100%; transform:rotate(-90deg); }
+  .clock .time { position:absolute; inset:0; display:grid; place-items:center; font:800 clamp(3.4rem, 7vw, 6rem)/1 "Unbounded", sans-serif; font-variant-numeric:tabular-nums; letter-spacing:-.04em; }
+  .steps { list-style:none; padding:0; display:grid; gap:4px; }
+  .steps li { display:grid; grid-template-columns:44px 1fr auto; gap:16px; align-items:center; padding:16px 18px; border-radius:20px; opacity:.94; transition:opacity .5s var(--ease), background .5s var(--ease), transform .5s var(--spring); }
+  .steps li.on { opacity:1; background:rgb(255 255 255 / .12); transform:translateX(8px); }
+  .steps li.done { opacity:1; }
+  .steps .tick { width:36px; height:36px; border-radius:50%; border:3px solid var(--white); display:grid; place-items:center; }
+  .steps .tick path { stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .4s var(--ease); }
+  .steps li.done .tick { background:var(--white); }
+  .steps li.done .tick path { stroke-dashoffset:0; }
+  .steps b { font:700 1.05rem "Unbounded", sans-serif; }
+  .steps em { font-style:normal; font-variant-numeric:tabular-nums; font-weight:600; }
+  #five .done-line { font:700 1.3rem "Unbounded", sans-serif; margin-top:26px; opacity:0; transform:scale(.9); transition:opacity .5s, transform .5s var(--spring); }
+  #five .done-line.on { opacity:1; transform:none; }
+
+  /* 3. the week */
+  #week { height:320vh; background:var(--white); }
+  #week .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1.2fr 1fr; align-items:center; gap:3vw; }
+  #cast-week { height:70svh; cursor:pointer; }
+  #week h2 { font-size:clamp(1.8rem, 3.2vw, 2.9rem); margin-bottom:26px; }
+  .streak { display:flex; align-items:center; gap:18px; margin-bottom:22px; }
+  .streak .n { font:800 clamp(4rem, 8vw, 6.4rem)/1 "Unbounded", sans-serif; font-variant-numeric:tabular-nums; letter-spacing:-.05em; display:inline-block; }
+  .streak .n.pop { animation:pop .5s var(--spring); }
+  @keyframes pop { 40% { transform:scale(1.25) rotate(-4deg); } }
+  .streak small { display:block; font-weight:600; font-size:1rem; }
+  .flame { width:64px; height:80px; }
+  .flame path { transition:fill .4s; }
+  .days { display:grid; grid-template-columns:repeat(7, 1fr); gap:8px; margin-bottom:20px; }
+  .days span { aspect-ratio:1; border-radius:16px; border:3px solid var(--ink); display:grid; place-items:center; font:700 13px "Unbounded", sans-serif; transition:background .3s, transform .4s var(--spring); }
+  .days span.on { background:var(--tomato); transform:translateY(-4px) rotate(-3deg); }
+  .days span.on:nth-child(2n) { background:var(--mint); transform:translateY(-4px) rotate(3deg); }
+  .days span.on:nth-child(3n) { background:var(--sun); }
+  .lesson { min-height:3.2em; font-size:1.1rem; }
+  .lesson b { font-weight:600; }
+  #tap { margin-top:16px; opacity:.35; pointer-events:none; transition:opacity .4s; }
+  #tap.ready { opacity:1; pointer-events:auto; }
+  .confetti { position:fixed; width:10px; height:16px; border-radius:3px; pointer-events:none; z-index:9; }
+
+  /* 4. the path */
+  #path { height:220vh; }
+  #path .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-rows:auto 1fr; padding-top:12vh; overflow:hidden; }
+  #path h2 { font-size:clamp(2rem, 4vw, 3.6rem); max-width:16ch; }
+  #path .map { position:relative; }
+  #path svg { position:absolute; inset:0; width:100%; height:100%; }
+  #path .road { stroke-dasharray:1; stroke-dashoffset:1; }
+  .unit { position:absolute; width:min(250px, 40vw); opacity:.55; transform:translateY(10px) scale(.96); transition:opacity .5s var(--ease), transform .5s var(--spring); }
+  .unit.on { opacity:1; transform:none; }
+  .unit b, .unit p { background:var(--sun); box-shadow:0 0 0 6px var(--sun); border-radius:6px; width:fit-content; } /* the road passes behind the words */
+  .unit i { display:grid; place-items:center; width:54px; height:54px; border-radius:50%; border:3px solid var(--ink); background:var(--white); font:800 18px "Unbounded", sans-serif; font-style:normal; margin-bottom:10px; box-shadow:3px 3px 0 var(--ink); }
+  .unit.on i { background:var(--ink); color:var(--sun); }
+  .unit b { font:700 1.1rem "Unbounded", sans-serif; display:block; }
+  .unit p { font-size:.98rem; }
+
+  /* 5. pick your coach + start */
+  #start { background:var(--sky); padding:14vh 0; }
+  #start .wrap { display:grid; grid-template-columns:1.1fr 1fr; gap:4vw; align-items:center; }
+  #start h2 { font-size:clamp(2.2rem, 4.4vw, 4rem); margin-bottom:14px; }
+  #cast-start { height:min(62vh, 540px); cursor:pointer; }
+  .bubble { position:relative; display:inline-block; background:var(--white); border:3px solid var(--ink); border-radius:22px; padding:12px 18px; font-weight:600; margin:6px 0 22px; box-shadow:4px 4px 0 var(--ink); }
+  .bubble::after { content:""; position:absolute; left:28px; bottom:-12px; width:18px; height:18px; background:var(--white); border-right:3px solid var(--ink); border-bottom:3px solid var(--ink); transform:rotate(45deg); }
+  .bubble.pop { animation:pop .5s var(--spring); }
+  .coaches { display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 24px; }
+  .coaches button { all:unset; cursor:pointer; display:flex; align-items:center; gap:10px; padding:10px 16px 10px 10px; border:3px solid var(--ink); border-radius:999px; background:var(--white); font-weight:600; transition:transform .25s var(--spring), box-shadow .25s var(--spring); }
+  .coaches button i { width:22px; height:22px; border-radius:50%; display:block; border:2px solid var(--ink); }
+  .coaches button:hover { transform:translateY(-3px); }
+  .coaches button[aria-pressed="true"] { box-shadow:4px 4px 0 var(--ink); transform:translate(-2px, -2px); background:var(--sun); }
+  .coaches button:focus-visible { outline:3px solid var(--ink); outline-offset:3px; }
+  form { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:end; }
+  label { display:grid; gap:6px; font-weight:600; font-size:15px; }
+  input { font:600 1.05rem "General Sans", sans-serif; padding:14px 18px; border:3px solid var(--ink); border-radius:18px; background:var(--white); color:var(--ink); }
+  input:focus { outline:none; box-shadow:4px 4px 0 var(--ink); }
+  form .btn { grid-column:1 / -1; justify-self:start; margin-top:8px; }
+  .err { grid-column:1 / -1; font-weight:600; min-height:1.4em; color:#b3200a; }
+  .ok { display:none; }
+  form.sent { display:none; }
+  form.sent + .ok { display:block; animation:pop .6s var(--spring); }
+  .ok h3 { font-size:2rem; margin-bottom:8px; }
+
+  /* 6. faq */
+  #faq { background:var(--white); padding:16vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:1fr 1.5fr; gap:5vw; }
+  #faq h2 { font-size:clamp(2rem, 4vw, 3.4rem); }
+  details { border:3px solid var(--ink); border-radius:24px; margin-bottom:12px; background:var(--white); transition:background .2s, box-shadow .25s var(--spring); }
+  details[open] { background:var(--sun); box-shadow:4px 4px 0 var(--ink); }
+  summary { list-style:none; cursor:pointer; padding:20px 60px 20px 24px; font:700 1.08rem/1.3 "Unbounded", sans-serif; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:22px; top:50%; translate:0 -50%; font:800 1.6rem "Unbounded", sans-serif; transition:rotate .3s var(--spring); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 24px 22px; max-width:56ch; }
+
+  @media (max-width:860px) {
+    .hero .top, #five .stick, #start .wrap, #faq .wrap { grid-template-columns:1fr; }
+    .hero { padding-top:96px; }
+    .hero .top { gap:18px; }
+    #cast-hero { height:40vh; }
+    #five .stick { align-content:center; gap:20px; }
+    .clock { width:46vw; }
+    #five h2 { margin-bottom:12px; font-size:1.5rem; }
+    .steps li { padding:8px 10px; grid-template-columns:32px 1fr auto; }
+    .steps .tick { width:28px; height:28px; }
+    .steps b { font-size:.85rem; }
+    #week .stick { grid-template-columns:1fr; grid-template-rows:38svh auto; align-content:start; padding-top:64px; gap:0; }
+    #cast-week { height:38svh; }
+    #week h2 { font-size:1.35rem; margin-bottom:10px; }
+    .streak .n { font-size:3.4rem; }
+    .streak { margin-bottom:10px; }
+    .flame { width:44px; height:56px; }
+    .days span { border-radius:10px; font-size:10px; }
+    .unit { width:44vw; }
+    .unit p { display:none; }
+    #cast-start { height:40vh; order:-1; }
+    form { grid-template-columns:1fr; }
+  }
+  .f-still #path .road { stroke-dashoffset:0; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <nav class="nav"><div class="wrap">
+    <a class="logo" href="index.html">Promptly <i aria-hidden="true"><b style="background:var(--tomato)"></b><b style="background:var(--cobalt)"></b><b style="background:var(--mint)"></b><b style="background:var(--pink)"></b></i></a>
+    <div class="links"><a href="lessons.html">Lessons</a><a href="how.html">How a lesson works</a><a href="#faq">Questions</a><a class="btn" href="#start">Start a lesson</a></div>
+  </div></nav>
+  <div class="blob" style="width:38vw;height:38vw;background:#ffe78a;right:-8vw;top:-10vw" data-depth=".3"></div>
+  <div class="blob" style="width:18vw;height:18vw;background:#ffcf2e;left:-6vw;bottom:8vh" data-depth=".6"></div>
+  <div class="top wrap">
+    <h1>Everyone at work is using AI. <span class="two">You're nodding along.</span></h1>
+    <div class="side">
+      <p data-reveal>Promptly fixes that in five minutes a day: one real task, in the AI assistant you already have.</p>
+      <a class="btn" href="#start" data-reveal>Start today's five minutes</a>
+    </div>
+  </div>
+  <div id="cast-hero" class="f-3d" data-title="Four round, colourful coach characters waving hello; their eyes follow the cursor"></div>
+</header>
+
+<section id="five" class="on-dark">
+  <div class="stick wrap">
+    <div class="clock" aria-hidden="true">
+      <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="88" fill="none" stroke="rgb(255 255 255 / .18)" stroke-width="16"/>
+        <circle id="ring" cx="100" cy="100" r="88" fill="none" stroke="#ffd84a" stroke-width="16" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0"/></svg>
+      <div class="time" id="time">5:00</div>
+    </div>
+    <div>
+      <h2>A lesson fits between two meetings.</h2>
+      <ol class="steps">
+        <li data-from="0" data-to="0.1"><span class="tick"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#2d5bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Read the task</b><em>0:30</em></li>
+        <li data-from="0.1" data-to="0.7"><span class="tick"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#2d5bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Try it in your assistant</b><em>3:00</em></li>
+        <li data-from="0.7" data-to="0.9"><span class="tick"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#2d5bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Check one thing it said</b><em>1:00</em></li>
+        <li data-from="0.9" data-to="1"><span class="tick"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 9.5 7.5 14 15 4" fill="none" stroke="#2d5bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span><b>Save the prompt</b><em>0:30</em></li>
+      </ol>
+      <p class="done-line" id="done-line">Done. That was today.</p>
+    </div>
+  </div>
+</section>
+
+<section id="week">
+  <div class="stick wrap">
+    <div id="cast-week" class="f-3d" data-title="The four coaches hopping as the streak grows, celebrating at seven days"></div>
+    <div>
+      <h2>Do it tomorrow too. They notice.</h2>
+      <div class="streak">
+        <svg class="flame" viewBox="0 0 64 80" aria-hidden="true"><path id="flame" d="M32 4 C 40 20, 58 30, 56 52 C 55 68, 44 77, 32 77 C 20 77, 8 68, 8 52 C 8 40, 16 34, 20 24 C 24 32, 28 34, 30 34 C 30 22, 28 14, 32 4 Z" fill="#ffd84a" stroke="#1c1840" stroke-width="3" stroke-linejoin="round"/></svg>
+        <div><span class="n" id="streak-n">0</span><small>days in a row</small></div>
+      </div>
+      <div class="days" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <p class="lesson" id="lesson" aria-live="polite">Scroll through a week of lessons.</p>
+      <button class="btn alt" id="tap" type="button">I did today's five</button>
+    </div>
+  </div>
+</section>
+
+<section id="path">
+  <div class="stick">
+    <div class="wrap"><h2>Sixty lessons, five units, one small step a day.</h2></div>
+    <div class="map wrap">
+      <svg viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M30 360 C 160 360, 160 240, 260 240 S 380 340, 480 300 S 600 100, 700 140 S 860 260, 970 60" fill="none" stroke="rgb(28 24 64 / .15)" stroke-width="14" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        <path class="road" d="M30 360 C 160 360, 160 240, 260 240 S 380 340, 480 300 S 600 100, 700 140 S 860 260, 970 60" fill="none" stroke="#1c1840" stroke-width="6" stroke-linecap="round" stroke-dasharray="1" pathLength="1" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="unit" style="left:0%;top:58%" data-at=".08"><i>1</i><b>First words</b><p>How to ask so the answer is useful.</p></div>
+      <div class="unit" style="left:20%;top:12%" data-at=".28"><i>2</i><b>Your notes</b><p>Summaries and first drafts from your own notes.</p></div>
+      <div class="unit" style="left:42%;top:52%" data-at=".5"><i>3</i><b>Trust, but check</b><p>Spot the confident wrong answer.</p></div>
+      <div class="unit" style="left:60%;top:0%" data-at=".7"><i>4</i><b>Plans and lists</b><p>A messy list in, a plan out.</p></div>
+      <div class="unit" style="left:80%;top:42%" data-at=".88"><i>5</i><b>Your own toolkit</b><p>Prompts you saved, ready to reuse.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <div>
+      <h2>Pick a coach. Start tomorrow morning.</h2>
+      <p class="bubble" id="bubble" aria-live="polite">I'm Dot. I keep it short.</p>
+      <div class="coaches" role="group" aria-label="Choose your coach">
+        <button type="button" data-coach="0" aria-pressed="true"><i style="background:var(--tomato)"></i>Dot</button>
+        <button type="button" data-coach="1" aria-pressed="false"><i style="background:var(--cobalt)"></i>Block</button>
+        <button type="button" data-coach="2" aria-pressed="false"><i style="background:var(--mint)"></i>Pip</button>
+        <button type="button" data-coach="3" aria-pressed="false"><i style="background:var(--pink)"></i>Puck</button>
+      </div>
+      <form id="start-form" novalidate>
+        <label>Your email<input type="email" name="email" autocomplete="email" required placeholder="you@work.com"></label>
+        <label>Remind me at<input type="time" name="at" value="08:30" required></label>
+        <p class="err" aria-live="polite"></p>
+        <button class="btn" type="submit">Start today's five minutes</button>
+      </form>
+      <div class="ok" role="status"><h3>You're in.</h3><p>Your first lesson arrives at <b id="ok-time">08:30</b> tomorrow, with <b id="ok-coach">Dot</b>. Five minutes, then you're done.</p></div>
+    </div>
+    <div id="cast-start" class="f-3d" data-pick="0" data-title="The four coaches; the one you pick steps forward, and they all cheer when you sign up"></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Fair questions.</h2>
+    <div>
+      <details><summary>Do I need a special AI app?</summary><p>No. Each lesson is a task you do in the AI assistant you already use. Promptly tells you what to try and what to check.</p></details>
+      <details><summary>Is it really five minutes?</summary><p>About that: 30 seconds to read the task, 3 minutes to try it, a minute to check the answer, 30 seconds to save the prompt.</p></details>
+      <details><summary>What if I miss a day?</summary><p>You get one spare day a week. Your streak stays.</p></details>
+      <details><summary>What will I be able to do at the end?</summary><p>Write a clear ask, turn your notes into drafts and summaries, catch a wrong answer, turn a messy list into a plan, and keep a toolkit of prompts you reuse.</p></details>
+      <details><summary>Can I change my coach later?</summary><p>Yes, any time. Same lessons, different style.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="on-dark">
+  <div class="wrap">
+    <div class="cols">
+      <div><a class="logo" href="index.html">Promptly <i aria-hidden="true"><b style="background:var(--tomato)"></b><b style="background:var(--cobalt)"></b><b style="background:var(--mint)"></b><b style="background:var(--pink)"></b></i></a><p class="tag">Get good at AI, five minutes a day.</p></div>
+      <div><h4>Learn</h4><ul><li><a href="lessons.html">All 60 lessons</a></li><li><a href="how.html">How a lesson works</a></li><li><a href="#path">The five units</a></li></ul></div>
+      <div><h4>Your habit</h4><ul><li><a href="#week">Streaks</a></li><li><a href="#start">Pick a coach</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h4>Start</h4><ul><li><a href="#start">Today's five minutes</a></li></ul></div>
+    </div>
+    <div class="small"><span>Promptly is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Dot, Block, Pip and Puck say hi.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/scenes.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

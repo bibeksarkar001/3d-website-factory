@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visit. Ristretto.</title>
+<meta name="description" content="Opening hours and how a visit to the bar goes. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .page-head { padding:20vh 0 10vh; display:grid; grid-template-columns:1.2fr 1fr; gap:6vw; align-items:end; }
+  .page-head h1 { font-size:clamp(3.4rem, 8vw, 8rem); }
+  .page-head p { color:var(--husk); max-width:40ch; font-size:1.15rem; }
+  .hours { border-top:1px solid var(--rule); }
+  .hours .wrap { display:grid; grid-template-columns:repeat(7, 1fr); }
+  .hours div { padding:36px 0 40px; border-left:1px solid var(--rule); padding-left:16px; }
+  .hours div:first-child { border-left:0; padding-left:0; }
+  .hours b { display:block; font:400 1.6rem "Gloock", serif; margin-bottom:8px; }
+  .hours .shut { color:var(--husk); }
+  .how { background:var(--roast); padding:16vh 0; }
+  .how h2 { font-size:clamp(2.4rem, 4.6vw, 4.4rem); margin-bottom:56px; }
+  .how svg { width:100%; height:auto; display:block; overflow:visible; }
+  .how text { font:500 15px "Satoshi"; fill:var(--crema); }
+  .how .lbl { font:400 26px "Gloock"; }
+  .groups { padding:16vh 0; }
+  .groups .wrap { display:grid; grid-template-columns:1fr 1.2fr; gap:6vw; }
+  .groups h2 { font-size:clamp(2.4rem, 4.6vw, 4.4rem); }
+  .groups p { color:var(--husk); margin-top:18px; max-width:38ch; }
+  .groups form { display:grid; gap:22px; }
+  .groups label { display:grid; gap:4px; }
+  .groups input, .groups select { background:none; border:0; border-bottom:1px solid var(--husk); color:var(--crema); font:inherit; padding:12px 2px; }
+  .groups select option { background:var(--cherry); }
+  .groups .btn { justify-self:start; }
+  @media (max-width:860px) {
+    .page-head, .groups .wrap { grid-template-columns:1fr; }
+    .hours .wrap { grid-template-columns:1fr 1fr; }
+    .hours div, .hours div:first-child { border-left:0; padding:18px 0; border-top:1px solid var(--rule); }
+    .how text { font-size:22px; } .how .lbl { font-size:34px; }
+  }
+</style>
+</head>
+<body id="top">
+<header class="nav">
+  <div class="wrap">
+    <a class="mark" href="index.html">Ristretto</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="links">Menu</button>
+    <nav class="links" id="links" aria-label="Main">
+      <a href="index.html#pull">Pull a shot</a><a href="menu.html">The menu</a><a href="visit.html" aria-current="page">Visit</a><a href="index.html#faq">Questions</a>
+      <a class="btn" href="index.html#note">Monthly note</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="page-head wrap">
+  <h1 data-words>Come <span>stand at the bar.</span></h1>
+  <p data-reveal>No bookings and no seats. Walk in, order at the bar, drink it there. About eight people fit along it.</p>
+</section>
+<section class="hours" aria-label="Opening hours"><div class="wrap"><div><b>Mon</b><span class="shut">Closed</span></div><div><b>Tue</b><span class="">7 to 15</span></div><div><b>Wed</b><span class="">7 to 15</span></div><div><b>Thu</b><span class="">7 to 15</span></div><div><b>Fri</b><span class="">7 to 15</span></div><div><b>Sat</b><span class="">7 to 15</span></div><div><b>Sun</b><span class="">7 to 15</span></div></div></section>
+<section class="how">
+  <div class="wrap">
+    <h2 data-reveal>A visit, <span>start to finish.</span></h2>
+    <svg id="visit-loop" viewBox="0 0 1000 220" role="img" aria-label="A visit in four steps: walk in, order at the bar, watch it pulled, two sips and out.">
+      <line x1="40" y1="70" x2="960" y2="70" stroke="#cfae90" stroke-opacity=".35" stroke-width="2"/>
+      <line id="vl-fill" x1="40" y1="70" x2="960" y2="70" stroke="#e3ac4f" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <g id="vl-steps"></g>
+      <circle id="vl-dot" cx="40" cy="70" r="9" fill="#e3ac4f"/>
+    </svg>
+  </div>
+</section>
+<section class="groups">
+  <div class="wrap">
+    <div>
+      <h2 data-reveal>Six or more?</h2>
+      <p data-reveal>Groups of six or more can ask ahead, so the bar is ready for you. Everyone else, just walk in.</p>
+    </div>
+    <div>
+      <form data-form novalidate>
+        <label class="small">Your name<input name="name" required autocomplete="name"></label>
+        <label class="small">Your email<input type="email" name="email" required autocomplete="email"></label>
+        <label class="small">How many of you<input type="number" name="size" min="6" max="20" value="6" required></label>
+        <label class="small">Which day<select name="day" required><option value="">Choose a day</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
+        <button class="btn">Ask about a group visit</button>
+      </form>
+      <p class="ok" hidden tabindex="-1">Thanks. We'll reply by email to say which time works.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="big" aria-hidden="true">Ristretto</div>
+    <div class="cols">
+      <div><h4>The bar</h4><p>A standing espresso bar. One machine, two grinders, four drinks.</p></div>
+      <div><h4>Open</h4><ul><li>Tuesday to Sunday</li><li>7 to 15</li><li>Closed Mondays</li></ul></div>
+      <div><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">The menu</a></li><li><a href="visit.html">Visit</a></li></ul></div>
+      <div><h4>Here</h4><ul><li><a href="index.html#pull">Pull a shot</a></li><li><a href="index.html#faq">Questions</a></li><li><a href="index.html#note">Monthly note</a></li></ul></div>
+    </div>
+    <div class="fine"><span>Ristretto is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><a href="#top">Back to the top</a></div>
+  </div>
+</footer>
+
+<script type="module">
+import { splitWords } from './site.js'; splitWords();
+// motion: a dot walks the visit, each step lights as it arrives; 12 s loop, a finished picture with reduced motion
+const steps = ['Walk in', 'Order at the bar', 'Watch it pulled', 'Two sips, and out'], NS = 'http://www.w3.org/2000/svg';
+const g = document.querySelector('#vl-steps'), dot = document.querySelector('#vl-dot'), fill = document.querySelector('#vl-fill');
+const xs = steps.map((_, i) => 40 + i * (920 / 3));
+const marks = steps.map((s, i) => {
+  const m = document.createElementNS(NS, 'g'); m.setAttribute('transform', `translate(${xs[i]} 0)`);
+  m.innerHTML = `<circle cx="0" cy="70" r="5" fill="#cfae90"/><text class="lbl" x="0" y="130" text-anchor="${i === 0 ? 'start' : i === 3 ? 'end' : 'middle'}">0${i + 1}</text><text x="0" y="168" text-anchor="${i === 0 ? 'start' : i === 3 ? 'end' : 'middle'}">${s}</text>`;
+  g.append(m); return m;
+});
+Factory.loop(document.querySelector('#visit-loop'), (t, still) => {
+  const k = still ? 1 : Math.min(1, (t % 12) / 10);
+  const e = k * k * (3 - 2 * k);
+  dot.setAttribute('cx', 40 + e * 920); fill.setAttribute('stroke-dashoffset', 1 - e);
+  marks.forEach((m, i) => m.style.opacity = e * 3 + 0.02 >= i ? 1 : 0.35);
+});
+</script>
+</body>
+</html>

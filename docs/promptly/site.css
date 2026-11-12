@@ -1,0 +1,59 @@
+/* Promptly: design.md as tokens, then the shared parts (nav, sticker buttons, footer). */
+:root { --sun:#ffd84a; --ink:#1c1840; --cobalt:#2d5bff; --white:#ffffff; --sky:#c4e8ff; --tomato:#ff5a3c; --mint:#29c79a; --pink:#ff7ab8;
+        --ease:cubic-bezier(.16,1,.3,1); --spring:cubic-bezier(.34,1.56,.64,1); --wrap:1220px; }
+* { box-sizing:border-box; margin:0; }
+html { background:var(--sun); color:var(--ink); font:500 18px/1.5 "General Sans", system-ui, sans-serif; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { overflow-x:clip; }
+.wrap { width:min(var(--wrap), 100% - 40px); margin-inline:auto; }
+h1, h2, h3, .display { font-family:"Unbounded", system-ui, sans-serif; font-weight:700; letter-spacing:-.025em; line-height:1.02; }
+a { color:inherit; }
+
+/* sticker buttons: thick ink border, hard offset shadow, springy press */
+.btn { display:inline-flex; align-items:center; gap:10px; padding:16px 26px; border-radius:999px; background:var(--ink); color:var(--white);
+       font:600 17px/1 "General Sans", sans-serif; text-decoration:none; border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
+       cursor:pointer; transition:transform .25s var(--spring), box-shadow .25s var(--spring), background .15s; will-change:transform; }
+.btn.alt { background:var(--white); color:var(--ink); }
+.btn:hover { transform:translate(-2px, -2px) rotate(-1.5deg); box-shadow:6px 6px 0 var(--ink); }
+.btn:active { transform:translate(3px, 3px); box-shadow:1px 1px 0 var(--ink); transition-duration:.08s; }
+.on-dark .btn { border-color:var(--white); box-shadow:4px 4px 0 var(--white); background:var(--white); color:var(--ink); }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline:3px solid var(--ink); outline-offset:3px; }
+.on-dark a:focus-visible, .on-dark button:focus-visible { outline-color:var(--white); }
+
+/* nav */
+.nav { position:absolute; inset:0 0 auto; z-index:5; padding:20px 0; }
+.nav .wrap { display:flex; align-items:center; gap:28px; }
+.logo { font:800 24px "Unbounded", sans-serif; letter-spacing:-.03em; text-decoration:none; display:flex; align-items:center; gap:8px; }
+.logo i { display:inline-flex; gap:3px; }
+.logo i b { width:9px; height:9px; border-radius:50%; display:block; transition:transform .3s var(--spring); }
+.logo:hover i b { transform:translateY(-5px); }
+.logo:hover i b:nth-child(2) { transition-delay:.05s; } .logo:hover i b:nth-child(3) { transition-delay:.1s; } .logo:hover i b:nth-child(4) { transition-delay:.15s; }
+.nav .links { display:flex; gap:24px; margin-left:auto; align-items:center; }
+.nav .links a:not(.btn) { text-decoration:none; font-weight:600; padding:6px 2px; background:linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 3px; transition:background-size .3s var(--ease); }
+.nav .links a:not(.btn):hover, .nav .links a[aria-current] { background-size:100% 3px; }
+.nav .btn { padding:11px 18px; font-size:15px; white-space:nowrap; }
+
+/* footer */
+footer { background:var(--ink); color:#d9d6f0; padding:80px 0 36px; }
+footer .cols { display:grid; grid-template-columns:1.6fr repeat(3, 1fr); gap:40px; padding-bottom:48px; border-bottom:2px solid rgb(255 255 255 / .12); }
+footer .logo { color:var(--white); font-size:34px; }
+footer .tag { margin-top:14px; max-width:28ch; }
+footer h4 { font:700 13px "Unbounded", sans-serif; color:var(--white); margin-bottom:14px; }
+footer ul { list-style:none; padding:0; display:grid; gap:8px; }
+footer a { text-decoration:none; transition:color .15s; }
+footer a:hover { color:var(--sun); }
+footer .small { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:24px; font-size:15px; }
+
+/* extra pages */
+.page-head { padding:150px 0 40px; display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center; }
+.page-head h1 { font-size:clamp(2.6rem, 6vw, 5.4rem); }
+.page-head p { font-size:1.2rem; max-width:34ch; margin-top:20px; }
+.cast-solo { height:min(56vh, 460px); }
+
+@media (max-width:860px) {
+  .nav .links a:not(.btn) { display:none; }
+  footer .cols { grid-template-columns:1fr 1fr; }
+  footer .cols > div:first-child { grid-column:1 / -1; }
+  .page-head { grid-template-columns:1fr; padding-top:110px; }
+  .cast-solo { height:42vh; }
+}
