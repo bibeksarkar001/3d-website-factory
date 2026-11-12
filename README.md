@@ -21,11 +21,11 @@ An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other cod
 | **Weft.** Selvedge denim. Scroll and a needle sews the pocket, sets the rivets and hems the leg. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/weft/) | **Faraway.** Small-group travel. Fly over a miniature island as the day turns to dusk and the lighthouse comes on. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/faraway/) |
 | [![Ridgeline: an electric mountain bike in 3D](docs/previews/ridgeline.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | [![Optra: a lens aperture closing](docs/previews/optra.jpg)](https://bibeksarkar001.github.io/3d-website-factory/optra/) |
 | **Ridgeline.** An e-MTB tour: motor, battery, fork and tyres, then drag it round and tap its parts. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | **Optra.** A camera lens. Its eleven aperture blades close as you scroll, then the glass comes apart. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/optra/) |
-| [![Vela: a candle lit by scrolling](docs/previews/vela.jpg)](https://bibeksarkar001.github.io/3d-website-factory/vela/) | |
-| **Vela.** A candle you light by scrolling. The page darkens to candlelight; at the end smoke rises. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/vela/) | |
+| [![Vela: a candle lit by scrolling](docs/previews/vela.jpg)](https://bibeksarkar001.github.io/3d-website-factory/vela/) | [![Ferro: a cast-iron pan heating on a flame](docs/previews/ferro.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ferro/) |
+| **Vela.** A candle you light by scrolling. The page darkens to candlelight; at the end smoke rises. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/vela/) | **Ferro.** A cast-iron pan, cast glowing hot, machined, seasoned and heated as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ferro/) |
 
 Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
-All thirteen brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+All fourteen brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
 
 ## What it does
 

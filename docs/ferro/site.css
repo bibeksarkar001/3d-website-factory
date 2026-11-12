@@ -1,0 +1,75 @@
+/* Ferro design system (see _work/ferro/brief.md). Shared by every page. */
+:root { --stone:#e6e1d8; --card:#ddd7cc; --ink:#161413; --muted:#5d554d; --molten:#e2531a; --molten-ink:#a8360a; --rule:rgb(22 20 19 / .16);
+        --ease:cubic-bezier(.16,1,.3,1); --wrap:1240px; }
+* { box-sizing:border-box; margin:0; }
+html { background:var(--stone); color:var(--ink); font:400 17px/1.55 "Instrument Sans", system-ui, sans-serif; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { overflow-x:clip; }
+a { color:inherit; }
+.wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
+h1, h2, h3, .display { font-family:"Zilla Slab", Rockwell, serif; font-weight:700; letter-spacing:-.015em; line-height:.95; }
+.label { font:400 12px/1.4 "DM Mono", ui-monospace, monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.muted { color:var(--muted); }
+.dark { background:var(--ink); color:var(--stone); }
+.dark .muted, .dark .label { color:#b5aca2; }
+
+.btn { display:inline-flex; align-items:center; gap:12px; padding:16px 24px; background:var(--ink); color:var(--stone); border:0; cursor:pointer;
+       font:600 16px "Instrument Sans", sans-serif; text-decoration:none; transition:transform .35s var(--ease), box-shadow .35s var(--ease); }
+.btn::after { content:"→"; transition:transform .3s var(--ease); }
+.btn:hover { transform:translateY(-2px); box-shadow:0 0 0 3px var(--molten); }
+.btn:hover::after { transform:translateX(4px); }
+.dark .btn { background:var(--stone); color:var(--ink); }
+:focus-visible { outline:2px solid var(--molten); outline-offset:3px; }
+
+.nav { position:fixed; inset:0 0 auto; z-index:20; transition:background .3s, box-shadow .3s; }
+.nav.solid { background:rgb(230 225 216 / .94); box-shadow:0 1px 0 var(--rule); }
+.nav .wrap { display:flex; align-items:center; gap:30px; height:70px; }
+.logo { font:700 28px/1 "Zilla Slab", serif; text-decoration:none; letter-spacing:.02em; display:flex; align-items:center; gap:10px; }
+.logo i { width:22px; height:22px; border-radius:50%; border:5px solid var(--ink); position:relative; }
+.logo i::after { content:""; position:absolute; left:15px; top:4px; width:12px; height:5px; background:var(--ink); }
+.nav ul { list-style:none; padding:0; display:flex; gap:26px; margin-left:auto; }
+.nav ul a { text-decoration:none; font-weight:500; font-size:15px; padding:6px 0; background:linear-gradient(var(--molten), var(--molten)) no-repeat 0 100% / 0 2px; transition:background-size .35s var(--ease); }
+.nav ul a:hover, .nav ul a[aria-current] { background-size:100% 2px; }
+.nav .btn { padding:10px 16px; font-size:15px; }
+.menu { display:none; background:none; border:0; font:600 15px "Instrument Sans", sans-serif; color:inherit; cursor:pointer; padding:10px 0; margin-left:auto; }
+
+.split .w { display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em; margin-bottom:-.08em; }
+.split .w > span { display:inline-block; transform:translateY(105%); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 60ms); }
+.split.in .w > span, .f-still .split .w > span { transform:none; }
+
+.field { display:grid; gap:8px; }
+.field label { font:400 12px "DM Mono", monospace; letter-spacing:.06em; text-transform:uppercase; }
+.field input, .field select { font:400 17px "Instrument Sans", sans-serif; color:inherit; background:transparent; border:1.5px solid currentColor; padding:13px 14px; width:100%; border-radius:0; }
+.field input:focus, .field select:focus { outline:none; border-color:var(--molten); }
+.field select option { color:var(--ink); }
+
+.seg { display:flex; flex-wrap:wrap; gap:8px; }
+.seg button { all:unset; cursor:pointer; padding:11px 16px; box-shadow:inset 0 0 0 1.5px var(--rule); font-weight:600; font-size:15px; transition:box-shadow .2s, background .2s; }
+.seg button:hover { box-shadow:inset 0 0 0 1.5px var(--ink); }
+.seg button[aria-pressed="true"] { background:var(--ink); color:var(--stone); box-shadow:none; }
+.seg button:focus-visible { outline:2px solid var(--molten); outline-offset:3px; }
+
+footer { background:var(--ink); color:var(--stone); padding:90px 0 34px; }
+footer .cols { display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; padding-bottom:56px; border-bottom:1px solid rgb(230 225 216 / .16); }
+footer .big { font:700 clamp(4.4rem, 12vw, 10rem)/.8 "Zilla Slab", serif; }
+footer h4 { font:400 12px "DM Mono", monospace; letter-spacing:.06em; text-transform:uppercase; color:#b5aca2; margin-bottom:14px; font-weight:400; }
+footer ul { list-style:none; padding:0; display:grid; gap:9px; }
+footer a { text-decoration:none; } footer a:hover { color:#ff8a52; }
+footer .small { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:24px; font-size:14px; color:#b5aca2; }
+
+.page-head { padding:20vh 0 8vh; display:grid; grid-template-columns:1fr 1.1fr; gap:5vw; align-items:center; }
+.page-head h1 { font-size:clamp(3.6rem, 8vw, 7.4rem); }
+.page-head p { font-size:1.2rem; max-width:34ch; margin-top:22px; }
+.cta { padding:16vh 0; display:grid; justify-items:center; gap:28px; text-align:center; }
+.cta h2 { font-size:clamp(3rem, 7vw, 6rem); max-width:12ch; }
+
+@media (max-width:860px) {
+  .nav ul { display:none; position:absolute; top:70px; left:0; right:0; flex-direction:column; gap:0; background:var(--stone); padding:8px 24px 22px; box-shadow:0 1px 0 var(--rule); }
+  .nav.open ul { display:flex; }
+  .nav ul a { display:block; padding:12px 0; font-size:17px; }
+  .menu { display:block; }
+  .nav .btn { display:none; }
+  footer .cols { grid-template-columns:1fr 1fr; }
+  footer .cols > :first-child { grid-column:1 / -1; }
+  .page-head { grid-template-columns:1fr; padding-top:15vh; }
+}

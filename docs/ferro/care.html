@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferro care. Wipe, oil, warm.</title>
+<meta name="description" content="How to look after a Ferro cast-iron pan: wipe it, oil it lightly, warm it. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Instrument+Sans:wght@400;500;600&family=DM+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161413'/%3E%3Ccircle cx='13' cy='16' r='7' fill='none' stroke='%23e2531a' stroke-width='3'/%3E%3Cpath d='M20 15h9' stroke='%23e2531a' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .loop { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; padding:2vh 0 14vh; }
+  #care-loop { width:min(100%, 440px); height:auto; justify-self:center; }
+  .steps3 { list-style:none; padding:0; display:grid; gap:0; }
+  .steps3 li { padding:22px 0; border-top:1.5px solid var(--ink); opacity:.45; transition:opacity .4s; }
+  .steps3 li.on { opacity:1; }
+  .steps3 h3 { font-size:2rem; margin-bottom:6px; }
+  @media (max-width:860px) { .loop { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Ferro</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">Ferro 26</a></li>
+      <li><a href="heat.html">Any heat</a></li>
+      <li><a href="care.html" aria-current="page">Care</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#dibs">Get first dibs</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap" style="padding-bottom:4vh">
+  <div><h1 class="split">Wipe. Oil. Warm.</h1><p>That is all it asks. Do it after cooking and it gets better every time.</p></div>
+</section>
+<section class="wrap loop">
+  <svg id="care-loop" viewBox="0 0 400 260" role="img" aria-label="A pan is wiped, a drop of oil falls in, and it warms, on a loop">
+    <ellipse id="glow" cx="170" cy="170" rx="120" ry="34" fill="#e2531a" opacity="0"/>
+    <ellipse cx="170" cy="160" rx="130" ry="40" fill="#161413"/>
+    <ellipse cx="170" cy="150" rx="112" ry="30" fill="#2a2725"/>
+    <path d="M296 150 L392 138" stroke="#161413" stroke-width="16" stroke-linecap="round"/>
+    <g id="cloth"><rect x="130" y="120" width="70" height="30" rx="6" fill="#d8cdbd" transform="rotate(-8 165 135)"/></g>
+    <circle id="drop" cx="170" cy="40" r="7" fill="#e9b04a" opacity="0"/>
+  </svg>
+  <ol class="steps3">
+    <li data-step><h3>Wipe</h3><p class="muted">While it is still warm, wipe it out. Hot water if it needs it.</p></li>
+    <li data-step><h3>Oil</h3><p class="muted">A few drops of oil, rubbed thin over the cooking floor.</p></li>
+    <li data-step><h3>Warm</h3><p class="muted">A minute on low heat so the oil settles in. Then it is ready for next time.</p></li>
+  </ol>
+</section>
+<section class="cta dark" style="background:var(--ink);color:var(--stone)"><h2 class="split">Made to be handed down.</h2><a class="btn" href="index.html#dibs">Get first dibs</a></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Ferro</div><p style="margin-top:18px;color:#b5aca2">One pan. Cast iron. For ever.</p></div>
+      <div><h4>The pan</h4><ul><li><a href="index.html">Ferro 26</a></li><li><a href="heat.html">Any heat</a></li><li><a href="care.html">Care</a></li></ul></div>
+      <div><h4>Know it</h4><ul><li><a href="index.html#specs">Specs</a></li><li><a href="index.html#heat">Heat sources</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Get one</h4><ul><li><a href="index.html#dibs">First dibs</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Ferro is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>2.4 kg.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>

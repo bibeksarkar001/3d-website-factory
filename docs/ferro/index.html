@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferro 26. Cast once. Cook for ever.</title>
+<meta name="description" content="Ferro 26, a 26 cm cast-iron skillet: cast in sand, machined smooth, seasoned three times. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Instrument+Sans:wght@400;500;600&family=DM+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161413'/%3E%3Ccircle cx='13' cy='16' r='7' fill='none' stroke='%23e2531a' stroke-width='3'/%3E%3Cpath d='M20 15h9' stroke='%23e2531a' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  #make { --bg:#e6e1d8; --dark:0; height:560vh; position:relative; background:var(--bg); color:color-mix(in srgb, #161413 calc((1 - var(--dark)) * 100%), #e6e1d8); }
+  #make .stick { position:sticky; top:0; height:100svh; overflow:hidden; background:var(--bg); }
+  #make .label, #make .ch .big small { color:color-mix(in srgb, #5d554d calc((1 - var(--dark)) * 100%), #b5aca2); }
+  #pan-3d { position:absolute; top:0; bottom:0; right:0; width:64%; }
+  .ch { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); top:50%; transform:translateY(-50%); width:min(440px, 34%); }
+  .ch h1, .ch h2 { font-size:clamp(3.2rem, 6.6vw, 6.6rem); }
+  .ch .big { display:block; font:700 clamp(5rem, 11vw, 10rem)/.85 "Zilla Slab", serif; color:var(--molten-ink); font-variant-numeric:tabular-nums; }
+  .ch .big small { font-size:.3em; color:var(--muted); margin-left:8px; }
+  .ch p { margin-top:20px; font-size:1.12rem; max-width:30ch; }
+  .ch .btn { margin-top:26px; }
+  .ch p, .ch .btn, .ch .big { opacity:0; transform:translateY(12px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+  .ch.on p, .ch.on .btn, .ch.on .big { opacity:1; transform:none; transition-delay:.15s; }
+  .ch:not(.on) { visibility:hidden; transition:visibility 0s .8s; }
+  .temp { position:absolute; right:max(24px, calc((100% - var(--wrap)) / 2)); bottom:32px; display:flex; align-items:center; gap:14px; }
+  .temp .bar { width:180px; height:6px; background:var(--rule); position:relative; overflow:hidden; }
+  .temp .bar b { position:absolute; inset:0; background:linear-gradient(90deg, #8a8580, #e2531a, #ffb04a); transform-origin:left; transform:scaleX(var(--h, 0)); }
+  .f-still #make { height:auto; } .f-still #make .stick { height:100svh; } .f-still .ch { visibility:hidden; } .f-still .ch.first { visibility:visible; }
+
+  #specs { padding:16vh 0; }
+  #specs .wrap { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:start; }
+  #specs h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:24px; }
+  #specs svg { width:100%; height:auto; overflow:visible; margin-top:10px; }
+  #specs .draw { fill:none; stroke:#e6e1d8; stroke-width:2; }
+  #specs .dim { fill:none; stroke:#e2531a; stroke-width:1.2; stroke-dasharray:4 5; }
+  #specs text { font:400 12px "DM Mono", monospace; fill:#b5aca2; }
+  .specs { width:100%; border-collapse:collapse; }
+  .specs th, .specs td { text-align:left; padding:13px 0; border-top:1px solid rgb(230 225 216 / .16); vertical-align:top; font-weight:400; }
+  .specs th { font:400 12px "DM Mono", monospace; letter-spacing:.06em; text-transform:uppercase; color:#b5aca2; width:42%; }
+
+  #heat { padding:16vh 0; }
+  #heat .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; align-items:center; }
+  #heat h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:16px; }
+  #heat .heat-3d { height:min(64vh, 580px); }
+
+  #faq { padding:16vh 0; background:var(--card); }
+  #faq .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; }
+  #faq h2 { font-size:clamp(3rem, 6vw, 5.4rem); }
+  details { border-top:1.5px solid var(--ink); } details:last-child { border-bottom:1.5px solid var(--ink); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:700 1.5rem/1.1 "Zilla Slab", serif; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:50%; translate:0 -50%; font:400 1.4rem "DM Mono", monospace; color:var(--molten-ink); transition:rotate .3s var(--ease); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 0 22px; max-width:56ch; }
+
+  #dibs { padding:16vh 0; }
+  #dibs .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; }
+  #dibs h2 { font-size:clamp(3.4rem, 7vw, 6.4rem); }
+  #dibs form { display:grid; gap:18px; }
+  #dibs .done { display:none; } #dibs.sent form { display:none; } #dibs.sent .done { display:block; }
+  #dibs .done h3 { font-size:2.8rem; margin-bottom:10px; }
+
+  @media (max-width:860px) {
+    #pan-3d { width:100%; top:auto; height:56svh; }
+    .ch { top:92px; transform:none; width:auto; right:24px; }
+    .ch h1, .ch h2 { font-size:2.8rem; } .ch .big { font-size:4.6rem; } .ch p { font-size:1rem; margin-top:10px; }
+    .temp { display:none; }
+    #specs .wrap, #heat .wrap, #faq .wrap, #dibs .wrap { grid-template-columns:1fr; }
+    #heat .heat-3d { height:46vh; order:-1; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Ferro</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">Ferro 26</a></li>
+      <li><a href="heat.html">Any heat</a></li>
+      <li><a href="care.html">Care</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="#dibs">Get first dibs</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="make" aria-label="How the Ferro 26 is made: cast, machined, seasoned, then heated">
+  <div class="stick">
+    <div id="pan-3d" class="f-3d" style="position:absolute" data-title="The Ferro 26 cast-iron pan in 3D; as you scroll it glows hot from casting, is machined smooth, seasoned black and heated on a gas ring"></div>
+    <div class="ch first" data-from="0" data-to="0.17">
+      <h1 class="split">Cast once. Cook for ever.</h1>
+      <p>The Ferro 26 is a 26 cm cast-iron skillet, made the old way and meant to be handed down.</p>
+      <a class="btn" href="#dibs">Get first dibs</a>
+    </div>
+    <div class="ch" data-from="0.17" data-to="0.39">
+      <span class="label">01 Cast</span>
+      <h2 class="split">Poured into sand.</h2>
+      <p>Molten iron fills a sand mould, then cools slowly into one solid piece. No joins, no rivets.</p>
+    </div>
+    <div class="ch" data-from="0.39" data-to="0.61">
+      <span class="label">02 Machined</span>
+      <h2 class="split">Then made smooth.</h2>
+      <p>The cooking floor is machined flat and smooth, so food releases and the pan sits true.</p>
+    </div>
+    <div class="ch" data-from="0.61" data-to="0.81">
+      <span class="label">03 Seasoned</span>
+      <span class="big" id="coats">0<small>of 3 coats</small></span>
+      <p>Three thin coats of oil, each baked on. It arrives seasoned and ready to cook.</p>
+    </div>
+    <div class="ch" data-from="0.81" data-to="1.01">
+      <span class="label">04 Heated</span>
+      <span class="big" data-to="2.4" data-dec="1">0<small>kg</small></span>
+      <p>Heavy enough to hold its heat. Gas, electric, induction, oven or fire.</p>
+      <a class="btn" href="#heat">Pick your heat</a>
+    </div>
+    <div class="temp" aria-hidden="true"><span class="label">Heat</span><span class="bar"><b id="tempbar"></b></span></div>
+  </div>
+</section>
+
+<section id="specs" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 class="split">The pan, plainly.</h2>
+      <svg viewBox="0 0 600 220" aria-hidden="true">
+        <path class="draw" pathLength="1" d="M60 70 L80 170 Q84 186 100 186 H300 Q316 186 320 170 L340 70 M340 72 L560 58 Q580 58 578 72 Q576 84 560 84 L340 96"/>
+        <path class="draw" pathLength="1" d="M60 70 Q50 74 44 84"/>
+        <path class="dim" d="M60 40 H340 M60 34 V46 M340 34 V46"/><text x="200" y="28" text-anchor="middle">26 cm</text>
+        <path class="dim" d="M30 70 V186 M24 70 H36 M24 186 H36"/><text x="22" y="134" text-anchor="end">5 cm</text>
+      </svg>
+    </div>
+    <table class="specs">
+      <tr><th>Size</th><td>26 cm across, 5 cm deep</td></tr>
+      <tr><th>Weight</th><td>2.4 kg</td></tr>
+      <tr><th>Made</th><td>Cast in sand, machined smooth inside</td></tr>
+      <tr><th>Seasoning</th><td>Three coats of oil, each baked on</td></tr>
+      <tr><th>Handles</th><td>A long handle and a helper handle</td></tr>
+      <tr><th>Heat</th><td>Gas, electric, induction, oven, fire</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="heat">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Any heat you have.</h2>
+      <p class="muted">Pick a heat source. The pan does not mind.</p>
+      <div class="seg" role="group" aria-label="Heat source" style="margin-top:24px">
+        <button type="button" data-heat="gas" aria-pressed="true">Gas</button>
+        <button type="button" data-heat="induction" aria-pressed="false">Induction</button>
+        <button type="button" data-heat="fire" aria-pressed="false">Fire</button>
+      </div>
+    </div>
+    <div class="f-3d heat-3d" data-title="The Ferro 26 on the heat source you pick: a gas ring, an induction hob or a wood fire"></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="split">Fair questions.</h2>
+    <div>
+      <details><summary>Is it ready to use?</summary><p>Yes. It arrives seasoned with three baked-on coats of oil.</p></details>
+      <details><summary>Will it work on induction?</summary><p>Yes, and on gas, electric, in the oven and over a fire.</p></details>
+      <details><summary>Why is the inside smooth?</summary><p>The cooking floor is machined after casting, so it is flat and smooth.</p></details>
+      <details><summary>How heavy is it?</summary><p>2.4 kg. The weight is what holds the heat.</p></details>
+      <details><summary>How do I look after it?</summary><p>Wipe it, oil it lightly, warm it. The <a href="care.html">care page</a> shows how.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="dibs" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Get first dibs.</h2>
+      <p class="muted" style="margin-top:18px;max-width:30ch">We cast in small runs. One email when the next one is ready.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="f-heat">What you cook on</label><select id="f-heat" name="heat"><option>Gas</option><option>Induction</option><option>Electric</option><option>Fire</option></select></div>
+        <p class="err" aria-live="polite" style="min-height:1.4em;color:#ff9a6b"></p>
+        <div><button class="btn" type="submit">Put me down</button></div>
+      </form>
+      <div class="done" role="status"><h3>You're down.</h3><p>One email when the next run is cast.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Ferro</div><p style="margin-top:18px;color:#b5aca2">One pan. Cast iron. For ever.</p></div>
+      <div><h4>The pan</h4><ul><li><a href="index.html">Ferro 26</a></li><li><a href="heat.html">Any heat</a></li><li><a href="care.html">Care</a></li></ul></div>
+      <div><h4>Know it</h4><ul><li><a href="#specs">Specs</a></li><li><a href="#heat">Heat sources</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Get one</h4><ul><li><a href="#dibs">First dibs</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Ferro is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>2.4 kg.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/pan.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>
