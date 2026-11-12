@@ -1,0 +1,79 @@
+/* Weft design system (see _work/weft/design.md). Shared by every page. */
+:root { --kraft:#d2ab7e; --indigo:#1a2440; --earth:#4a3a28; --night:#1f2b4d; --chalk:#efe6d6; --thread:#e39a3c;
+        --ease:cubic-bezier(.16,1,.3,1); --wrap:1240px; }
+* { box-sizing:border-box; margin:0; }
+html { background:var(--kraft); color:var(--indigo); font:400 18px/1.55 "Newsreader", Georgia, serif; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { overflow-x:clip; }
+a { color:inherit; }
+.wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
+h1, h2, h3, .display { font-family:"Big Shoulders Display", Impact, sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:-.01em; line-height:.9; }
+.mono { font:400 14px/1.45 "Courier Prime", ui-monospace, monospace; letter-spacing:.02em; }
+.night { background:var(--night); color:var(--chalk); }
+.night .muted { color:#c9bfae; }
+.muted { color:var(--earth); }
+.stitch { border:0; border-top:2px dashed currentColor; opacity:.55; }
+
+/* buttons: an indigo rectangle with a dashed stitch inside */
+.btn { position:relative; display:inline-flex; align-items:center; gap:12px; padding:17px 28px; background:var(--indigo); color:var(--chalk);
+       font:800 18px "Big Shoulders Display", sans-serif; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; border:0; cursor:pointer;
+       transition:transform .4s var(--ease), background .2s; }
+.btn::after { content:""; position:absolute; inset:5px; border:1.5px dashed var(--thread); pointer-events:none; transition:inset .4s var(--ease); }
+.btn:hover { transform:translateY(-3px); }
+.btn:hover::after { inset:3px; }
+.btn:active { transform:translateY(1px); }
+.night .btn { background:var(--chalk); color:var(--indigo); }
+.night .btn::after { border-color:var(--indigo); }
+:focus-visible { outline:2px solid var(--thread); outline-offset:3px; }
+
+/* nav */
+.nav { position:fixed; inset:0 0 auto; z-index:20; transition:background .3s, box-shadow .3s; }
+.nav.solid { background:rgb(210 171 126 / .94); box-shadow:0 2px 0 rgb(26 36 64 / .12); }
+.nav .wrap { display:flex; align-items:center; gap:34px; height:70px; }
+.logo { font:800 30px/1 "Big Shoulders Display", sans-serif; text-transform:uppercase; letter-spacing:.04em; text-decoration:none; display:flex; align-items:center; gap:10px; }
+.logo i { width:26px; height:0; border-top:2px dashed var(--thread); }
+.nav ul { list-style:none; padding:0; display:flex; gap:26px; margin-left:auto; }
+.nav ul a { text-decoration:none; font:400 15px "Courier Prime", monospace; padding:6px 0; background:linear-gradient(var(--indigo), var(--indigo)) no-repeat 0 100% / 0 2px; transition:background-size .35s var(--ease); }
+.nav ul a:hover, .nav ul a[aria-current] { background-size:100% 2px; }
+.nav .btn { padding:11px 18px; font-size:16px; }
+.menu { display:none; background:none; border:0; font:400 15px "Courier Prime", monospace; color:inherit; cursor:pointer; padding:10px 0; margin-left:auto; }
+
+/* words that rise out of a mask */
+.split .w { display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.06em; margin-bottom:-.06em; }
+.split .w > span { display:inline-block; transform:translateY(105%); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 80ms); }
+.split.in .w > span, .f-still .split .w > span { transform:none; }
+
+/* forms */
+.field { display:grid; gap:8px; }
+.field label, .field legend { font:400 14px "Courier Prime", monospace; }
+.field input, .field select { font:400 18px "Newsreader", serif; color:inherit; background:transparent; border:0; border-bottom:2px dashed currentColor; padding:10px 2px; border-radius:0; width:100%; }
+.field input:focus, .field select:focus { outline:none; border-bottom-style:solid; border-bottom-color:var(--thread); }
+.field select option { color:var(--indigo); }
+
+/* footer */
+footer { background:var(--indigo); color:var(--chalk); padding:90px 0 34px; font-size:16px; }
+footer .cols { display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; padding-bottom:56px; border-bottom:2px dashed rgb(239 230 214 / .25); }
+footer .big { font:800 clamp(4rem, 12vw, 10rem)/.8 "Big Shoulders Display", sans-serif; text-transform:uppercase; letter-spacing:.02em; }
+footer .big i { display:block; width:40%; border-top:3px dashed var(--thread); margin-top:18px; }
+footer h4 { font:400 14px "Courier Prime", monospace; color:#c9bfae; margin-bottom:14px; font-weight:400; }
+footer ul { list-style:none; padding:0; display:grid; gap:9px; }
+footer a { text-decoration:none; } footer a:hover { color:var(--thread); }
+footer .small { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:24px; font:400 14px "Courier Prime", monospace; color:#c9bfae; }
+
+/* extra pages */
+.page-head { padding:20vh 0 8vh; display:grid; grid-template-columns:1.1fr 1fr; gap:5vw; align-items:end; }
+.page-head h1 { font-size:clamp(3.4rem, 9vw, 8.4rem); }
+.page-head p { font-size:1.2rem; max-width:34ch; margin-top:22px; }
+.cta { padding:16vh 0; display:grid; justify-items:center; gap:28px; text-align:center; }
+.cta h2 { font-size:clamp(2.6rem, 6vw, 5.4rem); max-width:14ch; }
+
+@media (max-width:860px) {
+  .nav ul { display:none; position:absolute; top:70px; left:0; right:0; flex-direction:column; gap:0; background:var(--kraft); padding:8px 24px 22px; box-shadow:0 2px 0 rgb(26 36 64 / .12); }
+  .nav.open ul { display:flex; }
+  .nav ul a { display:block; padding:12px 0; font-size:17px; }
+  .menu { display:block; }
+  .nav .btn { display:none; }
+  footer .cols { grid-template-columns:1fr 1fr; }
+  footer .cols > :first-child { grid-column:1 / -1; }
+  .page-head { grid-template-columns:1fr; padding-top:15vh; }
+}

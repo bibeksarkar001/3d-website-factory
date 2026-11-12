@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weft. Selvedge denim, sewn slowly.</title>
+<meta name="description" content="Weft makes one straight-leg selvedge jean in small runs. 14.5 oz shuttle-loomed twill, ochre stitching, copper rivets. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Courier+Prime&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a2440'/%3E%3Cpath d='M6 22h20' stroke='%23e39a3c' stroke-width='3' stroke-dasharray='4 3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* 1. the sewing track: one 600vh run, five chapters, the panel on the right */
+  #sew { height:600vh; position:relative; }
+  #sew .stick { position:sticky; top:0; height:100svh; overflow:hidden; }
+  #panel-3d { position:absolute; top:0; bottom:0; right:0; width:62%; }
+  .chapter { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); top:50%; transform:translateY(-50%); width:min(470px, 38%); }
+  .chapter h1, .chapter h2 { font-size:clamp(3.2rem, 7vw, 7rem); }
+  .chapter p { margin-top:22px; font-size:1.15rem; max-width:30ch; }
+  .chapter p, .chapter .btn { opacity:0; transform:translateY(12px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .chapter.on p, .chapter.on .btn { opacity:1; transform:none; transition-delay:.2s; }
+  .chapter .btn { margin-top:28px; }
+  .chapter:not(.on) { visibility:hidden; transition:visibility 0s .8s; }
+  .counter { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); bottom:34px; display:flex; align-items:baseline; gap:14px; }
+  .counter b { font:800 clamp(3rem, 6vw, 5rem)/1 "Big Shoulders Display", sans-serif; font-variant-numeric:tabular-nums; }
+  .rule { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); right:max(24px, calc((100% - var(--wrap)) / 2)); bottom:18px; height:2px; }
+  .rule svg { width:100%; height:2px; display:block; overflow:visible; }
+  .marks { position:absolute; right:max(24px, calc((100% - var(--wrap)) / 2)); top:50%; transform:translateY(-50%); list-style:none; padding:0; display:grid; gap:10px; text-align:right; }
+  .marks li { color:var(--earth); transition:color .3s, transform .4s var(--ease); }
+  .marks li.on { color:var(--indigo); transform:translateX(-6px); }
+  .f-still #sew { height:auto; } .f-still #sew .stick { position:relative; height:100svh; }
+  .f-still .chapter { visibility:hidden; } .f-still .chapter.last { visibility:visible; } .f-still .chapter p, .f-still .chapter .btn { opacity:1; transform:none; }
+
+  /* 2. the close-up: dive into the twill */
+  #close { height:240vh; }
+  #close .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1fr 1.25fr; align-items:center; gap:4vw; }
+  #close h2 { font-size:clamp(2.8rem, 5.6vw, 5.2rem); }
+  #weave-dive { height:100svh; }
+  .facts { list-style:none; padding:0; margin-top:34px; display:grid; gap:18px; }
+  .facts li { display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:baseline; padding-top:16px; border-top:2px dashed rgb(239 230 214 / .3);
+              opacity:0; transform:translateY(14px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+  .facts li.on { opacity:1; transform:none; }
+  .facts b { font:800 2.4rem/1 "Big Shoulders Display", sans-serif; color:var(--thread); text-transform:uppercase; }
+  .f-still #close { height:auto; } .f-still #close .stick { position:relative; padding:14vh 0; height:auto; } .f-still .facts li { opacity:1; transform:none; }
+
+  /* 3. pick your pair */
+  #pick { padding:16vh 0; }
+  #pick .wrap { display:grid; grid-template-columns:1.1fr 1fr; gap:5vw; align-items:center; }
+  #pick h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); margin-bottom:18px; }
+  #weave-swatch { height:min(66vh, 600px); }
+  .opts { display:grid; gap:26px; margin-top:30px; }
+  .seg { display:flex; flex-wrap:wrap; gap:8px; }
+  .seg button { all:unset; cursor:pointer; padding:10px 16px; border:2px dashed var(--indigo); font:400 15px "Courier Prime", monospace; transition:background .15s, color .15s, border-style .15s; }
+  .seg button:hover { background:rgb(26 36 64 / .08); }
+  .seg button[aria-pressed="true"] { background:var(--indigo); color:var(--chalk); border-style:solid; }
+  .seg button:focus-visible { outline:2px solid var(--thread); outline-offset:3px; }
+  .chosen { margin-top:8px; }
+
+  /* 4. the making */
+  #making { padding:16vh 0; }
+  #making h2 { font-size:clamp(2.6rem, 5.4vw, 5rem); max-width:12ch; margin-bottom:56px; }
+  .steps { list-style:none; padding:0; counter-reset:s; }
+  .steps li { display:grid; grid-template-columns:90px 1fr 1.3fr; gap:30px; padding:30px 0; border-top:2px dashed rgb(239 230 214 / .3); align-items:baseline; }
+  .steps li::before { counter-increment:s; content:"0" counter(s); font:400 15px "Courier Prime", monospace; color:var(--thread); }
+  .steps h3 { font-size:2rem; }
+  .steps p { max-width:44ch; }
+
+  /* 5. faq */
+  #faq { padding:16vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:1fr 1.5fr; gap:5vw; }
+  #faq h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); }
+  details { border-top:2px dashed var(--indigo); }
+  details:last-child { border-bottom:2px dashed var(--indigo); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:800 1.5rem/1.1 "Big Shoulders Display", sans-serif; text-transform:uppercase; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:50%; translate:0 -50%; font:400 1.6rem "Courier Prime", monospace; transition:rotate .3s var(--ease); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 0 24px; max-width:56ch; }
+
+  /* 6. join the next run */
+  #run { padding:16vh 0; }
+  #run .wrap { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:start; }
+  #run h2 { font-size:clamp(2.8rem, 6vw, 5.6rem); }
+  #run form { display:grid; gap:24px; }
+  #run .done { display:none; }
+  #run.sent form { display:none; }
+  #run.sent .done { display:block; }
+  #run .done h3 { font-size:2.6rem; margin-bottom:12px; }
+
+  @media (max-width:860px) {
+    #panel-3d { width:100%; top:auto; height:58svh; }
+    .chapter { top:92px; transform:none; width:auto; right:24px; }
+    .chapter h1, .chapter h2 { font-size:clamp(2.6rem, 13vw, 3.6rem); }
+    .chapter p { font-size:1rem; margin-top:12px; }
+    .marks { display:none; }
+    .counter { bottom:28px; } .counter b { font-size:2.6rem; }
+    #close .stick { grid-template-columns:1fr; grid-template-rows:auto 1fr; align-content:start; padding-top:90px; gap:0; }
+    #weave-dive { height:55svh; }
+    .facts { margin-top:14px; gap:8px; } .facts b { font-size:1.6rem; }
+    #pick .wrap, #faq .wrap, #run .wrap { grid-template-columns:1fr; }
+    #weave-swatch { height:46vh; order:-1; }
+    .steps li { grid-template-columns:1fr; gap:8px; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Weft <i aria-hidden="true"></i></a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">The jean</a></li>
+      <li><a href="cloth.html">The cloth</a></li>
+      <li><a href="fit.html">Fit and hem</a></li>
+      <li><a href="#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="#run">Join the next run</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="sew" aria-label="A denim panel; scroll to sew its pocket, set its rivets and hem it">
+  <div class="stick">
+    <div id="panel-3d" class="f-3d" style="position:absolute" data-title="A raw denim panel; as you scroll a needle sews the ochre pocket stitching, copper rivets are set and the hem is chain-stitched"></div>
+    <div class="chapter" data-from="0" data-to="0.15">
+      <h1 class="split">Made slowly. <span style="color:var(--earth)">Worn for years.</span></h1>
+      <p>One straight-leg jean, sewn in small runs from raw selvedge denim.</p>
+      <a class="btn" href="#run">Join the next run</a>
+    </div>
+    <div class="chapter" data-from="0.15" data-to="0.36">
+      <h2 class="split">Then the needle.</h2>
+      <p>Ochre cotton thread, about nine stitches to the inch.</p>
+    </div>
+    <div class="chapter" data-from="0.36" data-to="0.62">
+      <h2 class="split">Two rows round the pocket.</h2>
+      <p>The back pocket gets a twin row of contrast stitching, end to end.</p>
+    </div>
+    <div class="chapter" data-from="0.62" data-to="0.8">
+      <h2 class="split">Copper at the corners.</h2>
+      <p>Rivets hold the pocket where it pulls hardest, and age with the cloth.</p>
+    </div>
+    <div class="chapter last" data-from="0.8" data-to="1.01">
+      <h2 class="split">A hem with a line in it.</h2>
+      <p>The hem is chain-stitched. Roll the cuff and the selvedge shows its ochre line.</p>
+    </div>
+    <div class="counter"><b id="stitches">0</b><span class="mono">stitches sewn</span></div>
+    <div class="rule" aria-hidden="true"><svg viewBox="0 0 100 2" preserveAspectRatio="none"><path id="rule" d="M0 1 H100" stroke="#1a2440" stroke-width="2" stroke-dasharray="1.2 .8" vector-effect="non-scaling-stroke" pathLength="100"/></svg></div>
+  </div>
+</section>
+
+<section id="close" class="night" aria-label="The cloth up close">
+  <div class="stick wrap">
+    <div>
+      <h2 class="split">Closer. It is all diagonals.</h2>
+      <ol class="facts">
+        <li data-at="0.25"><b>14.5 oz</b><span>A heavy twill. It starts stiff and softens to the way you move.</span></li>
+        <li data-at="0.5"><b>Right-hand</b><span>The indigo warp floats over three weft threads and under one, climbing to the right.</span></li>
+        <li data-at="0.75"><b>Selvedge</b><span>Woven on narrow shuttle looms, so each edge closes itself with an ochre line.</span></li>
+      </ol>
+    </div>
+    <div id="weave-dive" class="f-3d weave-3d" data-mode="dive" data-title="The twill in 3D: indigo warp and ecru weft yarns; the camera dives in as you scroll"></div>
+  </div>
+</section>
+
+<section id="pick">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Raw, or rinsed once.</h2>
+      <p class="muted">Raw is unwashed and fades to the way you wear it. Once-rinsed has been washed a single time, so it starts softer.</p>
+      <div class="opts">
+        <div class="field"><span class="mono">Wash</span>
+          <div class="seg" role="group" aria-label="Wash">
+            <button type="button" data-wash="raw" aria-pressed="true">Raw indigo</button>
+            <button type="button" data-wash="rinsed" aria-pressed="false">Once-rinsed</button>
+          </div></div>
+        <div class="field"><span class="mono">Waist</span>
+          <div class="seg" role="group" aria-label="Waist size" id="waists"></div></div>
+        <p class="chosen mono" id="chosen" aria-live="polite">Raw indigo, waist 32. Hemmed for free.</p>
+        <div><a class="btn" href="#run">Join the next run</a></div>
+      </div>
+    </div>
+    <div id="weave-swatch" class="f-3d weave-3d" data-mode="swatch" data-title="A swatch of the twill that tilts toward your cursor and changes with the wash you pick"></div>
+  </div>
+</section>
+
+<section id="making" class="night">
+  <div class="wrap">
+    <h2 class="split">How a pair gets made.</h2>
+    <ol class="steps">
+      <li><h3>Woven narrow</h3><p>The cloth comes off narrow shuttle looms, so both edges close themselves with a clean selvedge and an ochre line.</p></li>
+      <li><h3>Cut as one leg</h3><p>One straight leg, cut with the selvedge on the outseam, where it shows when you roll the cuff.</p></li>
+      <li><h3>Sewn in ochre</h3><p>Cotton thread at about nine stitches to the inch, in twin rows where the seams work hardest.</p></li>
+      <li><h3>Riveted</h3><p>Copper rivets at the pocket corners.</p></li>
+      <li><h3>Hemmed to you</h3><p>A chain-stitched hem, and every pair comes with free hemming.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="split">Before you order.</h2>
+    <div>
+      <details><summary>What does raw mean?</summary><p>The cloth has not been washed. It is stiffer and darker at first, and it fades where you bend, sit and carry things, so the pair ends up yours.</p></details>
+      <details><summary>Raw or once-rinsed?</summary><p>Raw if you want the fades to be all your own. Once-rinsed if you would rather start a little softer.</p></details>
+      <details><summary>Which sizes?</summary><p>Waist 28 to 38, in one straight-leg fit.</p></details>
+      <details><summary>Do you hem them?</summary><p>Yes. Every pair comes with free hemming, with a chain-stitched hem.</p></details>
+      <details><summary>Why small runs?</summary><p>The cloth is woven on narrow shuttle looms and each run is sewn in one go. Join the list and we will tell you when the next one opens.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="run" class="night">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Join the next run.</h2>
+      <p class="muted" style="margin-top:18px;max-width:34ch">One email when the next run opens. Nothing else.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="f-waist">Waist</label><select id="f-waist" name="waist"></select></div>
+        <div class="field"><label for="f-wash">Wash</label><select id="f-wash" name="wash"><option>Raw indigo</option><option>Once-rinsed</option></select></div>
+        <p class="err mono" aria-live="polite" style="min-height:1.4em;color:#ffb38a"></p>
+        <div><button class="btn" type="submit">Join the next run</button></div>
+      </form>
+      <div class="done" role="status"><h3>You're on the list.</h3><p>We will email you once, when the next run opens.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Weft<i></i></div><p class="mono" style="margin-top:18px;color:#c9bfae">One jean. Small runs. Raw selvedge.</p></div>
+      <div><h4>The jean</h4><ul><li><a href="index.html">The jean</a></li><li><a href="cloth.html">The cloth</a></li><li><a href="fit.html">Fit and hem</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="#pick">Wash and waist</a></li><li><a href="#making">How it's made</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h4>Run</h4><ul><li><a href="#run">Join the next run</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Weft is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Raw selvedge, 14.5 oz.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/panel.js"></script>
+<script type="module" src="3d/weave.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

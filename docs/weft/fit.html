@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weft fit and hem. One straight leg, hemmed for free.</title>
+<meta name="description" content="The Weft fit: one straight-leg jean, waist 28 to 38, with a chain-stitched hem and free hemming for every pair. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Courier+Prime&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a2440'/%3E%3Cpath d='M6 22h20' stroke='%23e39a3c' stroke-width='3' stroke-dasharray='4 3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .fit { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; padding:4vh 0 14vh; }
+  .fit h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); margin-bottom:18px; }
+  #roll { width:100%; max-width:420px; height:auto; justify-self:center; }
+  .sizes { display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; }
+  .sizes span { padding:9px 14px; border:2px dashed var(--indigo); font:400 15px "Courier Prime", monospace; }
+  .hem { padding:14vh 0; }
+  .hem .wrap { display:grid; grid-template-columns:1fr 1.3fr; gap:5vw; }
+  .hem h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); }
+  .hem ol { list-style:none; padding:0; counter-reset:h; }
+  .hem li { display:grid; grid-template-columns:60px 1fr; gap:20px; padding:24px 0; border-top:2px dashed rgb(239 230 214 / .3); }
+  .hem li::before { counter-increment:h; content:"0" counter(h); font:400 15px "Courier Prime", monospace; color:var(--thread); }
+  .hem h3 { font-size:1.7rem; margin-bottom:6px; }
+  @media (max-width:860px) { .fit, .hem .wrap { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Weft <i aria-hidden="true"></i></a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">The jean</a></li>
+      <li><a href="cloth.html">The cloth</a></li>
+      <li><a href="fit.html" aria-current="page">Fit and hem</a></li>
+      <li><a href="index.html#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="index.html#run">Join the next run</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <div>
+    <h1 class="split">One leg. Straight.</h1>
+    <p>We make one fit, and make it well. Waist 28 to 38.</p>
+  </div>
+</section>
+
+<section class="wrap fit">
+  <div>
+    <h2 class="split">Roll it and look.</h2>
+    <p class="muted">Turn the cuff up and the outseam shows the selvedge: a clean edge with an ochre line running down it.</p>
+    <div class="sizes" aria-label="Waist sizes"><span>28</span><span>29</span><span>30</span><span>31</span><span>32</span><span>33</span><span>34</span><span>35</span><span>36</span><span>37</span><span>38</span></div>
+  </div>
+  <svg id="roll" viewBox="0 0 240 360" role="img" aria-label="A jean leg whose cuff rolls up to show the selvedge line, then rolls back down">
+    <rect id="leg" x="60" y="30" width="120" height="300" fill="#1f2b4d"/>
+    <path d="M60 30 V330 M180 30 V330" stroke="#151d36" stroke-width="2"/>
+    <path d="M176 34 V326" stroke="#e39a3c" stroke-width="2" stroke-dasharray="4 4"/>
+    <rect id="cuff" x="56" y="330" width="128" height="14" fill="#d9d0bd"/>
+    <rect id="sel" x="168" y="330" width="16" height="14" fill="#efe6d6" opacity="0"/>
+    <path d="M56 344 H184" stroke="#e39a3c" stroke-width="2" stroke-dasharray="3 3"/>
+  </svg>
+</section>
+
+<section class="hem night"><div class="wrap">
+  <h2 class="split">Hemmed, free.</h2>
+  <ol>
+    <li><div><h3>Every pair</h3><p>Hemming is free with every pair.</p></div></li>
+    <li><div><h3>Chain-stitched</h3><p>A chain-stitched hem in ochre cotton thread, the way the rest of the jean is sewn.</p></div></li>
+    <li><div><h3>Selvedge kept</h3><p>The selvedge runs down the outseam, so it shows whenever you roll the cuff.</p></div></li>
+  </ol>
+</div></section>
+
+<section class="cta">
+  <h2 class="split">Find your waist.</h2>
+  <a class="btn" href="index.html#pick">Pick wash and waist</a>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Weft<i></i></div><p class="mono" style="margin-top:18px;color:#c9bfae">One jean. Small runs. Raw selvedge.</p></div>
+      <div><h4>The jean</h4><ul><li><a href="index.html">The jean</a></li><li><a href="cloth.html">The cloth</a></li><li><a href="fit.html">Fit and hem</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#pick">Wash and waist</a></li><li><a href="index.html#making">How it's made</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Run</h4><ul><li><a href="index.html#run">Join the next run</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Weft is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Raw selvedge, 14.5 oz.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>
