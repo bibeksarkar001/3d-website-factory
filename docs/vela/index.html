@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vela. Light something slow.</title>
+<meta name="description" content="Vela pours one candle by hand in small batches: soy and rapeseed wax in a glazed stoneware vessel, about forty hours of burning. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;1,500&family=Manrope:wght@400;500;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1611'/%3E%3Cpath d='M16 6c4 6 4 10 0 14c-4-4-4-8 0-14z' fill='%23c8662b'/%3E%3Crect x='10' y='20' width='12' height='7' rx='2' fill='%23f2ebe0'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* 1. the burn: one 520vh track; the page goes from oat to umber as the candle lights */
+  #burn { --bg:#f2ebe0; --lit:0; height:520vh; position:relative; background:var(--bg);
+          color:color-mix(in srgb, #2a211a calc((1 - var(--lit)) * 100%), #f2ebe0); }
+  #burn .stick { position:sticky; top:0; height:100svh; overflow:hidden; background:var(--bg); }
+  #candle-3d { position:absolute; top:0; bottom:0; right:0; width:66%; -webkit-mask:linear-gradient(90deg, transparent, #000 22%); mask:linear-gradient(90deg, transparent, #000 22%); }
+  .ch { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); top:50%; transform:translateY(-50%); width:min(440px, 36%); }
+  .ch h1, .ch h2 { font-size:clamp(3.4rem, 7vw, 6.6rem); }
+  .ch .big { display:block; font:500 clamp(6rem, 13vw, 11rem)/.85 "Cormorant", serif; font-variant-numeric:lining-nums; }
+  .ch .big small { font-size:.3em; font-style:italic; margin-left:8px; }
+  .ch p { margin-top:20px; font-size:1.12rem; max-width:30ch; opacity:.86; }
+  .ch .btn { margin-top:26px; }
+  .ch p, .ch .btn, .ch .big, .ch ul { opacity:0; transform:translateY(12px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .ch.on p { opacity:.86; } .ch.on .btn, .ch.on .big, .ch.on ul { opacity:1; }
+  .ch.on p, .ch.on .btn, .ch.on .big, .ch.on ul { transform:none; transition-delay:.2s; }
+  .ch:not(.on) { visibility:hidden; transition:visibility 0s .9s; }
+  .ch ul { list-style:none; padding:0; margin-top:24px; display:grid; gap:4px; }
+  .ch li { font:500 2rem/1.15 "Cormorant", serif; opacity:.4; transition:opacity .4s, transform .5s var(--ease); }
+  .ch li.on { opacity:1; transform:translateX(8px); }
+  .ch li em { font-style:italic; }
+  .f-still #burn { height:auto; } .f-still #burn .stick { height:100svh; } .f-still .ch { visibility:hidden; } .f-still .ch.first { visibility:visible; }
+
+  /* 2. vessel and wax */
+  #made { padding:18vh 0; }
+  #made h2 { font-size:clamp(3rem, 6.4vw, 5.8rem); max-width:12ch; margin-bottom:8vh; }
+  .three { display:grid; grid-template-columns:repeat(3, 1fr); gap:4vw; }
+  .three > div { border-top:1px solid rgb(242 235 224 / .2); padding-top:22px; }
+  .three h3 { font-size:2.2rem; margin-bottom:10px; }
+  .three svg { width:72px; height:72px; margin-bottom:18px; overflow:visible; }
+  .three svg .draw { fill:none; stroke:#f0a46e; stroke-width:1.6; }
+
+  /* 3. scents */
+  #scent { padding:16vh 0; }
+  #scent .wrap { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; }
+  #scent h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:14px; }
+  .note { min-height:5.4em; margin-top:24px; }
+  .note h3 { font-size:2rem; font-style:italic; margin-bottom:6px; }
+  #scent-3d { height:min(66vh, 600px); border-radius:14px; background:#1c1611; }
+
+  /* 4. faq */
+  #faq { padding:16vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:1fr 1.4fr; gap:5vw; }
+  #faq h2 { font-size:clamp(3rem, 6vw, 5.4rem); }
+  details { border-top:1px solid var(--rule); } details:last-child { border-bottom:1px solid var(--rule); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:500 1.7rem/1.15 "Cormorant", serif; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:50%; translate:0 -50%; font:400 1.5rem "Manrope", sans-serif; color:var(--ember-ink); transition:rotate .3s var(--ease); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 0 22px; max-width:56ch; }
+
+  /* 5. pour list */
+  #pour { padding:16vh 0; }
+  #pour .wrap { display:grid; grid-template-columns:1fr 1fr; gap:5vw; }
+  #pour h2 { font-size:clamp(3.2rem, 7vw, 6.2rem); }
+  #pour form { display:grid; gap:18px; }
+  #pour .done { display:none; } #pour.sent form { display:none; } #pour.sent .done { display:block; }
+  #pour .done h3 { font-size:2.8rem; margin-bottom:10px; }
+
+  @media (max-width:860px) {
+    #candle-3d { width:100%; top:auto; height:58svh; }
+    .ch { top:92px; transform:none; width:auto; right:24px; }
+    .ch h1, .ch h2 { font-size:3rem; } .ch .big { font-size:5.4rem; } .ch p { font-size:1rem; margin-top:10px; } .ch li { font-size:1.5rem; }
+    .three, #scent .wrap, #faq .wrap, #pour .wrap { grid-template-columns:1fr; }
+    #scent-3d { height:50vh; order:-1; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Vela</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">The candle</a></li>
+      <li><a href="scents.html">Scents</a></li>
+      <li><a href="refill.html">Refill</a></li>
+      <li><a href="#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="#pour"><span class="dot"></span>Join the next pour</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="burn" aria-label="A candle that lights as you scroll; the page darkens to candlelight">
+  <div class="stick">
+    <div id="candle-3d" class="f-3d" style="position:absolute" data-title="A hand-poured candle in a glazed stoneware vessel; it lights as you scroll, the flame leans toward your cursor, and at the end it is blown out"></div>
+    <div class="ch first" data-from="0" data-to="0.17">
+      <h1 class="split">Light something <em>slow.</em></h1>
+      <p>One candle, poured by hand in small batches.</p>
+      <a class="btn" href="#pour"><span class="dot"></span>Join the next pour</a>
+    </div>
+    <div class="ch" data-from="0.17" data-to="0.36">
+      <h2 class="split">It <em>catches.</em></h2>
+      <p>A cotton wick, and a flame that settles in.</p>
+    </div>
+    <div class="ch" data-from="0.36" data-to="0.6">
+      <span class="big" data-to="40">0<small>hours</small></span>
+      <p>About forty hours of burning, from 220 g of soy and rapeseed wax.</p>
+    </div>
+    <div class="ch" data-from="0.6" data-to="0.84">
+      <h2 class="split">Three <em>scents.</em></h2>
+      <ul><li data-at="0.6"><em>Fig</em> Leaf</li><li data-at="0.68"><em>Cedar</em> Smoke</li><li data-at="0.76"><em>Sea</em> Salt</li></ul>
+    </div>
+    <div class="ch" data-from="0.84" data-to="1.01">
+      <h2 class="split">Then, <em>out.</em></h2>
+      <p>Blow it out. When the wax is gone, the vessel is made to be filled again.</p>
+      <a class="btn" href="#pour"><span class="dot"></span>Join the next pour</a>
+    </div>
+  </div>
+</section>
+
+<section id="made" class="night">
+  <div class="wrap">
+    <h2 class="split">What is in <em>the pot.</em></h2>
+    <div class="three">
+      <div><svg viewBox="0 0 72 72" aria-hidden="true"><path class="draw" pathLength="1" d="M14 18 Q12 52 20 60 H52 Q60 52 58 18 Q36 24 14 18 Z M14 18 Q36 12 58 18"/></svg>
+        <h3>The <em>vessel</em></h3><p class="muted">Stoneware, glazed by hand, made to be refilled.</p></div>
+      <div><svg viewBox="0 0 72 72" aria-hidden="true"><path class="draw" pathLength="1" d="M10 30 H62 V58 H10 Z M10 30 Q22 24 36 30 T62 30"/></svg>
+        <h3>The <em>wax</em></h3><p class="muted">220 g of soy and rapeseed wax, poured in small batches.</p></div>
+      <div><svg viewBox="0 0 72 72" aria-hidden="true"><path class="draw" pathLength="1" d="M36 62 V36 Q38 30 34 26 M36 22 C46 14 44 6 36 2 C28 6 26 14 36 22 Z"/></svg>
+        <h3>The <em>wick</em></h3><p class="muted">Cotton, for a steady flame over about forty hours.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="scent">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Pick a <em>scent.</em></h2>
+      <p class="muted">Each scent has its own glaze, so you can tell them apart on the shelf.</p>
+      <div class="chips" role="group" aria-label="Scent" style="margin-top:24px">
+        <button type="button" data-scent="fig" aria-pressed="true"><i style="background:#7c8a5e"></i>Fig Leaf</button>
+        <button type="button" data-scent="cedar" aria-pressed="false"><i style="background:#8a5a3c"></i>Cedar Smoke</button>
+        <button type="button" data-scent="salt" aria-pressed="false"><i style="background:#9fb4b8"></i>Sea Salt</button>
+      </div>
+      <div class="note" id="note" aria-live="polite"><h3>Fig Leaf</h3><p class="muted">Green and soft. A glaze the colour of the leaf.</p></div>
+    </div>
+    <div id="scent-3d" class="f-3d" data-title="The candle, lit, in the glaze of the scent you pick"></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="split">Before you <em>light it.</em></h2>
+    <div>
+      <details><summary>How long does it burn?</summary><p>About forty hours, from 220 g of wax.</p></details>
+      <details><summary>What is the wax?</summary><p>A blend of soy and rapeseed wax, poured by hand.</p></details>
+      <details><summary>Can I refill the vessel?</summary><p>Yes. It is made for it. Send it back to us, or pour a refill at home.</p></details>
+      <details><summary>Which scents are there?</summary><p>Three: Fig Leaf, Cedar Smoke and Sea Salt.</p></details>
+      <details><summary>When can I get one?</summary><p>We pour in small batches. Join the list and we will tell you when the next pour opens.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="pour" class="night">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Join the next <em>pour.</em></h2>
+      <p class="muted" style="margin-top:18px;max-width:30ch">One email when the next batch is ready.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="f-scent">Scent you would like</label><select id="f-scent" name="scent"><option>Fig Leaf</option><option>Cedar Smoke</option><option>Sea Salt</option></select></div>
+        <p class="err" aria-live="polite" style="min-height:1.4em;color:#f0a46e"></p>
+        <div><button class="btn" type="submit"><span class="dot"></span>Save me one</button></div>
+      </form>
+      <div class="done" role="status"><h3>You're on the <em>list.</em></h3><p>We will write once, when the next pour is ready.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Vela</div><p style="margin-top:18px;color:#c9b9a6">One candle, poured by hand.</p></div>
+      <div><h4>The candle</h4><ul><li><a href="index.html">The candle</a></li><li><a href="scents.html">Scents</a></li><li><a href="refill.html">Refill</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="#scent">Pick a scent</a></li><li><a href="#made">What is in it</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h4>Pour</h4><ul><li><a href="#pour">Join the next pour</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Vela is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>About forty hours.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/candle.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

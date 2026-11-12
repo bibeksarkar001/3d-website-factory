@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refill your Vela. The vessel is made to last.</title>
+<meta name="description" content="How to refill a Vela candle: send the vessel back, or pour a refill at home. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;1,500&family=Manrope:wght@400;500;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1611'/%3E%3Cpath d='M16 6c4 6 4 10 0 14c-4-4-4-8 0-14z' fill='%23c8662b'/%3E%3Crect x='10' y='20' width='12' height='7' rx='2' fill='%23f2ebe0'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .loop { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; padding:2vh 0 14vh; }
+  #pour-loop { width:min(100%, 420px); height:auto; justify-self:center; }
+  .ways { padding:14vh 0; }
+  .ways .wrap { display:grid; grid-template-columns:1fr 1fr; gap:5vw; }
+  .ways h3 { font-size:2.6rem; margin-bottom:12px; }
+  .ways ol { padding-left:1.2em; display:grid; gap:8px; margin-top:16px; }
+  @media (max-width:860px) { .loop, .ways .wrap { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Vela</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">The candle</a></li>
+      <li><a href="scents.html">Scents</a></li>
+      <li><a href="refill.html" aria-current="page">Refill</a></li>
+      <li><a href="index.html#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="index.html#pour"><span class="dot"></span>Join the next pour</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap" style="padding-bottom:4vh">
+  <div><h1 class="split">Fill it <em>again.</em></h1><p>The vessel is stoneware, glazed by hand. It is made to outlast the wax.</p></div>
+</section>
+<section class="wrap loop">
+  <svg id="pour-loop" viewBox="0 0 320 340" role="img" aria-label="Wax pours into the vessel and the level rises, then it begins again">
+    <path d="M150 0 V290" stroke="#c8662b" stroke-width="8" stroke-linecap="round" id="stream" style="opacity:0"/>
+    <clipPath id="inside"><path d="M62 120 Q58 280 82 300 H218 Q242 280 238 120 Z"/></clipPath>
+    <rect id="level" x="40" y="300" width="240" height="0" fill="#dccab0" clip-path="url(#inside)"/>
+    <path d="M56 112 Q50 290 80 312 H220 Q250 290 244 112" fill="none" stroke="#7c8a5e" stroke-width="14" stroke-linecap="round"/>
+    <path d="M86 322 H214" stroke="#c9b49a" stroke-width="10" stroke-linecap="round"/>
+  </svg>
+  <div><h2 class="split" style="font-size:clamp(2.6rem,5vw,4.4rem)">Clean it, <em>fill it.</em></h2>
+    <p class="muted" style="margin-top:16px;max-width:34ch">When the wax is gone, the vessel is ready for another candle. Two ways to refill.</p></div>
+</section>
+<section class="ways night"><div class="wrap">
+  <div><h3>Send it <em>back</em></h3><p class="muted">Post the empty vessel to us and we will pour a new candle into it.</p></div>
+  <div><h3>Pour at <em>home</em></h3><p class="muted">Ask for a refill and pour it yourself into the same vessel.</p></div>
+</div></section>
+<section class="cta"><h2 class="split">One vessel, <em>many</em> candles.</h2><a class="btn" href="index.html#pour"><span class="dot"></span>Join the next pour</a></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Vela</div><p style="margin-top:18px;color:#c9b9a6">One candle, poured by hand.</p></div>
+      <div><h4>The candle</h4><ul><li><a href="index.html">The candle</a></li><li><a href="scents.html">Scents</a></li><li><a href="refill.html">Refill</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#scent">Pick a scent</a></li><li><a href="index.html#made">What is in it</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Pour</h4><ul><li><a href="index.html#pour">Join the next pour</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Vela is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>About forty hours.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>

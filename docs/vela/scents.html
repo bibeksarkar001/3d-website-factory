@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vela scents. Fig Leaf, Cedar Smoke, Sea Salt.</title>
+<meta name="description" content="The three Vela scents, each with its own glaze: Fig Leaf, Cedar Smoke and Sea Salt. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;1,500&family=Manrope:wght@400;500;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1611'/%3E%3Cpath d='M16 6c4 6 4 10 0 14c-4-4-4-8 0-14z' fill='%23c8662b'/%3E%3Crect x='10' y='20' width='12' height='7' rx='2' fill='%23f2ebe0'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  #scent-3d { height:min(70vh, 640px); border-radius:14px; background:#1c1611; }
+  .note { min-height:5.4em; margin-top:24px; }
+  .note h3 { font-size:2.2rem; font-style:italic; margin-bottom:6px; }
+  .rows { padding:14vh 0; }
+  .rows .row { display:grid; grid-template-columns:120px 1fr 1.4fr; gap:30px; align-items:baseline; padding:30px 0; border-top:1px solid rgb(242 235 224 / .16); }
+  .rows .row i { width:56px; height:56px; border-radius:50%; display:block; }
+  .rows h3 { font-size:2.4rem; }
+  @media (max-width:860px) { .rows .row { grid-template-columns:1fr; gap:10px; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Vela</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">The candle</a></li>
+      <li><a href="scents.html" aria-current="page">Scents</a></li>
+      <li><a href="refill.html">Refill</a></li>
+      <li><a href="index.html#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="index.html#pour"><span class="dot"></span>Join the next pour</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <div>
+    <h1 class="split">Three <em>scents.</em></h1>
+    <p>Each one has its own glaze, so you can tell them apart on the shelf.</p>
+    <div class="chips" role="group" aria-label="Scent" style="margin-top:26px">
+      <button type="button" data-scent="fig" aria-pressed="true"><i style="background:#7c8a5e"></i>Fig Leaf</button>
+      <button type="button" data-scent="cedar" aria-pressed="false"><i style="background:#8a5a3c"></i>Cedar Smoke</button>
+      <button type="button" data-scent="salt" aria-pressed="false"><i style="background:#9fb4b8"></i>Sea Salt</button>
+    </div>
+    <div class="note" id="note" aria-live="polite"><h3>Fig Leaf</h3><p class="muted">Green and soft. A glaze the colour of the leaf.</p></div>
+  </div>
+  <div id="scent-3d" class="f-3d" data-title="The candle, lit, in the glaze of the scent you pick; the flame leans toward your cursor"></div>
+</section>
+<section class="rows night"><div class="wrap">
+  <div class="row"><i style="background:#7c8a5e"></i><h3><em>Fig</em> Leaf</h3><p class="muted">Green and soft. A glaze the colour of the leaf.</p></div>
+  <div class="row"><i style="background:#8a5a3c"></i><h3><em>Cedar</em> Smoke</h3><p class="muted">Dry wood and a little smoke. A glaze like fired clay.</p></div>
+  <div class="row"><i style="background:#9fb4b8"></i><h3><em>Sea</em> Salt</h3><p class="muted">Clean and mineral. A glaze like the sea on a grey day.</p></div>
+</div></section>
+<section class="cta"><h2 class="split">Pick <em>yours.</em></h2><a class="btn" href="index.html#pour"><span class="dot"></span>Join the next pour</a></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Vela</div><p style="margin-top:18px;color:#c9b9a6">One candle, poured by hand.</p></div>
+      <div><h4>The candle</h4><ul><li><a href="index.html">The candle</a></li><li><a href="scents.html">Scents</a></li><li><a href="refill.html">Refill</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#scent">Pick a scent</a></li><li><a href="index.html#made">What is in it</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Pour</h4><ul><li><a href="index.html#pour">Join the next pour</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Vela is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>About forty hours.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/candle.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>
