@@ -65,7 +65,12 @@ Borrow rhythm, spacing, type scale and restraint. Never words, images, logos or 
 - **3D mood:** material family, lighting, how much things move.
 - **Not this:** the three slop-list items this brand is most at risk of.
 
-## 5. Sections (`sections.md`)
+## 5. Story and sections (`sections.md`)
+The site is a **journey, not a hero**: write the story arc first in five lines (setup → reveal → detail →
+climax → resolution), then map 4 to 6 scroll chapters onto it. The 3D object carries through the chapters,
+changing pose, camera, light or state. Then the rest of a real website: features or specs, a configurator or
+picker where the product has variants, FAQ or details, a signup form, a rich footer, and the extra pages
+(e.g. about, product or menu, contact) with their own small 3D or motion moment.
 One screen, one point, one ask at most. For each screen: the point, the copy idea, the visual, the motion
 pattern (from `roles/animator.md`), and its **scroll length** (100vh for a normal screen, 150 to 250vh for a big
 scroll moment, more for a film). Vary the layouts. Never plan a row of identical cards because sites have them.

@@ -32,7 +32,7 @@ hero concepts
 | **Sculptor** | Makes each 3D object: your logo extruded, your product rebuilt from shapes, your `.glb` model, a model generated from a photo, or a Spline scene. Exploded views, feature tours, free rotation with hotspots. |
 | **Animator** | Studio-style motion: scroll-driven moments you control, looping explainers, count-ups, maps that fill, drawing lines, the product's own action you can do yourself. One rhythm, sensible pacing. |
 | **Builder** | Stitches it all into one site on your design system, wires the interactions you asked for ("follow the cursor", "spin when I scroll"), edits the copy and shows you every change. |
-| **Critic** | Screenshots the whole scroll journey and judges it against thirteen fixed questions. Sends fixes back until it passes. |
+| **Critic** | Screenshots the whole scroll journey and judges it against fourteen fixed questions. Sends fixes back until it passes. |
 
 The roles hand over through files, so any part can be redone alone: "make the logo glossier" only reruns the sculptor.
 If your agent can run sub-agents, each role gets its own; otherwise one agent plays them in order.

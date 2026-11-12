@@ -36,6 +36,13 @@ Scroll moments use a sticky track and `Factory.scrub` (see `references/motion-pa
 The image inside a 3D box is the fallback if WebGL fails. It is replaced by the canvas when the object is ready.
 A Spline scene uses `<div class="f-3d" data-spline="URL" data-title="...">` instead (see SKILL.md).
 
+## A real website, not a one-page demo
+- A working nav, the home page journey, features or specs (designed, not a card grid), a configurator or picker
+  where the product has variants (it changes the 3D live), FAQ or details, a signup or contact form with a
+  success state, and a rich footer (columns, small print).
+- The extra pages from `sections.md` share the design system, nav and footer, each with a small 3D or motion moment.
+- Check every page in a browser for console errors; probe the home page.
+
 ## Stitching rules
 - **design.md is law.** Every colour, size and radius comes from its tokens. No new ones.
 - **The page takes the 3D's background.** Objects sit on the page, never in a visible box.

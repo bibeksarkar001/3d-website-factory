@@ -26,6 +26,14 @@ You make the page move like a motion-graphics studio made it: few moves, each wi
    For a 3D object, the sculptor's module already gets `scroll`. Tell the sculptor what you need.
 3. **Arrivals.** Headings, cards and buttons get `data-reveal` (a soft fade up). Nothing else needs to arrive.
 
+## Alive to every input
+- **Scroll** tells the story: every chapter has its own move, with type arriving by line or word, lines drawing,
+  numbers counting, masks and wipes, parallax depth, and the 3D changing with it.
+- **Cursor** always does something: the object tilts, a light follows, buttons lean toward it (magnetic),
+  hovers respond.
+- **Clicks** matter: hotspots open details, pickers change the 3D live, the product's own action can be performed.
+- **Idle**: things breathe a little. Nothing is ever fully dead, nothing is ever busy.
+
 ## Studio rules
 - **One rhythm.** Pick one duration (around 0.8 s) and one easing (`cubic-bezier(.16,1,.3,1)`) for the whole
   site, from `design.md`. Stagger siblings by 60 to 90 ms.

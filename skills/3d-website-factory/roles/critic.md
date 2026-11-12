@@ -23,7 +23,9 @@ Answer each YES or NO, with one line of evidence. A NO names the exact fix.
 10. Is every scroll moment slow enough to watch, with its start and end visible at rest?
 11. Does the hero concept and the signature move from `brief.md` land on screen, clearly?
 12. Across the journey sheet, does each screen look different from its neighbours, with one clear focus?
-13. Would the user be proud to send this link to the reference site's designers?
+13. Does it feel like a journey: every scroll chapter moves the story, the cursor and clicks always do something,
+    and it is a complete website with real pages, not a one-page demo?
+14. Would the user be proud to send this link to the reference site's designers?
 
 ## The loop
 All YES: do one last full quality pass at desktop and phone width (spacing, alignment, cut-off text, links
