@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optra 35 aperture. Eleven blades, set by hand.</title>
+<meta name="description" content="Set the aperture of the Optra 35 yourself: eleven rounded blades from f/1.4 to f/16. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23d93d1e' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .play { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; padding:2vh 0 14vh; }
+  #iris { width:min(100%, 460px); height:auto; justify-self:center; }
+  #iris .blade { fill:#1d1d1d; stroke:#3a3a3a; stroke-width:1; }
+  .ctl { display:grid; gap:18px; }
+  .ctl output { font:700 clamp(4rem, 9vw, 7.4rem)/.9 "Syne", sans-serif; letter-spacing:-.04em; }
+  input[type=range] { width:100%; accent-color:#d93d1e; }
+  .ticks { display:flex; justify-content:space-between; font:400 12px "IBM Plex Mono", monospace; color:var(--graphite); }
+  .why { padding:14vh 0; }
+  .why .wrap { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4vw; }
+  .why h3 { font-size:1.8rem; margin-bottom:10px; }
+  @media (max-width:860px) { .play, .why .wrap { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Optra</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">Optra 35</a></li>
+      <li><a href="aperture.html" aria-current="page">Aperture</a></li>
+      <li><a href="craft.html">Craft</a></li>
+      <li><a href="index.html#section">Specs</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#notify">Get notified</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap" style="padding-bottom:4vh">
+  <div><h1 class="split">Set it yourself.</h1><p>Drag the slider. The eleven blades close the way they do in the lens.</p></div>
+</section>
+<section class="wrap play">
+  <svg id="iris" viewBox="0 0 400 400" role="img" aria-label="An iris of eleven blades that closes as the f-number rises">
+    <defs><clipPath id="clip"><circle cx="200" cy="200" r="140"/></clipPath></defs>
+    <circle cx="200" cy="200" r="168" fill="#121212"/>
+    <circle cx="200" cy="200" r="140" fill="#fbe9d2"/>
+    <circle id="light" cx="200" cy="200" r="120" fill="#fff6ea"/>
+    <g clip-path="url(#clip)"><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/><path class="blade" d="M196 50 C 252 58 300 104 316 168 L 276 198 C 262 140 234 100 196 84 Z"/></g>
+    <circle cx="200" cy="200" r="140" fill="none" stroke="#2b2b2b" stroke-width="3"/>
+  </svg>
+  <div class="ctl">
+    <span class="label">Aperture</span>
+    <output id="fout" for="fstop">f/1.4</output>
+    <label class="label" for="fstop">Drag to stop down</label>
+    <input id="fstop" type="range" min="0" max="7" step="1" value="0">
+    <div class="ticks" aria-hidden="true"><span>1.4</span><span>2</span><span>2.8</span><span>4</span><span>5.6</span><span>8</span><span>11</span><span>16</span></div>
+  </div>
+</section>
+<section class="why dark"><div class="wrap">
+  <div><h3>Wide open</h3><p class="muted">At f/1.4 the most light comes in and the least is in focus. Backgrounds melt.</p></div>
+  <div><h3>Stopped down</h3><p class="muted">Each stop halves the light and deepens what is sharp, front to back.</p></div>
+  <div><h3>Round, always</h3><p class="muted">Eleven rounded blades keep the opening close to a circle, so points of light stay round.</p></div>
+</div></section>
+<section class="cta"><h2 class="split">Feel the clicks.</h2><a class="btn" href="index.html#notify">Get notified</a></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Optra</div><p style="margin-top:18px;color:#b8b5ad">35 mm f/1.4. Focus by hand.</p></div>
+      <div><h4>The lens</h4><ul><li><a href="index.html">Optra 35</a></li><li><a href="aperture.html">Aperture</a></li><li><a href="craft.html">Craft</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#finish">Finishes</a></li><li><a href="index.html#section">Specs</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Updates</h4><ul><li><a href="index.html#notify">Get notified</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Optra is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>420 g. 52 mm.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>

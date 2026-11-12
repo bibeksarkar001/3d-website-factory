@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optra 35 craft. Ten elements, eight groups.</title>
+<meta name="description" content="How the Optra 35 is put together: ten glass elements in eight groups, two aspherical, in an all-metal barrel. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23121212'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23d93d1e' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  #craft-3d { height:min(68vh, 620px); }
+  .steps3 { padding:14vh 0; }
+  .steps3 ol { list-style:none; padding:0; counter-reset:c; }
+  .steps3 li { display:grid; grid-template-columns:90px 1fr 1.4fr; gap:30px; align-items:baseline; padding:28px 0; border-top:1px solid rgb(239 238 233 / .16); }
+  .steps3 li::before { counter-increment:c; content:"0" counter(c); font:400 13px "IBM Plex Mono", monospace; color:#ff8f75; }
+  .steps3 h3 { font-size:1.9rem; }
+  @media (max-width:860px) { .steps3 li { grid-template-columns:1fr; gap:6px; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Optra</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">Optra 35</a></li>
+      <li><a href="aperture.html">Aperture</a></li>
+      <li><a href="craft.html" aria-current="page">Craft</a></li>
+      <li><a href="index.html#section">Specs</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#notify">Get notified</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <div><h1 class="split">Ten pieces of glass.</h1><p>Ten elements in eight groups, two of them aspherical, held in an all-metal barrel.</p></div>
+  <div id="craft-3d" class="f-3d" data-title="The ten glass elements of the Optra 35 spread along the axis, turning slowly toward your cursor"></div>
+</section>
+<section class="steps3 dark"><div class="wrap"><ol>
+  <li><h3>Ten elements</h3><p class="muted">Each one bends the light a little. Together they bring it to a sharp point.</p></li>
+  <li><h3>Eight groups</h3><p class="muted">Some elements are cemented in pairs, so ten pieces of glass sit in eight groups.</p></li>
+  <li><h3>Two aspherical</h3><p class="muted">Two surfaces are not quite spherical. They correct what round surfaces cannot.</p></li>
+  <li><h3>All-metal barrel</h3><p class="muted">The focus ring is metal too, with a long throw for fine focus by hand.</p></li>
+</ol></div></section>
+<section class="cta"><h2 class="split">Made to be turned.</h2><a class="btn" href="index.html#notify">Get notified</a></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Optra</div><p style="margin-top:18px;color:#b8b5ad">35 mm f/1.4. Focus by hand.</p></div>
+      <div><h4>The lens</h4><ul><li><a href="index.html">Optra 35</a></li><li><a href="aperture.html">Aperture</a></li><li><a href="craft.html">Craft</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#finish">Finishes</a></li><li><a href="index.html#section">Specs</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Updates</h4><ul><li><a href="index.html#notify">Get notified</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Optra is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>420 g. 52 mm.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/lens.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

@@ -19,11 +19,11 @@ An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other cod
 | **Promptly.** Four 3D coaches whose eyes follow you, hop as your streak grows, and cheer when you sign up. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/promptly/) | **Vanta.** An electric coupe that drives through a tunnel of light as you scroll, then lets you pick its paint and wheels. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/vanta/) |
 | [![Weft: denim stitching sewn by scrolling](docs/previews/weft.jpg)](https://bibeksarkar001.github.io/3d-website-factory/weft/) | [![Faraway: a miniature island](docs/previews/faraway.jpg)](https://bibeksarkar001.github.io/3d-website-factory/faraway/) |
 | **Weft.** Selvedge denim. Scroll and a needle sews the pocket, sets the rivets and hems the leg. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/weft/) | **Faraway.** Small-group travel. Fly over a miniature island as the day turns to dusk and the lighthouse comes on. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/faraway/) |
-| [![Ridgeline: an electric mountain bike in 3D](docs/previews/ridgeline.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | |
-| **Ridgeline.** An e-MTB tour: motor, battery, fork and tyres, then drag it round and tap its parts. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | |
+| [![Ridgeline: an electric mountain bike in 3D](docs/previews/ridgeline.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | [![Optra: a lens aperture closing](docs/previews/optra.jpg)](https://bibeksarkar001.github.io/3d-website-factory/optra/) |
+| **Ridgeline.** An e-MTB tour: motor, battery, fork and tyres, then drag it round and tap its parts. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | **Optra.** A camera lens. Its eleven aperture blades close as you scroll, then the glass comes apart. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/optra/) |
 
 Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
-All eleven brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+All twelve brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
 
 ## What it does
 
