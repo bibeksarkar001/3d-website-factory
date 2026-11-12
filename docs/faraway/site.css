@@ -7,7 +7,7 @@ html { background:var(--peach); color:var(--sea); font:400 17px/1.55 "Figtree", 
 body { overflow-x:clip; }
 a { color:inherit; }
 .wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
-h1, h2, h3, .display { font-family:"Instrument Serif", Georgia, serif; font-weight:400; letter-spacing:-.01em; line-height:1; }
+h1, h2, h3, .display { font-family:"Spectral", Georgia, serif; font-weight:400; letter-spacing:-.01em; line-height:1; }
 h1 em, h2 em, h3 em { font-style:italic; }
 .muted { color:var(--rust); }
 .eyebrowless { font-weight:600; }
@@ -29,7 +29,7 @@ h1 em, h2 em, h3 em { font-style:italic; }
 .nav { position:fixed; inset:0 0 auto; z-index:20; transition:background .3s; }
 .nav.solid { background:rgb(255 244 230 / .92); box-shadow:0 1px 0 rgb(18 63 61 / .1); }
 .nav .wrap { display:flex; align-items:center; gap:30px; height:70px; }
-.logo { font:400 30px/1 "Instrument Serif", serif; font-style:italic; text-decoration:none; }
+.logo { font:400 30px/1 "Spectral", serif; font-style:italic; text-decoration:none; }
 .nav ul { list-style:none; padding:0; display:flex; gap:26px; margin-left:auto; }
 .nav ul a { text-decoration:none; font-weight:600; font-size:15px; padding:6px 0; background:linear-gradient(var(--coral), var(--coral)) no-repeat 0 100% / 0 2px; transition:background-size .35s var(--ease); }
 .nav ul a:hover, .nav ul a[aria-current] { background-size:100% 2px; }
@@ -57,7 +57,7 @@ h1 em, h2 em, h3 em { font-style:italic; }
 /* footer */
 footer { background:var(--sea); color:var(--paper); padding:90px 0 34px; }
 footer .cols { display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; padding-bottom:56px; border-bottom:1px solid rgb(255 244 230 / .18); }
-footer .big { font:400 clamp(4rem, 11vw, 9rem)/.85 "Instrument Serif", serif; font-style:italic; }
+footer .big { font:400 clamp(4rem, 11vw, 9rem)/.85 "Spectral", serif; font-style:italic; }
 footer h4 { font-size:14px; font-weight:600; color:#cfe3df; margin-bottom:14px; }
 footer ul { list-style:none; padding:0; display:grid; gap:9px; }
 footer a { text-decoration:none; } footer a:hover { color:var(--peach); }
