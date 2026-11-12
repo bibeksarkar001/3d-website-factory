@@ -1,0 +1,83 @@
+/* Ridgeline design system (see _work/ridgeline/design.md). Shared by every page. */
+:root { --stone:#e4e2d6; --bone:#f3f2ea; --pine:#1d2a21; --moss:#4a584c; --volt:#c8f03c; --rule:rgb(29 42 33 / .16);
+        --ease:cubic-bezier(.16,1,.3,1); --wrap:1240px; }
+* { box-sizing:border-box; margin:0; }
+html { background:var(--stone); color:var(--pine); font:400 17px/1.55 "Archivo", system-ui, sans-serif; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { overflow-x:clip; }
+a { color:inherit; }
+.wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
+h1, h2, h3, .display { font-family:"Big Shoulders Display", Impact, sans-serif; font-weight:800; text-transform:uppercase; line-height:.9; letter-spacing:.005em; }
+.label { font:400 12px/1.4 "Martian Mono", ui-monospace, monospace; letter-spacing:.04em; text-transform:uppercase; color:var(--moss); }
+.muted { color:var(--moss); }
+.dark { background:var(--pine); color:var(--bone); }
+.dark .muted, .dark .label { color:#b9c4b3; }
+
+/* buttons: volt with pine text, 4px corners */
+.btn { display:inline-flex; align-items:center; gap:12px; padding:16px 24px; border-radius:4px; background:var(--volt); color:var(--pine); border:0; cursor:pointer;
+       font:800 19px "Big Shoulders Display", sans-serif; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; transition:transform .35s var(--ease), background .2s; }
+.btn:hover { transform:translateY(-2px); background:#d6f765; }
+.btn .arr { transition:transform .3s var(--ease); } .btn:hover .arr { transform:translateX(4px); }
+.btn.line { background:transparent; box-shadow:inset 0 0 0 1.5px currentColor; color:inherit; }
+:focus-visible { outline:2px solid var(--pine); outline-offset:3px; }
+.dark :focus-visible { outline-color:var(--volt); }
+
+/* nav */
+.nav { position:fixed; inset:0 0 auto; z-index:20; transition:background .3s, box-shadow .3s; }
+.nav.solid { background:rgb(228 226 214 / .94); box-shadow:0 1px 0 var(--rule); }
+.nav .wrap { display:flex; align-items:center; gap:30px; height:70px; }
+.logo { font:800 26px/1 "Big Shoulders Display", sans-serif; letter-spacing:.08em; text-transform:uppercase; text-decoration:none; display:flex; align-items:center; gap:10px; }
+.logo svg { width:28px; height:16px; }
+.nav ul { list-style:none; padding:0; display:flex; gap:26px; margin-left:auto; }
+.nav ul a { text-decoration:none; font-weight:600; font-size:15px; padding:6px 0; background:linear-gradient(var(--pine), var(--pine)) no-repeat 0 100% / 0 2px; transition:background-size .35s var(--ease); }
+.nav ul a:hover, .nav ul a[aria-current] { background-size:100% 2px; }
+.nav .btn { padding:10px 16px; font-size:16px; }
+.menu { display:none; background:none; border:0; font:600 15px "Archivo", sans-serif; color:inherit; cursor:pointer; padding:10px 0; margin-left:auto; }
+
+/* words that rise out of a mask */
+.split .w { display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.06em; margin-bottom:-.06em; }
+.split .w > span { display:inline-block; transform:translateY(105%); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 60ms); }
+.split.in .w > span, .f-still .split .w > span { transform:none; }
+
+/* forms */
+.field { display:grid; gap:8px; }
+.field label { font:400 12px "Martian Mono", monospace; text-transform:uppercase; letter-spacing:.04em; }
+.field input, .field select { font:400 17px "Archivo", sans-serif; color:inherit; background:var(--bone); border:1.5px solid var(--rule); border-radius:4px; padding:13px 14px; width:100%; }
+.dark .field input, .dark .field select { background:rgb(243 242 234 / .06); border-color:rgb(243 242 234 / .25); color:var(--bone); }
+.field input:focus, .field select:focus { outline:none; border-color:var(--volt); }
+.field select option { color:var(--pine); }
+
+/* swatches and chips */
+.seg { display:flex; flex-wrap:wrap; gap:8px; }
+.seg button { all:unset; cursor:pointer; display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:4px; box-shadow:inset 0 0 0 1.5px var(--rule); font-weight:600; font-size:15px; transition:box-shadow .2s, background .2s; }
+.seg button:hover { box-shadow:inset 0 0 0 1.5px var(--pine); }
+.seg button[aria-pressed="true"] { box-shadow:inset 0 0 0 2px var(--pine); background:var(--bone); }
+.seg button i { width:18px; height:18px; border-radius:50%; display:block; }
+.seg button:focus-visible { outline:2px solid var(--pine); outline-offset:3px; }
+
+/* footer */
+footer { background:var(--pine); color:var(--bone); padding:90px 0 34px; }
+footer .cols { display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; padding-bottom:56px; border-bottom:1px solid rgb(243 242 234 / .16); }
+footer .big { font:800 clamp(4rem, 11vw, 9.5rem)/.8 "Big Shoulders Display", sans-serif; text-transform:uppercase; letter-spacing:.03em; }
+footer h4 { font:400 12px "Martian Mono", monospace; text-transform:uppercase; letter-spacing:.04em; color:#b9c4b3; margin-bottom:14px; font-weight:400; }
+footer ul { list-style:none; padding:0; display:grid; gap:9px; }
+footer a { text-decoration:none; } footer a:hover { color:var(--volt); }
+footer .small { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:24px; font-size:14px; color:#b9c4b3; }
+
+/* extra pages */
+.page-head { padding:20vh 0 8vh; display:grid; grid-template-columns:1fr 1.2fr; gap:5vw; align-items:center; }
+.page-head h1 { font-size:clamp(3.6rem, 9vw, 8.4rem); }
+.page-head p { font-size:1.2rem; max-width:34ch; margin-top:22px; }
+.cta { padding:16vh 0; display:grid; justify-items:center; gap:28px; text-align:center; }
+.cta h2 { font-size:clamp(3rem, 7vw, 6rem); max-width:12ch; }
+
+@media (max-width:860px) {
+  .nav ul { display:none; position:absolute; top:70px; left:0; right:0; flex-direction:column; gap:0; background:var(--stone); padding:8px 24px 22px; box-shadow:0 1px 0 var(--rule); }
+  .nav.open ul { display:flex; }
+  .nav ul a { display:block; padding:12px 0; font-size:17px; }
+  .menu { display:block; }
+  .nav .btn { display:none; }
+  footer .cols { grid-template-columns:1fr 1fr; }
+  footer .cols > :first-child { grid-column:1 / -1; }
+  .page-head { grid-template-columns:1fr; padding-top:15vh; }
+}

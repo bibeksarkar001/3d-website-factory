@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ridgeline E1 battery. 720 Wh, out from below.</title>
+<meta name="description" content="The Ridgeline E1 battery: 720 Wh inside the down tube, sliding out from below to charge off the bike. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Archivo:wght@400;600&family=Martian+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d2a21'/%3E%3Cpath d='M4 22 L12 10 L18 18 L22 13 L28 22' fill='none' stroke='%23c8f03c' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .facts { display:grid; grid-template-columns:repeat(3, 1fr); border-top:1px solid rgb(243 242 234 / .16); }
+  .facts > div { padding:34px 30px 34px 0; }
+  .facts b { display:block; font:800 clamp(3.4rem, 7vw, 6rem)/.9 "Big Shoulders Display", sans-serif; color:var(--volt); margin-bottom:12px; }
+  .facts b small { font-size:.4em; margin-left:6px; color:#b9c4b3; }
+  .band { padding:14vh 0; }
+  .band h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:34px; max-width:14ch; }
+  @media (max-width:860px) { .facts { grid-template-columns:1fr; } .facts > div { padding:22px 0; border-bottom:1px solid rgb(243 242 234 / .16); } }
+  #battery-3d { height:min(70vh, 640px); -webkit-mask:radial-gradient(closest-side, #000 72%, transparent); mask:radial-gradient(closest-side, #000 72%, transparent); }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><svg viewBox="0 0 28 16" aria-hidden="true"><path d="M1 15 L9 3 L15 11 L19 6 L27 15" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>Ridgeline</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">E1</a></li>
+      <li><a href="battery.html" aria-current="page">Battery</a></li>
+      <li><a href="workshop.html">Wheels</a></li>
+      <li><a href="index.html#geo">Specs</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#ride">Book a test ride</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <div>
+    <h1 class="split">Out from below.</h1>
+    <p>The battery lives inside the down tube. It slides out underneath, so you can take it indoors to charge.</p>
+  </div>
+  <div id="battery-3d" class="f-3d" data-title="The Ridgeline E1 down tube in 3D; the battery slides out from below and back in, on a loop"></div>
+</section>
+
+<section class="band dark"><div class="wrap">
+  <h2 class="split">The battery, plainly.</h2>
+  <div class="facts">
+    <div><b data-count="720">0<small>Wh</small></b><p>Capacity, inside the down tube.</p></div>
+    <div><b data-count="85">0<small>Nm</small></b><p>From the mid-drive motor it feeds.</p></div>
+    <div><b data-count="25">0<small>km/h</small></b><p>The speed the motor helps up to.</p></div>
+  </div>
+</div></section>
+
+<section class="cta">
+  <h2 class="split">Charge it. Ride it.</h2>
+  <a class="btn" href="index.html#ride">Book a test ride <span class="arr">→</span></a>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Ridgeline</div><p style="margin-top:18px;color:#b9c4b3">E1. Full-suspension electric trail bike.</p></div>
+      <div><h4>The bike</h4><ul><li><a href="index.html">Ridgeline E1</a></li><li><a href="battery.html">Battery</a></li><li><a href="workshop.html">Wheels and tyres</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#turn">Colours</a></li><li><a href="index.html#geo">Specs</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Ride</h4><ul><li><a href="index.html#ride">Book a test ride</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Ridgeline is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>23.4 kg, size M.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/pages.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

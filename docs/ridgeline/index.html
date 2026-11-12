@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ridgeline E1. More climbs, so more descents.</title>
+<meta name="description" content="Ridgeline E1, a full-suspension electric trail bike: 85 Nm mid-drive, 720 Wh battery, 160 mm fork. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Archivo:wght@400;600&family=Martian+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d2a21'/%3E%3Cpath d='M4 22 L12 10 L18 18 L22 13 L28 22' fill='none' stroke='%23c8f03c' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* 1. the tour: one 560vh track, five stops */
+  #tour { height:560vh; position:relative; }
+  #tour .stick { position:sticky; top:0; height:100svh; overflow:hidden; }
+  #tour-3d { position:absolute; top:0; bottom:0; right:0; width:66%; }
+  .contours { position:absolute; inset:0; pointer-events:none; opacity:.5; }
+  .contours path { fill:none; stroke:rgb(29 42 33 / .14); stroke-width:1.2; }
+  .stopx { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); top:50%; transform:translateY(-50%); width:min(440px, 36%); }
+  .stopx h1, .stopx h2 { font-size:clamp(3.4rem, 7vw, 7rem); }
+  .stopx .big { display:block; font:800 clamp(5rem, 12vw, 11rem)/.85 "Big Shoulders Display", sans-serif; letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+  .stopx .big small { font-size:.32em; margin-left:6px; color:var(--moss); }
+  .stopx p { margin-top:20px; font-size:1.12rem; max-width:30ch; }
+  .stopx .btn { margin-top:26px; }
+  .stopx p, .stopx .btn, .stopx .big { opacity:0; transform:translateY(12px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+  .stopx.on p, .stopx.on .btn, .stopx.on .big { opacity:1; transform:none; transition-delay:.15s; }
+  .stopx:not(.on) { visibility:hidden; transition:visibility 0s .8s; }
+  .steps { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); bottom:34px; display:flex; gap:22px; list-style:none; padding:0; }
+  .steps li { font:400 12px "Martian Mono", monospace; text-transform:uppercase; letter-spacing:.04em; color:var(--moss); padding-top:12px; position:relative; transition:color .3s; }
+  .steps li::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:var(--rule); }
+  .steps li::after { content:""; position:absolute; top:0; left:0; height:3px; width:calc(var(--k, 0) * 100%); background:var(--pine); }
+  .steps li.on { color:var(--pine); }
+  .f-still #tour { height:auto; } .f-still #tour .stick { height:100svh; } .f-still .stopx { visibility:hidden; } .f-still .stopx.first { visibility:visible; }
+
+  /* 2. turn it over */
+  #turn { padding:14vh 0; }
+  #turn .wrap { display:grid; grid-template-columns:5fr 7fr; gap:4vw; align-items:center; }
+  #turn h2 { font-size:clamp(3rem, 6vw, 5.6rem); margin-bottom:16px; }
+  .stage { position:relative; height:min(72vh, 680px); background:var(--bone); overflow:hidden; }
+  #turn-3d { position:absolute; inset:0; }
+  .spot { position:absolute; left:0; top:0; z-index:2; width:30px; height:30px; border-radius:50%; border:0; background:var(--volt); color:var(--pine); cursor:pointer;
+          font:800 15px "Big Shoulders Display", sans-serif; box-shadow:0 0 0 6px rgb(200 240 60 / .3); transition:box-shadow .3s; }
+  .spot:hover, .spot[aria-expanded="true"] { box-shadow:0 0 0 10px rgb(200 240 60 / .35); }
+  .info { margin-top:22px; min-height:7.5em; border-top:1px solid var(--rule); padding-top:18px; }
+  .info h3 { font-size:2rem; margin-bottom:6px; }
+  .swatch-row { margin-top:22px; }
+
+  /* 3. geometry and specs */
+  #geo { padding:14vh 0; }
+  #geo .wrap { display:grid; grid-template-columns:7fr 5fr; gap:5vw; align-items:center; }
+  #geo h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:28px; }
+  #geo svg { width:100%; height:auto; overflow:visible; }
+  #geo svg .draw { fill:none; stroke:var(--bone); stroke-width:2.5; stroke-linecap:round; }
+  #geo svg .dim { fill:none; stroke:var(--volt); stroke-width:1.5; stroke-dasharray:4 5; }
+  #geo svg text { font:400 12px "Martian Mono", monospace; fill:#b9c4b3; }
+  .specs { width:100%; border-collapse:collapse; }
+  .specs th, .specs td { text-align:left; padding:13px 0; border-top:1px solid rgb(243 242 234 / .16); vertical-align:top; }
+  .specs th { font:400 12px "Martian Mono", monospace; text-transform:uppercase; letter-spacing:.04em; color:#b9c4b3; width:44%; font-weight:400; }
+  .specs td b { font:800 1.5rem/1 "Big Shoulders Display", sans-serif; }
+
+  /* 4. faq */
+  #faq { padding:14vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; }
+  #faq h2 { font-size:clamp(3rem, 6vw, 5.4rem); }
+  details { border-top:1px solid var(--rule); } details:last-child { border-bottom:1px solid var(--rule); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:800 1.6rem/1.05 "Big Shoulders Display", sans-serif; text-transform:uppercase; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:50%; translate:0 -50%; font:400 1.4rem "Martian Mono", monospace; transition:rotate .3s var(--ease); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 0 22px; max-width:56ch; }
+
+  /* 5. test ride */
+  #ride { padding:14vh 0; }
+  #ride .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; }
+  #ride h2 { font-size:clamp(3.4rem, 7vw, 6.4rem); }
+  #ride form { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  #ride form .wide { grid-column:1 / -1; }
+  #ride .done { display:none; } #ride.sent form { display:none; } #ride.sent .done { display:block; }
+  #ride .done h3 { font-size:3rem; margin-bottom:10px; }
+
+  @media (max-width:860px) {
+    #tour-3d { width:100%; top:auto; height:56svh; }
+    .stopx { top:92px; transform:none; width:auto; right:24px; }
+    .stopx h1, .stopx h2 { font-size:2.8rem; } .stopx .big { font-size:4.4rem; } .stopx p { font-size:1rem; margin-top:10px; }
+    .steps { display:none; }
+    #turn .wrap, #geo .wrap, #faq .wrap, #ride .wrap, #ride form { grid-template-columns:1fr; }
+    .stage { height:58vh; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><svg viewBox="0 0 28 16" aria-hidden="true"><path d="M1 15 L9 3 L15 11 L19 6 L27 15" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>Ridgeline</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">E1</a></li>
+      <li><a href="battery.html">Battery</a></li>
+      <li><a href="workshop.html">Wheels</a></li>
+      <li><a href="#geo">Specs</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="#ride">Book a test ride</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="tour" aria-label="A tour of the Ridgeline E1: the motor, the battery, the fork and the tyres">
+  <div class="stick">
+    <svg class="contours" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true" id="contours">
+      <path d="M-20 700 C 260 640, 420 520, 700 560 S 1160 700, 1460 600"/><path d="M-20 760 C 280 700, 460 600, 720 630 S 1160 760, 1460 670"/>
+      <path d="M-20 820 C 300 770, 500 680, 740 700 S 1180 820, 1460 740"/><path d="M-20 640 C 240 580, 400 440, 680 490 S 1140 640, 1460 530"/>
+      <path d="M-20 580 C 220 520, 380 360, 660 420 S 1120 580, 1460 460"/>
+    </svg>
+    <div id="tour-3d" class="f-3d" style="position:absolute" data-title="The Ridgeline E1 e-bike in 3D; the camera visits the motor, the battery slides out, the fork compresses and the tyres turn"></div>
+    <div class="stopx first" data-from="0" data-to="0.17">
+      <h1 class="split">Climb more. Ride more down.</h1>
+      <p>The Ridgeline E1 is a full-suspension electric trail bike. The motor does the climbs, so you get more laps.</p>
+      <a class="btn" href="#ride">Book a test ride <span class="arr">→</span></a>
+    </div>
+    <div class="stopx" data-from="0.17" data-to="0.37">
+      <span class="label">Mid-drive motor</span>
+      <span class="big" data-to="85">0<small>Nm</small></span>
+      <p>Torque at the cranks, with assistance up to 25 km/h.</p>
+    </div>
+    <div class="stopx" data-from="0.37" data-to="0.58">
+      <span class="label">Battery in the down tube</span>
+      <span class="big" data-to="720">0<small>Wh</small></span>
+      <p>It slides out from below, so you can charge it off the bike.</p>
+    </div>
+    <div class="stopx" data-from="0.58" data-to="0.78">
+      <span class="label">Fork</span>
+      <span class="big" data-to="160">0<small>mm</small></span>
+      <p>Of travel up front, and 150 mm at the back, for roots, rocks and drops.</p>
+    </div>
+    <div class="stopx" data-from="0.78" data-to="1.01">
+      <span class="label">Tyres</span>
+      <span class="big" data-to="2.5" data-dec="1">0<small>in</small></span>
+      <p>Wide knobby tyres, tubeless, on a 29-inch front and a 27.5-inch rear.</p>
+      <a class="btn" href="#turn">Turn it over <span class="arr">→</span></a>
+    </div>
+    <ol class="steps" aria-hidden="true"><li>Bike</li><li>Motor</li><li>Battery</li><li>Fork</li><li>Tyres</li></ol>
+  </div>
+</section>
+
+<section id="turn">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Turn it over.</h2>
+      <p class="muted">Drag the bike to spin it. Tap a dot to read about the part.</p>
+      <div class="info" id="info" aria-live="polite"><h3>Pick a part</h3><p class="muted">Five dots, five parts that do the work.</p></div>
+      <div class="swatch-row"><span class="label">Frame colour</span>
+        <div class="seg" role="group" aria-label="Frame colour" style="margin-top:10px">
+          <button type="button" data-color="pine" aria-pressed="true"><i style="background:#2f4b3a"></i>Pine</button>
+          <button type="button" data-color="granite" aria-pressed="false"><i style="background:#76797a"></i>Granite</button>
+          <button type="button" data-color="rust" aria-pressed="false"><i style="background:#9a4a2a"></i>Rust</button>
+        </div></div>
+    </div>
+    <div class="stage">
+      <div id="turn-3d" class="f-3d" style="position:absolute" data-title="The Ridgeline E1 in 3D; drag to turn it, and tap the dots for its parts"></div>
+      <button class="spot" type="button" data-spot="motor" aria-expanded="false" aria-label="Motor">1</button>
+      <button class="spot" type="button" data-spot="battery" aria-expanded="false" aria-label="Battery">2</button>
+      <button class="spot" type="button" data-spot="fork" aria-expanded="false" aria-label="Fork">3</button>
+      <button class="spot" type="button" data-spot="shock" aria-expanded="false" aria-label="Rear suspension">4</button>
+      <button class="spot" type="button" data-spot="tyre" aria-expanded="false" aria-label="Tyres">5</button>
+    </div>
+  </div>
+</section>
+
+<section id="geo" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 class="split">The numbers.</h2>
+      <svg viewBox="0 0 640 330" aria-hidden="true">
+        <circle class="draw" cx="130" cy="230" r="86" pathLength="1"/><circle class="draw" cx="510" cy="222" r="94" pathLength="1"/>
+        <path class="draw" pathLength="1" d="M300 228 L 470 92 L 455 60 M300 228 L 268 84 L 252 52 M268 104 L 462 76 M300 228 L 130 230 L 262 112 M462 92 L 510 222"/>
+        <path class="dim" d="M130 320 H510"/><path class="dim" d="M510 222 V320"/><path class="dim" d="M130 230 V320"/>
+        <text x="320" y="312" text-anchor="middle">29 in front, 27.5 in rear</text>
+        <text x="40" y="128">150 mm rear</text><text x="520" y="110">160 mm fork</text>
+      </svg>
+    </div>
+    <table class="specs">
+      <tr><th>Motor</th><td><b>85 Nm</b> mid-drive, assists to 25 km/h</td></tr>
+      <tr><th>Battery</th><td><b>720 Wh</b> in the down tube, removable</td></tr>
+      <tr><th>Travel</th><td><b>160 / 150 mm</b> front and rear</td></tr>
+      <tr><th>Wheels</th><td><b>29 / 27.5 in</b> front and rear</td></tr>
+      <tr><th>Tyres</th><td><b>2.5 in</b> knobby, tubeless</td></tr>
+      <tr><th>Drivetrain</th><td><b>12-speed</b></td></tr>
+      <tr><th>Weight</th><td><b>23.4 kg</b> size M</td></tr>
+      <tr><th>Sizes</th><td><b>S, M, L, XL</b></td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="split">Before you ride.</h2>
+    <div>
+      <details><summary>How fast does the motor help?</summary><p>It assists up to 25 km/h. Above that, it is just you.</p></details>
+      <details><summary>Can I charge the battery off the bike?</summary><p>Yes. The 720 Wh battery slides out from below the down tube, so you can carry it in and charge it anywhere.</p></details>
+      <details><summary>Why two wheel sizes?</summary><p>A 29-inch front rolls over roots and rocks; a 27.5-inch rear keeps the back end quick through turns.</p></details>
+      <details><summary>How much does it weigh?</summary><p>23.4 kg in size M.</p></details>
+      <details><summary>Which colours and sizes?</summary><p>Pine, Granite or Rust, in S, M, L and XL.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="ride" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Book a test ride.</h2>
+      <p class="muted" style="margin-top:18px;max-width:30ch">Tell us your size and we will be in touch to set one up.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="f-size">Size</label><select id="f-size" name="size"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select></div>
+        <div class="field"><label for="f-colour">Colour</label><select id="f-colour" name="colour"><option>Pine</option><option>Granite</option><option>Rust</option></select></div>
+        <p class="err wide" aria-live="polite" style="min-height:1.4em;color:#e6ff8a;font-weight:600"></p>
+        <div class="wide"><button class="btn" type="submit">Book my test ride <span class="arr">→</span></button></div>
+      </form>
+      <div class="done" role="status"><h3>You're booked in.</h3><p>We will email you to pick a day.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Ridgeline</div><p style="margin-top:18px;color:#b9c4b3">E1. Full-suspension electric trail bike.</p></div>
+      <div><h4>The bike</h4><ul><li><a href="index.html">Ridgeline E1</a></li><li><a href="battery.html">Battery</a></li><li><a href="workshop.html">Wheels and tyres</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="#turn">Colours</a></li><li><a href="#geo">Specs</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Ride</h4><ul><li><a href="#ride">Book a test ride</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Ridgeline is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>23.4 kg, size M.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/scenes.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

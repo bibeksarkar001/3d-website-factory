@@ -110,7 +110,8 @@ try {
 
   await load(390, 844, true);
   await shot('phone.png');
-  const over = await js('document.documentElement.scrollWidth - innerWidth');
+  // A phone browser widens its layout to fit anything too wide, so innerWidth grows with it: compare with the real 390.
+  const over = await js('Math.max(innerWidth, document.documentElement.scrollWidth) - 390');
   if (over > 2) fails.push(`phone layout is ${over}px wider than the screen`);
   [...new Set(errors)].forEach(e => fails.push(`console error: ${String(e).slice(0, 200)}`));
   ws.close();
