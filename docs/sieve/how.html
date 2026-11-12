@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Sieve works</title>
+<meta name="description" content="How Sieve reads your sources and finds one answer. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Schibsted+Grotesk:wght@400;500&family=JetBrains+Mono:wght@500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .top { min-height:100svh; display:grid; grid-template-columns:1fr 1.2fr; align-items:center; padding-top:80px; }
+  .top h1 { font-size:clamp(2.8rem, 6vw, 6rem); }
+  #constellation { height:78svh; }
+  .labels { position:relative; }
+  .src { display:grid; grid-template-columns:repeat(2, 1fr); gap:0 6vw; }
+  .src div { padding:22px 0; border-top:1px solid var(--rule); }
+  .src b { font-family:"Syne"; font-size:1.3rem; display:block; }
+  .src span { color:var(--haze); }
+  @media (max-width:860px) { .top { grid-template-columns:1fr; padding-top:110px; } #constellation { height:52svh; } .src { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="logo" href="index.html" aria-label="Sieve home"><svg viewBox="0 0 26 26" aria-hidden="true"><g fill="#eef2ff"><circle cx="5" cy="6" r="2"/><circle cx="13" cy="4" r="2"/><circle cx="21" cy="6" r="2"/><circle cx="9" cy="13" r="2"/><circle cx="17" cy="13" r="2"/></g><circle cx="13" cy="21" r="2.6" fill="#ffb547"/></svg>sieve</a>
+  <button class="menu" aria-expanded="false" aria-controls="links">Menu</button>
+  <div class="links" id="links">
+    <a href="how.html" aria-current="page">How it works</a>
+    <a href="plans.html">Plans</a>
+    <a href="index.html#faq">Questions</a>
+    <a class="btn" href="index.html#waitlist">Ask your first question</a>
+  </div>
+</div></nav>
+<main>
+<header class="top wrap">
+  <div><h1 data-words>Four sources. <i>One ring.</i></h1><p class="lede">Sieve reads where your numbers already live, joins what belongs together, and lets the rest fall through.</p></div>
+  <div id="constellation" class="f-3d" data-title="Four clouds of light streaming into one amber ring"></div>
+</header>
+
+<section class="sec">
+  <div class="wrap split">
+    <h2 data-words>What it <i>reads.</i></h2>
+    <div class="src">
+      <div data-reveal><b>Spreadsheets</b><span>Shared sheets, with the tabs you choose.</span></div>
+      <div data-reveal><b>Postgres and MySQL</b><span>A read-only user you create for Sieve.</span></div>
+      <div data-reveal><b>Shop exports</b><span>Orders, refunds and customers from your shop platform.</span></div>
+      <div data-reveal><b>CSV files</b><span>Anything else, dropped in by hand.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap split">
+    <h2 data-words>From question <i>to chart.</i></h2>
+    <ol class="steps">
+      <li data-reveal><div><h3>You ask</h3><p>"Why did refunds jump last month?"</p></div></li>
+      <li data-reveal><div><h3>Sieve finds the tables</h3><p>It looks at the names and shapes of your columns, not at what is in your rows, to decide where to look.</p></div></li>
+      <li data-reveal><div><h3>It reads and joins</h3><p>Orders meet refunds meet courier times, across sources if it has to.</p></div></li>
+      <li data-reveal><div><h3>One chart, with receipts</h3><p>The answer in amber. Every bar opens to its rows.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="safety">
+  <div class="wrap split">
+    <h2 data-words>Read-only, <i>by design.</i></h2>
+    <p class="lede" style="margin:0">Sieve connects with read-only access and never writes to a source. Disconnect a source and its copy in Sieve is deleted. <a class="link" href="index.html#waitlist">Join the waitlist</a></p>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="index.html">sieve</a><p>One question in, one chart out, with the rows behind it.</p></div>
+    <div><h4>Product</h4><ul><li><a href="how.html">How it works</a></li><li><a href="plans.html">Plans</a></li><li><a href="index.html#what">What it does</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="index.html#faq">Questions</a></li><li><a href="plans.html#faq">Plans questions</a></li><li><a href="how.html#safety">Read-only access</a></li></ul></div>
+    <div><h4>Start</h4><ul><li><a href="index.html#waitlist">Join the waitlist</a></li></ul></div>
+  </div>
+  <div class="small"><span>Sieve is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Example data only.</span></div>
+</div></footer>
+<script src="site.js" type="module"></script>
+<script type="module" src="3d/constellation.js"></script>
+</body>
+</html>

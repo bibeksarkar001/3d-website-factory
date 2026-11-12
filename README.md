@@ -10,8 +10,11 @@ An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other cod
 | [![Orbit opening into its layers](docs/previews/orbit-inside.jpg)](https://bibeksarkar001.github.io/3d-website-factory/orbit/) | [![Kiln: a logo made into a fired-clay object](docs/previews/kiln.jpg)](https://bibeksarkar001.github.io/3d-website-factory/kiln/) |
 | **Orbit.** A speaker built from code. It tilts to your cursor, opens into five labelled layers as you scroll, and its dial turns on the page. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/orbit/) | **Kiln.** A flat SVG logo made into a fired-clay object with a glowing flame. It follows the cursor and turns as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/kiln/) |
 
+| [![Guild: a dot globe under a serif masthead](docs/previews/guild.jpg)](https://bibeksarkar001.github.io/3d-website-factory/guild/) | [![Sieve: a vortex of light particles](docs/previews/sieve.jpg)](https://bibeksarkar001.github.io/3d-website-factory/sieve/) |
+| **Guild.** A community site styled as an annual report. A dot globe turns as you scroll and member dots glow in. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/guild/) | **Sieve.** A data tool. You scroll through a vortex of light particles until they settle into one bar chart. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/sieve/) |
+
 Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
-Both brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+All four brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
 
 ## What it does
 

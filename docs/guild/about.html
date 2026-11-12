@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Martian+Mono:wght@400&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<title>How Guild is run</title>
+<meta name="description" content="The house rules of Guild, a fictional community for people learning to build with AI.">
+<style>
+  .ring-wrap { display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:center; padding-bottom:14vh; }
+  #ring { width:100%; max-width:480px; aspect-ratio:1; display:block; color:var(--ink); }
+  .house { list-style:none; padding:0 0 16vh; }
+  .house li { display:grid; grid-template-columns:120px 1fr 1.2fr; gap:4vw; padding:34px 0; border-top:1px solid var(--ink); }
+  .house .sec { font:400 3rem/1 "Gloock", serif; color:var(--saffron-ink); }
+  .house h2 { font-size:clamp(1.6rem, 2.6vw, 2.3rem); }
+  .house p { color:var(--slate); }
+  @media (max-width:860px) { .ring-wrap, .house li { grid-template-columns:1fr; gap:10px; } }
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap"><a class="logo" href="index.html">Guild</a><span class="mono muted">The member report</span><div class="links"><a href="index.html#map">The map</a><a href="nights.html" >Build nights</a><a href="about.html" aria-current="page">How it's run</a><a class="apply" href="index.html#apply">Apply to join</a></div></div></nav>
+<header class="page-head wrap">
+  <h1 data-reveal>How Guild is run.</h1>
+  <p class="muted" data-reveal>Six house rules, written down. They are the whole constitution.</p>
+</header>
+<section class="wrap ring-wrap">
+  <svg id="ring" viewBox="0 0 200 200" role="img" aria-label="Members in a ring; a project passes to two reviewers, then each of them passes one on">
+    <g id="ring-dots"></g><path id="ring-arc" fill="none" stroke="#8a5a00" stroke-width="1.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+    <path id="ring-arc2" fill="none" stroke="#8a5a00" stroke-width="1.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+  </svg>
+  <p class="display" style="font-size:clamp(1.8rem,3.4vw,3rem)" data-reveal>Help goes round. <span class="muted">You get two reviews, you give two, and the ring keeps turning.</span></p>
+</section>
+<ol class="house wrap">
+  <li data-reveal><span class="sec">§1</span><h2>Thursdays are for building.</h2><p>Build nights run online at 19:00 in New York, London and Singapore. Come with something to work on.</p></li>
+  <li data-reveal><span class="sec">§2</span><h2>Two reviews in, two out.</h2><p>Every project gets written feedback from two members within a week. You review two in return.</p></li>
+  <li data-reveal><span class="sec">§3</span><h2>Say where you're stuck.</h2><p>Post in #stuck with what you tried. Short questions get fast answers.</p></li>
+  <li data-reveal><span class="sec">§4</span><h2>Nobody is selling.</h2><p>No sponsored posts and no vendor channels. Recommend a tool only if you used it.</p></li>
+  <li data-reveal><span class="sec">§5</span><h2>People read applications.</h2><p>A member reads each one and answers within a week.</p></li>
+  <li data-reveal><span class="sec">§6</span><h2>Ship small, show it.</h2><p>Unfinished is fine. Post what works today; the reviewers will help with tomorrow.</p></li>
+</ol>
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div class="brand">Guild</div>
+      <div><h4>The report</h4><ul><li><a href="index.html#stuck">The problem</a></li><li><a href="index.html#map">The map</a></li><li><a href="index.html#exhibits">Exhibits</a></li><li><a href="index.html#sources">Receipts</a></li></ul></div>
+      <div><h4>Guild</h4><ul><li><a href="about.html">How it's run</a></li><li><a href="nights.html">Build nights</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Join</h4><ul><li><a href="index.html#apply">Apply to join</a></li><li><a href="nights.html#tonight">This Thursday</a></li></ul></div>
+    </div>
+    <div class="small"><span>Guild is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>No. 07, November 2026</span></div>
+  </div>
+</footer>
+<script src="motion.js" defer></script>
+<script>
+  // A ring of twelve members; the help passes from one to two, then on. 9 s loop.
+  addEventListener('DOMContentLoaded', () => {
+    const svg = document.getElementById('ring'), g = document.getElementById('ring-dots');
+    const P = i => { const a = i / 12 * Math.PI * 2 - Math.PI / 2; return [100 + Math.cos(a) * 78, 100 + Math.sin(a) * 78]; };
+    const dots = Array.from({ length: 12 }, (_, i) => { const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); const [x, y] = P(i); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 6); c.setAttribute('fill', 'none'); c.setAttribute('stroke', 'currentColor'); g.append(c); return c; });
+    const a1 = document.getElementById('ring-arc'), a2 = document.getElementById('ring-arc2');
+    const arc = (i, j) => { const [x1, y1] = P(i), [x2, y2] = P(j); return `M${x1} ${y1} Q100 100 ${x2} ${y2}`; };
+    const ez = x => (x = Math.min(1, Math.max(0, x)), x * x * (3 - 2 * x));
+    Factory.loop(svg, (t, still) => {
+      const step = still ? 0 : Math.floor(t / 3) % 12, k = still ? 1 : (t % 3) / 3;
+      a1.setAttribute('d', arc(step, (step + 5) % 12)); a2.setAttribute('d', arc(step, (step + 7) % 12));
+      a1.style.strokeDashoffset = a2.style.strokeDashoffset = 1 - ez(k / 0.6);
+      a1.style.opacity = a2.style.opacity = still ? 1 : 1 - ez((k - 0.8) / 0.2);
+      dots.forEach((d, i) => d.setAttribute('fill', i === step || (k > 0.6 && (i === (step + 5) % 12 || i === (step + 7) % 12)) ? '#8a5a00' : 'none'));
+    });
+  });
+</script>
+</body>
+</html>

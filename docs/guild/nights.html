@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Martian+Mono:wght@400&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<title>Guild build nights</title>
+<meta name="description" content="Three Guild build nights every Thursday at 19:00: New York, London, Singapore. A fictional demo brand.">
+<style>
+  .nights-top { display:grid; grid-template-columns:1fr 1fr; gap:4vw; align-items:center; }
+  .nights-top .zone-globe { aspect-ratio:1; width:100%; max-width:520px; justify-self:center; }
+  #tonight { padding:12vh 0 16vh; }
+  .city { display:grid; grid-template-columns:140px 1fr auto; gap:4vw; align-items:center; padding:28px 0; border-top:1px solid var(--rule); cursor:pointer; transition:background .2s; }
+  .city:last-child { border-bottom:1px solid var(--rule); }
+  .city:hover, .city.on { background:rgb(242 184 75 / .08); }
+  .city svg { width:120px; height:120px; color:var(--frost); }
+  .city h2 { font-size:clamp(2rem, 4vw, 3.4rem); }
+  .city .t { font:400 1.8rem "Gloock", serif; color:var(--saffron); font-variant-numeric:tabular-nums; }
+  .city.on h2 { color:var(--saffron); }
+  @media (max-width:860px) { .nights-top { grid-template-columns:1fr; } .city { grid-template-columns:80px 1fr; } .city svg { width:80px; height:80px; } .city .t { grid-column:2; font-size:1.3rem; } }
+</style>
+</head>
+<body class="dark">
+<nav class="nav"><div class="wrap"><a class="logo" href="index.html">Guild</a><span class="mono muted">The member report</span><div class="links"><a href="index.html#map">The map</a><a href="nights.html" aria-current="page">Build nights</a><a href="about.html" >How it's run</a><a class="apply" href="index.html#apply">Apply to join</a></div></div></nav>
+<header class="page-head wrap nights-top">
+  <div><h1 data-reveal>Thursdays, 19:00.</h1><p class="muted" data-reveal>Three rooms, one in each of three time zones. Pick one below; the globe turns to it.</p></div>
+  <div class="zone-globe f-3d" data-zone="1" data-title="The globe turning to the chosen build-night city"></div>
+</header>
+<section id="tonight" class="wrap" aria-label="The three build nights">
+  <div class="city" data-zone="0" role="button" tabindex="0"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5"/><line class="h" x1="50" y1="50" x2="50" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line class="m" x1="50" y1="50" x2="50" y2="12" stroke="#f2b84b" stroke-width="1.5" stroke-linecap="round"/></svg><h2>New York</h2><span class="t" data-tz="America/New_York"></span></div>
+  <div class="city on" data-zone="1" role="button" tabindex="0"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5"/><line class="h" x1="50" y1="50" x2="50" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line class="m" x1="50" y1="50" x2="50" y2="12" stroke="#f2b84b" stroke-width="1.5" stroke-linecap="round"/></svg><h2>London</h2><span class="t" data-tz="Europe/London"></span></div>
+  <div class="city" data-zone="2" role="button" tabindex="0"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5"/><line class="h" x1="50" y1="50" x2="50" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line class="m" x1="50" y1="50" x2="50" y2="12" stroke="#f2b84b" stroke-width="1.5" stroke-linecap="round"/></svg><h2>Singapore</h2><span class="t" data-tz="Asia/Singapore"></span></div>
+  <p class="muted" style="margin-top:40px">Members only. <a href="index.html#apply">Apply to join</a> and you'll get the room links.</p>
+</section>
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div class="brand">Guild</div>
+      <div><h4>The report</h4><ul><li><a href="index.html#stuck">The problem</a></li><li><a href="index.html#map">The map</a></li><li><a href="index.html#exhibits">Exhibits</a></li><li><a href="index.html#sources">Receipts</a></li></ul></div>
+      <div><h4>Guild</h4><ul><li><a href="about.html">How it's run</a></li><li><a href="nights.html">Build nights</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>Join</h4><ul><li><a href="index.html#apply">Apply to join</a></li><li><a href="nights.html#tonight">This Thursday</a></li></ul></div>
+    </div>
+    <div class="small"><span>Guild is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>No. 07, November 2026</span></div>
+  </div>
+</footer>
+<script type="module" src="3d/scenes.js"></script>
+<script src="motion.js" defer></script>
+<script>
+  // Live clocks for each city; clicking a city turns the globe.
+  addEventListener('DOMContentLoaded', () => {
+    const cities = [...document.querySelectorAll('.city')];
+    const pick = c => { cities.forEach(x => x.classList.toggle('on', x === c)); document.dispatchEvent(new CustomEvent('guild:zone', { detail: +c.dataset.zone })); };
+    cities.forEach(c => { c.addEventListener('click', () => pick(c)); c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(c); } }); });
+    Factory.loop(document.getElementById('tonight'), () => {
+      const now = new Date();
+      cities.forEach(c => {
+        const t = c.querySelector('.t'), [h, m, s] = now.toLocaleTimeString('en-GB', { timeZone: t.dataset.tz, hour12: false }).split(':').map(Number);
+        t.textContent = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ' now';
+        c.querySelector('.h').setAttribute('transform', `rotate(${(h % 12 + m / 60) * 30} 50 50)`);
+        c.querySelector('.m').setAttribute('transform', `rotate(${(m + s / 60) * 6} 50 50)`);
+      });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guild. Nobody learns to build with AI alone.</title>
+<meta name="description" content="Guild is a community for people learning to build with AI: Thursday build nights, two reviewers per project, every claim sourced. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Martian+Mono:wght@400&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* 1. cover */
+  .cover { position:relative; min-height:100svh; overflow:hidden; }
+  .masthead { position:absolute; left:0; right:0; top:84px; text-align:center; font:400 clamp(9rem, 31vw, 30rem)/.8 "Gloock", serif; letter-spacing:-.045em; color:var(--frost); pointer-events:none; user-select:none; }
+  #cover-globe { position:absolute; width:min(92vh, 60vw); aspect-ratio:1; left:50%; top:max(34vh, 250px); transform:translateX(-4%); z-index:2; }
+  .cover .issue { position:absolute; top:84px; right:max(24px, calc(50vw - 620px)); text-align:right; z-index:3; }
+  .cover .line { position:absolute; left:max(24px, calc(50vw - 620px)); bottom:9vh; z-index:3; max-width:min(520px, 44vw); display:grid; gap:22px; justify-items:start; }
+  .cover h1 { font-size:clamp(2.4rem, 4.2vw, 4rem); }
+  .cover h1 span { color:var(--saffron); }
+  .cover .line p { font-size:1.1rem; color:var(--mist); max-width:34ch; }
+  .cover .contents { position:absolute; right:max(24px, calc(50vw - 620px)); bottom:9vh; z-index:3; width:230px; }
+  .contents ol { list-style:none; padding:0; display:grid; }
+  .contents li a { display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid var(--rule-n); text-decoration:none; transition:color .15s, padding .3s var(--ease); }
+  .contents li a:hover { color:var(--saffron); padding-left:6px; }
+  .contents li a span { font:400 12px "Martian Mono", monospace; color:var(--mist); }
+
+  /* 2. stuck: words light up with scroll */
+  #stuck { height:190vh; }
+  #stuck .stick { position:sticky; top:0; height:100svh; display:grid; align-content:center; gap:40px; }
+  #stuck p.big { font:400 clamp(2.2rem, 5.2vw, 5rem)/1.08 "Gloock", serif; letter-spacing:-.02em; max-width:19ch; }
+  #stuck .w { opacity:.14; transition:opacity .25s linear; }
+  #stuck .w.lit { opacity:1; }
+  #stuck .after { font-size:1.3rem; max-width:34ch; }
+  #stuck .folio { display:flex; justify-content:space-between; border-top:1px solid var(--rule); padding-top:12px; }
+
+  /* 3. the map */
+  #map { height:300vh; }
+  #map .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1.25fr 1fr; align-items:center; gap:4vw; }
+  #map-globe { height:100svh; }
+  #map .tally { display:grid; gap:34px; }
+  #map .num { font:400 clamp(4rem, 9vw, 8.5rem)/.9 "Gloock", serif; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+  #map .num small { display:block; font:400 1.15rem/1.4 "Newsreader", serif; letter-spacing:0; color:var(--mist); margin-top:12px; }
+  #map .row { display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:baseline; border-top:1px solid var(--rule); padding-top:16px; }
+  #map .row b { font:400 2.4rem "Gloock", serif; color:var(--saffron); font-variant-numeric:tabular-nums; min-width:2.2ch; }
+  #map .late { opacity:0; transform:translateY(16px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  #map .late.on { opacity:1; transform:none; }
+  #map .bar { height:2px; background:var(--rule); position:relative; }
+  #map .bar i { position:absolute; inset:0; background:var(--saffron); transform-origin:left; transform:scaleX(0); }
+
+  /* 4. how it works: a ruled report */
+  #how { padding:18vh 0; }
+  #how header { display:grid; grid-template-columns:1fr 1fr; gap:4vw; align-items:end; margin-bottom:64px; }
+  #how h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); }
+  .rules { list-style:none; padding:0; }
+  .rules li { display:grid; grid-template-columns:120px 1.1fr 1fr; gap:4vw; padding:34px 0; position:relative; }
+  .rules li::before { content:""; position:absolute; left:0; right:0; top:0; height:1px; background:var(--ink); transform:scaleX(0); transform-origin:left; transition:transform 1.2s var(--ease); }
+  .rules li.f-in::before { transform:none; }
+  .rules .sec { font:400 3.4rem/1 "Gloock", serif; color:var(--saffron-ink); }
+  .rules h3 { font-size:clamp(1.6rem, 2.6vw, 2.3rem); }
+  .rules p { color:var(--slate); }
+  .rules p .claim { color:var(--ink); }
+  .loop { border:1px solid var(--rule); margin-top:56px; display:grid; grid-template-columns:1fr 2fr; align-items:center; gap:4vw; padding:32px; }
+  .loop svg { width:100%; height:auto; display:block; color:var(--ink); }
+  .loop p { font-size:1.15rem; }
+
+  /* 5. exhibits strip */
+  #exhibits { height:340vh; background:#dde4eb; }
+  #exhibits .stick { position:sticky; top:0; height:100svh; overflow:hidden; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto 1fr; padding-top:12vh; }
+  #exhibits h2 { font-size:clamp(2.2rem, 4.2vw, 3.8rem); max-width:22ch; }
+  #exhibits .head { display:flex; justify-content:space-between; align-items:end; gap:24px; }
+  .strip { display:flex; gap:48px; align-items:center; padding-left:max(24px, calc(50vw - 620px)); will-change:transform; }
+  .ex { flex:0 0 min(560px, 78vw); display:grid; grid-template-columns:auto 1fr; gap:10px 28px; padding:28px 0; border-top:1px solid var(--ink); }
+  .ex .letter { font:400 9rem/.8 "Gloock", serif; color:var(--saffron-ink); grid-row:span 3; }
+  .ex h3 { font-size:1.9rem; }
+  .ex p { color:var(--slate); font-size:1.02rem; }
+  .ex svg { grid-column:1 / -1; width:100%; height:120px; color:var(--ink); margin-top:8px; }
+  .ex svg .d { stroke-dasharray:1; stroke-dashoffset:1; }
+  .strip .end { flex:0 0 360px; font:400 1.6rem/1.3 "Gloock", serif; }
+
+  /* 6. picker */
+  #night { padding:16vh 0; }
+  #night .wrap { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; }
+  #night h2 { font-size:clamp(2.4rem, 4.6vw, 4.2rem); margin-bottom:22px; }
+  .zones { display:grid; margin:34px 0 26px; }
+  .zones button { all:unset; cursor:pointer; display:grid; grid-template-columns:1fr auto; align-items:baseline; padding:18px 0; border-top:1px solid var(--rule); transition:color .2s, padding .3s var(--ease); }
+  .zones button:last-child { border-bottom:1px solid var(--rule); }
+  .zones button b { font:400 1.9rem "Gloock", serif; }
+  .zones button span { font:400 12px "Martian Mono", monospace; color:var(--mist); }
+  .zones button:hover { padding-left:10px; }
+  .zones button[aria-pressed="true"] { color:var(--saffron); padding-left:10px; }
+  .zones button[aria-pressed="true"] span { color:var(--saffron); }
+  #local { font-size:1.15rem; min-height:3em; }
+  .zone-globe { aspect-ratio:1; width:100%; max-width:560px; justify-self:center; }
+
+  /* 7. faq */
+  #faq { padding:18vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:1fr 1.6fr; gap:5vw; }
+  #faq h2 { font-size:clamp(2.4rem, 4.6vw, 4.2rem); }
+  details { border-top:1px solid var(--rule); }
+  details:last-child { border-bottom:1px solid var(--rule); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:400 1.5rem/1.2 "Gloock", serif; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:18px; font:400 1.8rem "Newsreader", serif; transition:transform .3s var(--ease); }
+  details[open] summary::after { transform:rotate(45deg); }
+  details p { padding:0 0 24px; color:var(--slate); max-width:56ch; }
+
+  /* 8. apply */
+  #apply { padding:18vh 0; }
+  #apply .wrap { display:grid; grid-template-columns:1.1fr 1fr; gap:6vw; align-items:start; }
+  #apply h2 { font-size:clamp(2.8rem, 6vw, 5.6rem); }
+  #apply h2 span { color:var(--saffron); }
+  form { display:grid; gap:22px; }
+  label { display:grid; gap:8px; font:400 12px "Martian Mono", monospace; letter-spacing:.04em; color:var(--mist); }
+  input, select, textarea { font:400 1.15rem "Newsreader", serif; color:var(--frost); background:transparent; border:0; border-bottom:1px solid var(--mist); padding:10px 0; border-radius:0; }
+  select option { color:var(--ink); }
+  input:focus, select:focus, textarea:focus { outline:none; border-bottom-color:var(--saffron); }
+  .ok { display:none; border-top:2px solid var(--saffron); padding-top:22px; }
+  .ok h3 { font-size:2.2rem; margin-bottom:10px; }
+  form.sent { display:none; }
+  form.sent + .ok { display:block; animation:rise .8s var(--ease); }
+  @keyframes rise { from { opacity:0; transform:translateY(16px); } }
+  .err { color:var(--saffron); font:400 12px "Martian Mono", monospace; min-height:1.4em; }
+
+  /* 9. receipts list */
+  #sources { padding:14vh 0; }
+  #sources h2 { font-size:clamp(2.2rem, 4vw, 3.4rem); margin-bottom:36px; }
+  #sources ol { padding:0; list-style:none; columns:2; column-gap:5vw; }
+  #sources li { break-inside:avoid; display:grid; grid-template-columns:40px 1fr; padding:14px 0; border-top:1px solid var(--rule); }
+  #sources li b { font:400 1.3rem "Gloock", serif; color:var(--saffron-ink); }
+  #sources li .mono { color:var(--slate); display:block; margin-top:4px; }
+
+  @media (max-width:860px) {
+    .cover { min-height:auto; display:flex; flex-direction:column; padding:96px 0 0; }
+    .masthead { position:relative; top:auto; font-size:35vw; }
+    .cover .line { position:relative; left:auto; bottom:auto; order:2; margin:28px 24px 0; max-width:none; gap:16px; }
+    .cover h1 { font-size:2.5rem; }
+    #cover-globe { position:relative; order:3; width:100vw; left:auto; top:auto; transform:none; margin-top:-8vw; }
+    .issue-line { display:none; }
+    #map .stick { grid-template-columns:1fr; grid-template-rows:48svh auto; align-content:start; gap:8px; }
+    #map-globe { height:48svh; }
+    #map .tally { gap:14px; padding:0 24px; }
+    #map .num { font-size:3.6rem; }
+    #map .row b { font-size:1.8rem; }
+    #how header, .rules li, .loop, #night .wrap, #faq .wrap, #apply .wrap { grid-template-columns:1fr; }
+    .rules li { gap:10px; }
+    #sources ol { columns:1; }
+    .ex .letter { font-size:6rem; }
+    #exhibits .stick { padding-top:90px; }
+    #exhibits .head .mono { display:none; }
+  }
+  .f-still #stuck .w { opacity:1; }
+  .f-still .ex svg .d { stroke-dashoffset:0; }
+</style>
+</head>
+<body>
+<a id="receipts-meter" href="#sources" aria-label="Claims sourced so far, see the sources">
+  <span class="n">0/6</span><span class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="mono">sourced</span>
+</a>
+
+<header class="cover dark" id="top">
+  <nav class="nav"><div class="wrap">
+    <a class="logo" href="index.html">Guild</a>
+    <span class="mono issue-line">The member report, No. 07, November 2026</span>
+    <div class="links"><a href="#map">The map</a><a href="nights.html">Build nights</a><a href="about.html">How it's run</a><a class="apply" href="#apply">Apply to join</a></div>
+  </div></nav>
+  <div class="masthead" aria-hidden="true">Guild</div>
+  <div id="cover-globe" class="f-3d" data-title="A dot globe with a few member dots glowing"></div>
+  <div class="line">
+    <h1 data-reveal>Nobody learns to build with AI <span>alone.</span></h1>
+    <p data-reveal>Guild is where you bring the thing you're building, and the thing you're stuck on.</p>
+    <a class="btn" href="#apply" data-reveal>Apply to join</a>
+  </div>
+</header>
+
+<section id="stuck">
+  <div class="stick wrap">
+    <p class="big" aria-label="Tutorials end. Then it's eleven at night, the error is yours alone, and the person in the video never had it.">Tutorials end. Then it's eleven at night, the error is yours alone, and the person in the video never had it.</p>
+    <p class="after" data-reveal>Guild is a room full of people a few steps ahead of you, and a few behind. Bring the error.</p>
+    <div class="folio mono muted"><span>02 / The problem</span><span>Guild, the member report</span></div>
+  </div>
+</section>
+
+<section id="map" class="dark">
+  <div class="stick wrap">
+    <div id="map-globe" class="f-3d" data-title="The globe filling with member dots, then arcs between them"></div>
+    <div class="tally">
+      <div class="num"><span id="members">0</span><small><span class="claim" tabindex="0">Members, in <span id="countries">0</span> countries<sup>1</sup><span class="src">[1] Member directory, 1 Nov 2026</span></span></small></div>
+      <div class="bar" aria-hidden="true"><i id="fillbar"></i></div>
+      <div class="row late" id="late1"><b>38</b><span><span class="claim" tabindex="0">minutes: the median wait for a first reply in #stuck<sup>2</sup><span class="src">[2] Stuck-channel log, October 2026</span></span>. Someone is awake when you're stuck.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <header>
+      <h2 data-reveal>How it works, by the house rules.</h2>
+      <p class="muted" data-reveal>Three rules do most of the work. Each one is written down, and each claim below has its source.</p>
+    </header>
+    <ol class="rules">
+      <li data-reveal><span class="sec">§1</span><h3>Build nights, every Thursday.</h3><p><span class="claim" tabindex="0">Online, at 19:00 in New York, London and Singapore<sup>3</sup><span class="src">[3] Build-night calendar, 2026</span></span>. Cameras optional. You build, someone sits with you.</p></li>
+      <li data-reveal><span class="sec">§2</span><h3>Two reviewers per project.</h3><p><span class="claim" tabindex="0">Every project you post gets written feedback from two members within a week<sup>4</sup><span class="src">[4] Review queue, 2026</span></span>. You review two in return.</p></li>
+      <li data-reveal><span class="sec">§4</span><h3>Nobody is selling.</h3><p><span class="claim" tabindex="0">No sponsored posts and no vendor channels<sup>5</sup><span class="src">[5] House rules, section 4</span></span>. Advice comes from people who used the tool.</p></li>
+    </ol>
+    <div class="loop" data-reveal>
+      <p>One project in, two reviews out. <span class="muted">Then you give two back.</span></p>
+      <svg id="review-loop" viewBox="0 0 520 140" role="img" aria-label="A project goes to two reviewers and comes back with two notes">
+        <rect x="10" y="45" width="90" height="56" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="55" y="78" text-anchor="middle" font-family="Martian Mono" font-size="11" fill="currentColor">project</text>
+        <circle cx="300" cy="35" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="300" cy="110" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <path id="rl-a" d="M100 62 C 180 62, 200 35, 278 35" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 5"/>
+        <path id="rl-b" d="M100 84 C 180 84, 200 110, 278 110" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 5"/>
+        <path id="rl-c" d="M322 35 C 400 35, 420 72, 500 72" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 5"/>
+        <path id="rl-d" d="M322 110 C 400 110, 420 72, 500 72" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 5"/>
+        <circle id="rl-dot1" r="6" fill="#8a5a00"/><circle id="rl-dot2" r="6" fill="#8a5a00"/>
+        <text id="rl-day" x="510" y="40" text-anchor="end" font-family="Martian Mono" font-size="11" fill="currentColor">day 0</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="exhibits">
+  <div class="stick">
+    <div class="head wrap">
+      <h2><span class="claim" tabindex="0">212 member projects shipped in 2026<sup>6</sup><span class="src">[6] Project log, 1 Nov 2026</span></span>. Five of them, up close.</h2>
+      <span class="mono muted">14 / Exhibits</span>
+    </div>
+    <div class="strip">
+      <article class="ex"><span class="letter">A</span><h3>Voice notes, sorted into a week.</h3><p>Talk on the walk home; the tool files each thought under a day.</p>
+        <svg viewBox="0 0 520 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path class="d" pathLength="1" d="M10 60 L30 40 L45 80 L60 30 L75 90 L90 50 L105 70 L120 60 L200 60"/><path class="d" pathLength="1" d="M220 20 H510 V100 H220 Z M261 20 V100 M302 20 V100 M343 20 V100 M384 20 V100 M425 20 V100 M466 20 V100"/></svg></article>
+      <article class="ex"><span class="letter">B</span><h3>A receipt sorter for a small bakery.</h3><p>Photos of receipts in, tidy columns for the books out.</p>
+        <svg viewBox="0 0 520 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path class="d" pathLength="1" d="M20 15 H80 V105 L70 98 L60 105 L50 98 L40 105 L30 98 L20 105 Z M30 35 H70 M30 50 H65 M30 65 H70"/><path class="d" pathLength="1" d="M100 60 H200"/><path class="d" pathLength="1" d="M230 20 H510 M230 50 H510 M230 80 H510 M230 110 H510 M320 20 V110 M420 20 V110"/></svg></article>
+      <article class="ex"><span class="letter">C</span><h3>Flashcards from lecture slides.</h3><p>A deck of slides becomes a stack of questions to study on the bus.</p>
+        <svg viewBox="0 0 520 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path class="d" pathLength="1" d="M20 20 H150 V100 H20 Z M35 40 H120 M35 55 H135 M35 70 H100"/><path class="d" pathLength="1" d="M170 60 H260"/><path class="d" pathLength="1" d="M290 30 H420 V95 H290 Z M310 22 H440 V87 M330 14 H460 V79 M340 62 H370"/></svg></article>
+      <article class="ex"><span class="letter">D</span><h3>Draft replies for a tenants' group chat.</h3><p>The bot drafts; a person reads every reply before it is sent.</p>
+        <svg viewBox="0 0 520 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path class="d" pathLength="1" d="M20 20 H200 V60 H60 L40 75 V60 H20 Z"/><path class="d" pathLength="1" d="M320 55 H500 V95 H480 V110 L460 95 H320 Z"/><path class="d" pathLength="1" d="M210 40 C 260 40, 270 75, 310 75"/></svg></article>
+      <article class="ex"><span class="letter">E</span><h3>A tiny game with written levels.</h3><p>A model writes each level; the builder plays it before anyone else does.</p>
+        <svg viewBox="0 0 520 120" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path class="d" pathLength="1" d="M10 110 H90 V85 H170 V60 H250 V35 H330 V60 H410 V20 H510"/><path class="d" pathLength="1" d="M400 12 L410 2 L420 12"/></svg></article>
+      <p class="end">Every exhibit was reviewed by two members before it shipped. <a href="#apply">Yours could be next.</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="night" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 data-reveal>Find your Thursday.</h2>
+      <p class="muted" data-reveal>Pick the build night nearest you. It runs at 19:00 local time, every week.</p>
+      <div class="zones" role="group" aria-label="Build night time zones">
+        <button type="button" data-zone="0" aria-pressed="false"><b>New York</b><span>19:00 EST</span></button>
+        <button type="button" data-zone="1" aria-pressed="true"><b>London</b><span>19:00 GMT</span></button>
+        <button type="button" data-zone="2" aria-pressed="false"><b>Singapore</b><span>19:00 SGT</span></button>
+      </div>
+      <p id="local" aria-live="polite"></p>
+    </div>
+    <div class="zone-globe f-3d" data-zone="1" data-title="The globe turning to the chosen build-night city"></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 data-reveal>Before you apply.</h2>
+    <div>
+      <details><summary>Do I need to be a programmer?</summary><p>No. Members range from people on their first project to people who write code for a living. What matters is that you are building something.</p></details>
+      <details><summary>What happens at a build night?</summary><p>An online room opens at 19:00 local time. You say what you are working on, then you work. When you get stuck, you say so out loud and someone helps.</p></details>
+      <details><summary>Who reads my application?</summary><p>A member does, not an algorithm. You hear back within a week.</p></details>
+      <details><summary>What do I owe in return?</summary><p>Two reviews for every project you post. That is how everyone gets two.</p></details>
+      <details><summary>Will anyone try to sell me a tool?</summary><p>No. There are no sponsored posts and no vendor channels. It is in the house rules, section 4.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="apply" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 data-reveal>Bring the thing <span>you're stuck on.</span></h2>
+      <p class="muted" data-reveal style="margin-top:24px;max-width:34ch">A short application. A member reads it and answers within a week.</p>
+    </div>
+    <div>
+      <form id="apply-form" novalidate>
+        <label>Email<input type="email" name="email" autocomplete="email" required></label>
+        <label>What are you building?<input type="text" name="what" maxlength="120" required></label>
+        <label>Nearest build night<select name="night"><option>New York</option><option selected>London</option><option>Singapore</option></select></label>
+        <p class="err" aria-live="polite"></p>
+        <button class="btn" type="submit">Send my application</button>
+      </form>
+      <div class="ok" role="status"><h3>Application in.</h3><p class="muted">A member will read it this week. Meanwhile, the build night in <span id="ok-night">London</span> is open to look around.</p><p style="margin-top:18px"><a href="nights.html">See the build nights</a></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <h2 data-reveal>Receipts.</h2>
+    <ol>
+      <li><b>1</b><span>4,180 members in 61 countries.<span class="mono">Member directory, 1 Nov 2026</span></span></li>
+      <li><b>2</b><span>Median first reply in #stuck: 38 minutes.<span class="mono">Stuck-channel log, Oct 2026</span></span></li>
+      <li><b>3</b><span>Build nights at 19:00 in New York, London, Singapore.<span class="mono">Build-night calendar, 2026</span></span></li>
+      <li><b>4</b><span>Two written reviews per project, within a week.<span class="mono">Review queue, 2026</span></span></li>
+      <li><b>5</b><span>No sponsored posts, no vendor channels.<span class="mono">House rules, section 4</span></span></li>
+      <li><b>6</b><span>212 projects shipped in 2026.<span class="mono">Project log, 1 Nov 2026</span></span></li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div class="brand">Guild</div>
+      <div><h4>The report</h4><ul><li><a href="#stuck">The problem</a></li><li><a href="#map">The map</a></li><li><a href="#exhibits">Exhibits</a></li><li><a href="#sources">Receipts</a></li></ul></div>
+      <div><h4>Guild</h4><ul><li><a href="about.html">How it's run</a></li><li><a href="nights.html">Build nights</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h4>Join</h4><ul><li><a href="#apply">Apply to join</a></li><li><a href="nights.html#tonight">This Thursday</a></li></ul></div>
+    </div>
+    <div class="small"><span>Guild is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>No. 07, November 2026</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/scenes.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

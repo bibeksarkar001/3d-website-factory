@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sieve. Ask one question, get one chart back.</title>
+<meta name="description" content="Sieve reads your sheets, databases and exports and answers a plain question with one chart and the rows behind it. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Schibsted+Grotesk:wght@400;500&family=JetBrains+Mono:wght@500&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* the vortex: one 600vh track, six chapters over one persistent particle stage */
+  #vortex { height:600vh; position:relative; }
+  #vortex .stick { position:sticky; top:0; height:100svh; overflow:hidden; }
+  #vortex-3d { position:absolute; inset:0; }
+  #vortex .veil { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, transparent 35%, rgb(16 37 95 / .75) 100%); }
+  .ch { position:absolute; inset:0; display:grid; align-content:center; pointer-events:none; opacity:0; }
+  .ch.on { pointer-events:auto; }
+  .ch .wrap { width:min(var(--wrap), 100% - 48px); }
+  .ch-0 h1 { font-size:clamp(3rem, 8.4vw, 8.4rem); max-width:10ch; }
+  .ch-0 p { color:var(--haze); font-size:1.2rem; max-width:36ch; margin:28px 0 34px; }
+  .ch-0 .cta { display:flex; gap:28px; align-items:center; flex-wrap:wrap; }
+  .ch .mid { text-align:center; justify-items:center; display:grid; }
+  .ch h2 { font-size:clamp(2.2rem, 5.6vw, 5.2rem); max-width:16ch; margin-inline:auto; }
+  .sources { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:34px; max-width:640px; }
+  .sources span { font:500 13px "JetBrains Mono", monospace; padding:9px 14px; border:1px solid var(--rule); background:rgb(16 37 95 / .6);
+                  transform:translateY(calc(var(--k, 0) * 40px)); opacity:calc(1 - var(--k, 0)); }
+  .count { font:500 clamp(2.6rem, 7vw, 6rem)/1 "JetBrains Mono", monospace; letter-spacing:-.04em; margin:20px 0 10px; font-variant-numeric:tabular-nums; }
+  .ch-4 .wrap { display:grid; grid-template-columns:.9fr 1.1fr; }
+  .ch-4 h2 { margin:0; font-size:clamp(2.2rem, 4.4vw, 4.2rem); }
+  .ask { margin-top:30px; display:grid; gap:10px; justify-items:start; }
+  .ask button { font:inherit; color:var(--haze); background:rgb(16 37 95 / .7); border:1px solid var(--rule); padding:11px 16px; border-radius:2px; cursor:pointer; text-align:left; transition:color .15s, border-color .15s, transform .3s var(--ease); }
+  .ask button:hover { color:var(--star); transform:translateX(4px); }
+  .ask button[aria-pressed="true"] { color:var(--star); border-color:var(--amber); }
+  .ask button[aria-pressed="true"]::before { content:"› "; color:var(--amber); }
+  .said { color:var(--haze); margin-top:20px; max-width:34ch; min-height:3em; }
+  .said b { color:var(--amber); font-weight:500; }
+  .receipt { margin-top:22px; border-top:1px solid var(--rule); width:min(420px, 100%); }
+  .receipt div { display:grid; grid-template-columns:1fr 1fr 70px; gap:10px; padding:7px 0; border-bottom:1px solid var(--rule);
+                 font:500 12px "JetBrains Mono", monospace; color:var(--haze); opacity:0; transform:translateX(-14px); transition:.6s var(--ease) calc(var(--i) * 80ms); }
+  .receipt.on div { opacity:1; transform:none; }
+  .bar-labels span { position:absolute; left:0; top:0; font:500 12px "JetBrains Mono", monospace; color:var(--haze); opacity:0; transition:opacity .6s, color .3s; pointer-events:none; }
+  .bar-labels span.on { opacity:1; }
+  .bar-labels span.hot { color:var(--amber); }
+  .rail { position:absolute; right:24px; top:50%; transform:translateY(-50%); list-style:none; padding:0; display:grid; gap:4px; z-index:2; }
+  .rail button { background:none; border:0; color:var(--haze); font:500 11px "JetBrains Mono", monospace; display:flex; align-items:center; gap:10px; justify-content:flex-end; cursor:pointer; padding:6px 0; transition:color .2s; }
+  .rail button::after { content:""; width:14px; height:1px; background:currentColor; transition:width .4s var(--ease); }
+  .rail button.on { color:var(--star); }
+  .rail button.on::after { width:34px; background:var(--amber); }
+  .rail button:hover { color:var(--star); }
+  .scroll-hint { position:absolute; left:50%; bottom:28px; transform:translateX(-50%); width:1px; height:56px; background:linear-gradient(var(--haze), transparent); }
+
+  /* what it does: a line that draws as you read */
+  .draw-line { position:absolute; left:-1px; top:0; width:2px; height:100%; background:var(--amber); transform-origin:top; transform:scaleY(var(--d, 0)); }
+  /* plans teaser */
+  .plans { display:grid; grid-template-columns:repeat(3, 1fr); border-top:1px solid var(--rule); }
+  .plan { padding:34px 28px 34px 0; border-right:1px solid var(--rule); transition:background .3s; }
+  .plan + .plan { padding-left:28px; }
+  .plan:last-child { border-right:0; }
+  .plan h3 { font-size:2rem; }
+  .plan p { color:var(--haze); margin:10px 0 20px; }
+  .plan .dots { display:flex; flex-wrap:wrap; gap:5px; max-width:180px; height:46px; align-content:flex-start; }
+  .plan .dots i { width:8px; height:8px; border-radius:50%; background:var(--haze); opacity:.5; transform:scale(.6); transition:.5s var(--ease) calc(var(--i) * 25ms); }
+  .plan:hover .dots i { opacity:1; transform:none; background:var(--amber); }
+
+  .f-still #vortex { height:auto; }
+  .f-still #vortex .stick { position:relative; height:auto; overflow:visible; padding-top:100px; }
+  .f-still #vortex-3d { inset:auto 0 0 !important; height:100svh; }
+  .f-still .ch { position:relative; opacity:1; pointer-events:auto; padding:10vh 0; }
+  .f-still .ch-4 { min-height:100svh; }
+  .f-still .rail, .f-still .scroll-hint { display:none; }
+
+  @media (max-width:860px) {
+    .rail { display:none; }
+    .ch-0 { align-content:end; padding-bottom:16vh; }
+    .ch-4 { align-content:end; padding-bottom:5vh; }
+    .ch-4 .wrap { grid-template-columns:1fr; }
+    .ch-4 h2 { font-size:1.9rem; }
+    .ask { margin-top:16px; gap:6px; }
+    .ask button { padding:8px 12px; font-size:14px; }
+    .said { margin-top:10px; font-size:15px; }
+    .receipt { display:none; }
+    .plans { grid-template-columns:1fr; }
+    .plan, .plan + .plan { padding:26px 0; border-right:0; border-bottom:1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="logo" href="index.html" aria-label="Sieve home"><svg viewBox="0 0 26 26" aria-hidden="true"><g fill="#eef2ff"><circle cx="5" cy="6" r="2"/><circle cx="13" cy="4" r="2"/><circle cx="21" cy="6" r="2"/><circle cx="9" cy="13" r="2"/><circle cx="17" cy="13" r="2"/></g><circle cx="13" cy="21" r="2.6" fill="#ffb547"/></svg>sieve</a>
+  <button class="menu" aria-expanded="false" aria-controls="links">Menu</button>
+  <div class="links" id="links">
+    <a href="how.html">How it works</a>
+    <a href="plans.html">Plans</a>
+    <a href="#faq">Questions</a>
+    <a class="btn" href="#waitlist">Ask your first question</a>
+  </div>
+</div></nav>
+
+<main>
+<section id="vortex" aria-label="From too much data to one answer">
+  <div class="stick">
+    <div id="vortex-3d" class="f-3d" style="position:absolute;inset:0" data-title="A spiral of light points that settles into a bar chart"></div>
+    <div class="veil"></div>
+    <div class="bar-labels" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+
+    <div class="ch ch-0" data-in="0" data-out=".1"><div class="wrap">
+      <h1 data-words>Ten thousand numbers. <i>Not one answer.</i></h1>
+      <p>Sieve reads every sheet, table and export you keep, and hands back the one chart that matters.</p>
+      <div class="cta"><a class="btn" href="#waitlist">Ask your first question</a><a class="link" href="how.html">See how it works</a></div>
+    </div></div>
+
+    <div class="ch ch-1" data-in=".14" data-out=".28"><div class="wrap mid">
+      <h2 data-words>Every tab you leave open <i>is still talking.</i></h2>
+    </div></div>
+
+    <div class="ch ch-2" data-in=".31" data-out=".45"><div class="wrap mid">
+      <h2 data-words>Sieve listens <i>to all of it.</i></h2>
+      <div class="sources" aria-label="Sources Sieve reads"><span>Spreadsheets</span><span>Postgres</span><span>MySQL</span><span>Shop exports</span><span>CSV files</span></div>
+    </div></div>
+
+    <div class="ch ch-3" data-in=".48" data-out=".63"><div class="wrap mid">
+      <h2 data-words>Then it lets the noise <i>fall through.</i></h2>
+      <div class="count" aria-hidden="true">0</div>
+      <div class="mono">rows read in an example workspace</div>
+    </div></div>
+
+    <div class="ch ch-4" data-in=".82" data-out="2"><div class="wrap">
+      <div>
+        <h2 data-words>One question in. <i>One chart out.</i></h2>
+        <div class="ask" role="group" aria-label="Try a question">
+          <button aria-pressed="true" data-q="refunds">Why did refunds jump last month?</button>
+          <button aria-pressed="false" data-q="first">When do first-time buyers order?</button>
+          <button aria-pressed="false" data-q="tickets">Which day floods support?</button>
+        </div>
+        <p class="said" aria-live="polite"><b>Thursday.</b> Orders placed after the 2 pm courier left a day late.</p>
+        <div class="receipt" aria-label="The rows behind the bar">
+          <div style="--i:0"><span>order_id</span><span>placed</span><span>refund</span></div>
+          <div style="--i:1"><span>#40812</span><span>Thu 14:22</span><span>yes</span></div>
+          <div style="--i:2"><span>#40815</span><span>Thu 15:03</span><span>yes</span></div>
+          <div style="--i:3"><span>#40821</span><span>Thu 16:40</span><span>yes</span></div>
+          <div style="--i:4"><span>#40790</span><span>Thu 09:12</span><span>no</span></div>
+        </div>
+      </div>
+    </div></div>
+
+    <ol class="rail" aria-label="Chapters">
+      <li><button data-go=".02">The noise</button></li>
+      <li><button data-go=".2">The pull</button></li>
+      <li><button data-go=".37">Your sources</button></li>
+      <li><button data-go=".55">The sieve</button></li>
+      <li><button data-go="1">The answer</button></li>
+    </ol>
+    <div class="scroll-hint" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section class="sec" id="what">
+  <div class="wrap split">
+    <div><h2 data-words>It shows <i>its working.</i></h2><p class="lede">A chart you cannot check is just another opinion. Every answer Sieve gives opens down to the rows it came from.</p></div>
+    <ol class="steps" style="position:relative">
+      <i class="draw-line" aria-hidden="true"></i>
+      <li data-reveal><div><h3>Ask in plain words</h3><p>Type the question the way you would ask a colleague. No query language, no dashboard to build first.</p></div></li>
+      <li data-reveal><div><h3>Get one chart back</h3><p>Not a wall of tiles. One chart, with the part that answers you in amber.</p></div></li>
+      <li data-reveal><div><h3>Open any bar</h3><p>Click a bar to see the rows behind it, with the source each row came from.</p></div></li>
+      <li data-reveal><div><h3>Read-only, always</h3><p>Sieve reads your sources and never writes to them. Disconnect one and its data is gone from Sieve too.</p></div></li>
+      <li data-reveal><div><h3>One question a week</h3><p>A short email each Monday with one chart Sieve thinks you should see. Turn it off in one click.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="plans">
+  <div class="wrap">
+    <h2 data-words style="margin-bottom:6vh">Sized by team, <i>not by rows.</i></h2>
+    <div class="plans">
+      <div class="plan"><h3>Solo</h3><p>One person, up to three sources.</p><div class="dots" aria-hidden="true"></div></div>
+      <div class="plan"><h3>Team</h3><p>Up to ten people, up to ten sources.</p><div class="dots" aria-hidden="true"></div></div>
+      <div class="plan"><h3>Company</h3><p>Everyone, every source, single sign-on.</p><div class="dots" aria-hidden="true"></div></div>
+    </div>
+    <p style="margin-top:34px"><a class="link" href="plans.html">Compare the plans</a></p>
+  </div>
+</section>
+
+<section class="sec faq" id="faq">
+  <div class="wrap split">
+    <h2 data-words>Fair <i>questions.</i></h2>
+    <div>
+      <details open><summary>Does Sieve change my data?</summary><p>No. It connects with read-only access and never writes back to a source.</p></details>
+      <details><summary>Which sources can it read?</summary><p>Spreadsheets, Postgres and MySQL databases, exports from your shop platform, and CSV files you upload.</p></details>
+      <details><summary>What if the answer looks wrong?</summary><p>Open the bar. You see every row behind it and which source it came from, so you can check the working yourself.</p></details>
+      <details><summary>Do I need to build dashboards first?</summary><p>No. You ask a question; Sieve picks the tables it needs.</p></details>
+      <details><summary>Can I stop the weekly email?</summary><p>Yes, with one click at the bottom of any email.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec join" id="waitlist">
+  <div class="wrap split">
+    <div><h2 data-words>Ask your <i>first question.</i></h2><p class="lede">Join the waitlist. We open new workspaces each week, smallest teams first.</p></div>
+    <form data-success novalidate>
+      <label>Work email<input type="email" name="email" required autocomplete="email" placeholder="you@company.com"></label>
+      <label>Where do your numbers live?<select name="source"><option>Spreadsheets</option><option>A database</option><option>Shop exports</option><option>All of the above</option></select></label>
+      <button class="btn" type="submit">Join the waitlist</button>
+      <div class="ok" tabindex="-1" hidden><b>You are on the list.</b>We will email you when your workspace is ready.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="index.html">sieve</a><p>One question in, one chart out, with the rows behind it.</p></div>
+    <div><h4>Product</h4><ul><li><a href="how.html">How it works</a></li><li><a href="plans.html">Plans</a></li><li><a href="index.html#what">What it does</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="index.html#faq">Questions</a></li><li><a href="plans.html#faq">Plans questions</a></li><li><a href="how.html#safety">Read-only access</a></li></ul></div>
+    <div><h4>Start</h4><ul><li><a href="index.html#waitlist">Join the waitlist</a></li></ul></div>
+  </div>
+  <div class="small"><span>Sieve is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Example data only.</span></div>
+</div></footer>
+
+<script src="site.js" type="module"></script>
+<script type="module" src="3d/vortex.js"></script>
+<script type="module" src="motion.js"></script>
+</body>
+</html>

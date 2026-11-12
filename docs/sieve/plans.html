@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sieve plans</title>
+<meta name="description" content="Sieve plans by team size: Solo, Team and Company. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Schibsted+Grotesk:wght@400;500&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .top { padding:22vh 0 10vh; }
+  .top h1 { font-size:clamp(2.8rem, 6.4vw, 6.4rem); max-width:12ch; }
+  .picker { display:grid; grid-template-columns:1fr 1fr; gap:6vw; align-items:center; }
+  .tabs { display:flex; gap:0; border:1px solid var(--rule); width:max-content; }
+  .tabs button { font:500 15px "Schibsted Grotesk"; color:var(--haze); background:none; border:0; padding:14px 22px; cursor:pointer; transition:color .15s, background .3s var(--ease); }
+  .tabs button[aria-selected="true"] { background:var(--amber); color:var(--deeper); }
+  .tabs button:not([aria-selected="true"]):hover { color:var(--star); }
+  .detail h2 { font-size:clamp(2.4rem, 5vw, 4.4rem); margin:34px 0 12px; }
+  .detail ul { list-style:none; padding:0; margin-top:24px; }
+  .detail li { padding:14px 0; border-top:1px solid var(--rule); display:flex; justify-content:space-between; gap:20px; }
+  .detail li span:last-child { color:var(--haze); font-family:"JetBrains Mono"; font-size:13px; }
+  #funnel { width:100%; max-width:520px; aspect-ratio:1; justify-self:center; }
+  @media (max-width:860px) { .picker { grid-template-columns:1fr; } .tabs { width:100%; } .tabs button { flex:1; padding:14px 8px; } }
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="logo" href="index.html" aria-label="Sieve home"><svg viewBox="0 0 26 26" aria-hidden="true"><g fill="#eef2ff"><circle cx="5" cy="6" r="2"/><circle cx="13" cy="4" r="2"/><circle cx="21" cy="6" r="2"/><circle cx="9" cy="13" r="2"/><circle cx="17" cy="13" r="2"/></g><circle cx="13" cy="21" r="2.6" fill="#ffb547"/></svg>sieve</a>
+  <button class="menu" aria-expanded="false" aria-controls="links">Menu</button>
+  <div class="links" id="links">
+    <a href="how.html">How it works</a>
+    <a href="plans.html" aria-current="page">Plans</a>
+    <a href="index.html#faq">Questions</a>
+    <a class="btn" href="index.html#waitlist">Ask your first question</a>
+  </div>
+</div></nav>
+<main>
+<header class="top wrap"><h1 data-words>Pay for people, <i>not for rows.</i></h1><p class="lede">Every plan reads as much data as you have. Plans differ by how many people ask and how many sources they connect.</p></header>
+
+<section class="sec">
+  <div class="wrap picker">
+    <div class="detail">
+      <div class="tabs" role="tablist" aria-label="Plans">
+        <button role="tab" aria-selected="false" data-plan="0">Solo</button>
+        <button role="tab" aria-selected="true" data-plan="1">Team</button>
+        <button role="tab" aria-selected="false" data-plan="2">Company</button>
+      </div>
+      <h2 id="plan-name">Team</h2>
+      <p class="lede" id="plan-line" style="margin:0">For a small team that shares one set of numbers.</p>
+      <ul id="plan-list"></ul>
+    </div>
+    <svg id="funnel" viewBox="0 0 400 400" role="img" aria-label="People's questions falling through the sieve into one answer"></svg>
+  </div>
+</section>
+
+<section class="sec faq" id="faq">
+  <div class="wrap split">
+    <h2 data-words>Plan <i>questions.</i></h2>
+    <div>
+      <details open><summary>Is there a limit on rows?</summary><p>No. Plans are sized by people and sources, not by how much data you have.</p></details>
+      <details><summary>Can I change plans later?</summary><p>Yes, at any time. Your questions and charts stay where they are.</p></details>
+      <details><summary>What counts as a source?</summary><p>One spreadsheet, one database, one shop connection, or one folder of CSV files.</p></details>
+      <details><summary>Does Company include single sign-on?</summary><p>Yes. Solo and Team sign in with email.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="index.html">sieve</a><p>One question in, one chart out, with the rows behind it.</p></div>
+    <div><h4>Product</h4><ul><li><a href="how.html">How it works</a></li><li><a href="plans.html">Plans</a></li><li><a href="index.html#what">What it does</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="index.html#faq">Questions</a></li><li><a href="plans.html#faq">Plans questions</a></li><li><a href="how.html#safety">Read-only access</a></li></ul></div>
+    <div><h4>Start</h4><ul><li><a href="index.html#waitlist">Join the waitlist</a></li></ul></div>
+  </div>
+  <div class="small"><span>Sieve is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>Example data only.</span></div>
+</div></footer>
+<script src="site.js" type="module"></script>
+<script>
+  // Plan picker + a looping explainer: each person's questions fall as dots through the sieve and become one amber answer.
+  const plans = [
+    { name: 'Solo', line: 'For one person with one business to understand.', seats: 1, rows: [['People', '1'], ['Sources', 'up to 3'], ['Weekly question email', 'yes'], ['Sign in', 'email']] },
+    { name: 'Team', line: 'For a small team that shares one set of numbers.', seats: 4, rows: [['People', 'up to 10'], ['Sources', 'up to 10'], ['Shared questions', 'yes'], ['Sign in', 'email']] },
+    { name: 'Company', line: 'For everyone, with every source connected.', seats: 7, rows: [['People', 'no limit'], ['Sources', 'no limit'], ['Shared questions', 'yes'], ['Sign in', 'single sign-on']] },
+  ];
+  let seats = 4;
+  const show = i => {
+    const p = plans[i]; seats = p.seats;
+    document.querySelectorAll('[role=tab]').forEach((b, k) => b.setAttribute('aria-selected', k === i));
+    document.querySelector('#plan-name').textContent = p.name;
+    document.querySelector('#plan-line').textContent = p.line;
+    document.querySelector('#plan-list').innerHTML = p.rows.map(([a, b]) => `<li><span>${a}</span><span>${b}</span></li>`).join('');
+  };
+  document.querySelectorAll('[role=tab]').forEach(b => b.addEventListener('click', () => show(+b.dataset.plan)));
+  show(1);
+  const svg = document.querySelector('#funnel'), NS = 'http://www.w3.org/2000/svg';
+  svg.innerHTML = `<g stroke="rgb(238 242 255 / .3)" fill="none"><path d="M70 170 Q200 230 330 170"/><path d="M90 186 Q200 240 310 186"/></g>`;
+  const dots = Array.from({ length: 70 }, (_, i) => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 4); svg.append(c); return c; });
+  const ans = document.createElementNS(NS, 'rect'); ans.setAttribute('fill', '#ffb547'); ans.setAttribute('x', 180); ans.setAttribute('width', 40); svg.append(ans);
+  document.addEventListener('DOMContentLoaded', () => Factory.loop(svg, (t, still) => {
+    dots.forEach((c, i) => {
+      const lane = i % 7, on = lane < seats, ph = ((still ? .4 : t * .22) + i * .137) % 1;
+      const x0 = 200 + (lane - (seats - 1) / 2) * 42, y = 30 + ph * 300;
+      const x = y < 200 ? x0 + (200 - x0) * (y - 30) / 170 * .6 : 200 + (x0 - 200) * .4 * (1 - (y - 200) / 130);
+      c.setAttribute('cx', x); c.setAttribute('cy', y);
+      c.setAttribute('fill', y > 210 ? '#ffb547' : '#eef2ff');
+      c.setAttribute('opacity', on ? (y > 210 ? .25 : .85) * (i % 2 ? 1 : .6) : 0);
+    });
+    const h = still ? 60 : 30 + 30 * (.5 + .5 * Math.sin(t * .8));
+    ans.setAttribute('y', 370 - h); ans.setAttribute('height', h);
+  }));
+</script>
+</body>
+</html>
