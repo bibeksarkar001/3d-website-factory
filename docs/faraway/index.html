@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faraway. Slow trips to small islands.</title>
+<meta name="description" content="Faraway runs slow trips to small islands: ten travellers at most, one local host, seven or ten nights. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f6c3a0'/%3E%3Cpath d='M6 22c4-8 16-8 20 0z' fill='%23123f3d'/%3E%3Ccircle cx='22' cy='10' r='3' fill='%23b23a1a'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  /* 1. the flight: one 640vh track, five places, the sky turns to dusk */
+  #fly { --sky:#f6c3a0; height:640vh; position:relative; background:var(--sky); }
+  #fly .stick { position:sticky; top:0; height:100svh; overflow:hidden; background:var(--sky); }
+  #island-3d { position:absolute; inset:0; }
+  /* tilt-shift: soft blur bands at the top and bottom of the frame */
+  #fly .tilt { position:absolute; inset:0; pointer-events:none; }
+  #fly .tilt::before, #fly .tilt::after { content:""; position:absolute; left:0; right:0; height:24%; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+  #fly .tilt::before { top:0; mask:linear-gradient(#000, transparent); -webkit-mask:linear-gradient(#000, transparent); }
+  #fly .tilt::after { bottom:0; mask:linear-gradient(transparent, #000); -webkit-mask:linear-gradient(transparent, #000); }
+  .stop { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); bottom:9vh; width:min(430px, 100% - 48px);
+          opacity:0; transform:translateY(30px) rotate(-1.5deg); transition:opacity .7s var(--ease), transform .8s var(--ease); pointer-events:none; }
+  .stop.on { opacity:1; transform:rotate(-1.5deg); pointer-events:auto; }
+  .stop:nth-of-type(even).on { transform:rotate(1.2deg); }
+  .stop h1, .stop h2 { font-size:clamp(2.4rem, 4.2vw, 3.8rem); max-width:11ch; }
+  .stop p { margin-top:14px; max-width:32ch; }
+  .stop .btn { margin-top:22px; }
+  .stop .place { display:block; font-weight:600; font-size:14px; color:var(--coral); margin-bottom:10px; }
+  .route { position:absolute; right:max(24px, calc((100% - var(--wrap)) / 2)); bottom:9vh; display:flex; gap:6px; }
+  .route i { width:34px; height:3px; border-radius:2px; background:rgb(255 244 230 / .55); overflow:hidden; position:relative; }
+  .route i b { position:absolute; inset:0; background:var(--paper); transform-origin:left; transform:scaleX(var(--k, 0)); }
+  .f-still #fly { height:auto; } .f-still #fly .stick { height:100svh; } .f-still .stop { display:none; } .f-still .stop.first { display:block; opacity:1; transform:none; }
+
+  /* 2. three kinds of day */
+  #days { padding:18vh 0 14vh; background:var(--paper); }
+  #days h2 { font-size:clamp(2.8rem, 6vw, 5.4rem); max-width:13ch; }
+  .timeline { position:relative; margin-top:9vh; display:grid; grid-template-columns:repeat(3, 1fr); gap:4vw; }
+  .timeline svg { position:absolute; left:0; right:0; top:22px; width:100%; height:40px; overflow:visible; }
+  .day { position:relative; padding-top:76px; }
+  .day .dot { position:absolute; top:12px; left:0; width:22px; height:22px; border-radius:50%; background:var(--paper); box-shadow:inset 0 0 0 3px var(--coral); transition:background .4s; }
+  .day.on .dot { background:var(--coral); }
+  .day h3 { font-size:2.3rem; margin-bottom:10px; }
+  .day p { max-width:30ch; }
+
+  /* 3. pick a trip */
+  #pick { padding:16vh 0; }
+  #pick .wrap { display:grid; grid-template-columns:1fr 1.1fr; gap:5vw; align-items:center; }
+  #pick h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); margin-bottom:16px; }
+  .opts { display:grid; gap:22px; margin-top:26px; }
+  .opts .label { font-weight:600; font-size:14px; margin-bottom:8px; display:block; }
+  .plan svg { width:100%; height:auto; overflow:visible; }
+  .plan .summary { margin-top:18px; font-weight:600; min-height:1.6em; }
+
+  /* 4. faq */
+  #faq { padding:16vh 0; background:var(--paper); }
+  #faq .wrap { display:grid; grid-template-columns:1fr 1.5fr; gap:5vw; }
+  #faq h2 { font-size:clamp(2.6rem, 5vw, 4.6rem); }
+  details { border-top:1px solid rgb(18 63 61 / .2); }
+  details:last-child { border-bottom:1px solid rgb(18 63 61 / .2); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:400 1.7rem/1.15 "Instrument Serif", serif; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:50%; translate:0 -50%; font:400 1.6rem "Figtree", sans-serif; color:var(--coral); transition:rotate .3s var(--ease); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 0 24px; max-width:56ch; }
+
+  /* 5. the trip list */
+  #list { padding:16vh 0; }
+  #list .card { display:grid; grid-template-columns:1fr 1fr; gap:5vw; padding:56px; }
+  #list h2 { font-size:clamp(2.8rem, 5.6vw, 5rem); }
+  #list form { display:grid; gap:18px; }
+  #list .done { display:none; }
+  #list.sent form { display:none; }
+  #list.sent .done { display:block; }
+  #list .done h3 { font-size:2.6rem; margin-bottom:10px; }
+
+  @media (max-width:860px) {
+    .stop { bottom:5vh; } .stop h1, .stop h2 { font-size:2.2rem; } .card { padding:24px 22px; } .card::after { width:34px; height:42px; }
+    .route { display:none; }
+    .timeline { grid-template-columns:1fr; gap:0; } .timeline svg { display:none; } .day { padding-top:28px; padding-left:40px; } .day .dot { top:34px; }
+    #pick .wrap, #faq .wrap, #list .card { grid-template-columns:1fr; }
+    #list .card { padding:28px 22px; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Faraway</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">The islands</a></li>
+      <li><a href="trips.html">Trips</a></li>
+      <li><a href="about.html">How we travel</a></li>
+      <li><a href="#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="#list">Get the trip list</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="fly" aria-label="Fly over a small island from the harbour to the lighthouse while the day turns to dusk">
+  <div class="stick">
+    <div id="island-3d" class="f-3d" style="position:absolute" data-title="A miniature island in 3D: harbour, village, hill and lighthouse; the ferry comes in and dusk falls as you scroll"></div>
+    <div class="tilt" aria-hidden="true"></div>
+    <div class="stop card first" data-from="0" data-to="0.16">
+      <span class="place">Faraway</span>
+      <h1 class="split">A small island, at <em>walking pace.</em></h1>
+      <p>Ten travellers at most, one local host, seven or ten nights.</p>
+      <a class="btn" href="#list">Get the trip list <span class="arr">→</span></a>
+    </div>
+    <div class="stop card" data-from="0.16" data-to="0.38">
+      <span class="place">The harbour</span>
+      <h2 class="split">You arrive <em>by ferry.</em></h2>
+      <p>The scheduled boat, with everyone else. Harbour days are boats and markets.</p>
+    </div>
+    <div class="stop card" data-from="0.38" data-to="0.6">
+      <span class="place">The village</span>
+      <h2 class="split">Stay where the <em>island stays.</em></h2>
+      <p>Family-run guesthouses. You eat where the island eats, and some days you cook.</p>
+    </div>
+    <div class="stop card" data-from="0.6" data-to="0.82">
+      <span class="place">The headland</span>
+      <h2 class="split">Walk out to <em>the light.</em></h2>
+      <p>Most days you walk. The long one goes out along the headland to the lighthouse.</p>
+    </div>
+    <div class="stop card" data-from="0.82" data-to="1.01">
+      <span class="place">Dusk</span>
+      <h2 class="split">Home by <em>lamplight.</em></h2>
+      <p>Trips run from April to October.</p>
+      <a class="btn" href="#list">Get the trip list <span class="arr">→</span></a>
+    </div>
+    <div class="route" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+  </div>
+</section>
+
+<section id="days">
+  <div class="wrap">
+    <h2 class="split">Three kinds of <em>day.</em></h2>
+    <p class="muted" style="margin-top:18px;max-width:40ch">Every trip has all three. The host picks the order around the weather and the ferry.</p>
+    <div class="timeline">
+      <svg viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path id="tl" d="M10 20 C 200 0, 300 40, 500 20 S 800 0, 990 20" fill="none" stroke="#b23a1a" stroke-width="2" stroke-dasharray="1" pathLength="1" vector-effect="non-scaling-stroke"/></svg>
+      <div class="day" data-at="0.2"><span class="dot"></span><h3>The <em>harbour</em></h3><p>Arrival, boats coming and going, and the market.</p></div>
+      <div class="day" data-at="0.5"><span class="dot"></span><h3>The <em>village</em></h3><p>Staying put. Cooking, a long lunch, nowhere you have to be.</p></div>
+      <div class="day" data-at="0.8"><span class="dot"></span><h3>The <em>headland</em></h3><p>A long walk out to the lighthouse and back.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pick">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Seven nights, <em>or ten.</em></h2>
+      <p class="muted">Pick a length and a month. Every trip keeps the same small group and the same three kinds of day.</p>
+      <div class="opts">
+        <div><span class="label">Nights</span><div class="chips" role="group" aria-label="Trip length"><button type="button" data-nights="7" aria-pressed="true">7 nights</button><button type="button" data-nights="10" aria-pressed="false">10 nights</button></div></div>
+        <div><span class="label">Month</span><div class="chips" role="group" aria-label="Month" id="months"></div></div>
+      </div>
+    </div>
+    <div class="plan card">
+      <svg viewBox="0 0 500 260" aria-hidden="true">
+        <path d="M30 220 C 90 120, 160 230, 230 150 S 340 40, 470 70" fill="none" stroke="rgb(18 63 61 / .15)" stroke-width="2"/>
+        <path id="trip" d="M30 220 C 90 120, 160 230, 230 150 S 340 40, 470 70" fill="none" stroke="#b23a1a" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <g id="nights"></g>
+      </svg>
+      <p class="summary" id="summary" aria-live="polite">7 nights in May. Up to 10 travellers, one local host.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="split">Good <em>questions.</em></h2>
+    <div>
+      <details><summary>How big are the groups?</summary><p>Ten travellers at most, with one local host.</p></details>
+      <details><summary>How do we get there?</summary><p>By the island's scheduled ferry, the same boat the island uses.</p></details>
+      <details><summary>Where do we stay?</summary><p>In family-run guesthouses, and you eat where the island eats.</p></details>
+      <details><summary>How much walking is there?</summary><p>You walk most days. The longest is the headland walk out to the lighthouse.</p></details>
+      <details><summary>When do trips run?</summary><p>From April to October, for seven or ten nights.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="list">
+  <div class="wrap card">
+    <div>
+      <h2 class="split">Get the <em>trip list.</em></h2>
+      <p class="muted" style="margin-top:16px;max-width:32ch">The islands, the months and the lengths, sent to you once. No newsletter.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="given-name" required></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="f-when">Roughly when</label><select id="f-when" name="when"></select></div>
+        <p class="err" aria-live="polite" style="min-height:1.4em;color:#b23a1a;font-weight:600"></p>
+        <div><button class="btn" type="submit">Send me the list <span class="arr">→</span></button></div>
+      </form>
+      <div class="done" role="status"><h3>It's on its way.</h3><p>Look out for one email with the trip list.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Faraway</div><p style="margin-top:16px;color:#cfe3df">Slow trips to small islands.</p></div>
+      <div><h4>Travel</h4><ul><li><a href="index.html">The islands</a></li><li><a href="trips.html">Trips</a></li><li><a href="about.html">How we travel</a></li></ul></div>
+      <div><h4>Plan</h4><ul><li><a href="#days">Three kinds of day</a></li><li><a href="#pick">Length and month</a></li><li><a href="#faq">Questions</a></li></ul></div>
+      <div><h4>List</h4><ul><li><a href="#list">Get the trip list</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Faraway is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>April to October.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/island.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

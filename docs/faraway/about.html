@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Faraway travels. Slowly, in small groups.</title>
+<meta name="description" content="How Faraway travels: ten people at most, one local host, the scheduled ferry, family-run guesthouses and walking most days. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f6c3a0'/%3E%3Cpath d='M6 22c4-8 16-8 20 0z' fill='%23123f3d'/%3E%3Ccircle cx='22' cy='10' r='3' fill='%23b23a1a'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  #boat-3d { height:min(60vh, 520px); cursor:pointer; }
+  .ways { padding:6vh 0 14vh; }
+  .ways ol { list-style:none; padding:0; counter-reset:w; }
+  .ways li { display:grid; grid-template-columns:90px 1fr 1.3fr; gap:30px; align-items:baseline; padding:30px 0; border-top:1px solid rgb(18 63 61 / .2); }
+  .ways li::before { counter-increment:w; content:"0" counter(w); font:400 2rem "Instrument Serif", serif; color:var(--coral); }
+  .ways h3 { font-size:2.2rem; }
+  .ways p { max-width:44ch; }
+  @media (max-width:860px) { .ways li { grid-template-columns:1fr; gap:6px; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Faraway</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">The islands</a></li>
+      <li><a href="trips.html">Trips</a></li>
+      <li><a href="about.html" aria-current="page">How we travel</a></li>
+      <li><a href="index.html#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="index.html#list">Get the trip list</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <div>
+    <h1 class="split">How we <em>travel.</em></h1>
+    <p>Slowly. In a small group, on the island's own boats, at the island's pace.</p>
+  </div>
+  <div id="boat-3d" class="f-3d" data-title="A small boat rocking on the sea; it turns toward your cursor and a click sends a bigger swell"></div>
+</section>
+
+<section class="ways wrap">
+  <ol>
+    <li><h3>Ten, <em>at most</em></h3><p>Every group is ten travellers at most, so the island barely notices you arrive.</p></li>
+    <li><h3>One local <em>host</em></h3><p>Each group travels with one host from the island.</p></li>
+    <li><h3>The scheduled <em>ferry</em></h3><p>You arrive the way everyone else does, on the regular boat.</p></li>
+    <li><h3>Family-run <em>rooms</em></h3><p>You stay in family-run guesthouses and eat where the island eats.</p></li>
+    <li><h3>On <em>foot</em></h3><p>You walk most days, and one day goes all the way out to the lighthouse.</p></li>
+  </ol>
+</section>
+
+<section class="cta">
+  <h2 class="split">Come <em>slowly.</em></h2>
+  <a class="btn" href="index.html#list">Get the trip list <span class="arr">→</span></a>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Faraway</div><p style="margin-top:16px;color:#cfe3df">Slow trips to small islands.</p></div>
+      <div><h4>Travel</h4><ul><li><a href="index.html">The islands</a></li><li><a href="trips.html">Trips</a></li><li><a href="about.html">How we travel</a></li></ul></div>
+      <div><h4>Plan</h4><ul><li><a href="index.html#days">Three kinds of day</a></li><li><a href="index.html#pick">Length and month</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>List</h4><ul><li><a href="index.html#list">Get the trip list</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Faraway is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>April to October.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/boat.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

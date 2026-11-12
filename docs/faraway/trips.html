@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faraway trips. Seven nights or ten, April to October.</title>
+<meta name="description" content="Faraway trips: seven or ten nights on a small island, ten travellers at most and one local host, April to October. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f6c3a0'/%3E%3Cpath d='M6 22c4-8 16-8 20 0z' fill='%23123f3d'/%3E%3Ccircle cx='22' cy='10' r='3' fill='%23b23a1a'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .lengths { display:grid; grid-template-columns:1fr 1fr; gap:28px; padding-bottom:12vh; }
+  .lengths .card h2 { font-size:clamp(2.6rem, 5vw, 4.4rem); margin-bottom:12px; }
+  .lengths ul { list-style:none; padding:0; margin-top:20px; display:grid; gap:10px; }
+  .lengths li { padding-left:22px; position:relative; }
+  .lengths li::before { content:""; position:absolute; left:0; top:.6em; width:10px; height:10px; border-radius:50%; background:var(--coral); }
+  #routes { width:100%; height:auto; overflow:visible; }
+  .route-band { background:var(--paper); padding:14vh 0; }
+  .route-band .wrap { display:grid; grid-template-columns:1fr 1.3fr; gap:5vw; align-items:center; }
+  .route-band h2 { font-size:clamp(2.6rem, 5vw, 4.4rem); margin-bottom:16px; }
+  .season { padding:14vh 0; }
+  .season h2 { font-size:clamp(2.6rem, 5vw, 4.4rem); margin-bottom:34px; }
+  .months { display:grid; grid-template-columns:repeat(12, 1fr); gap:6px; }
+  .months span { padding:16px 0; text-align:center; border-radius:6px; font-weight:600; font-size:14px; background:rgb(18 63 61 / .08); color:var(--rust); }
+  .months span.on { background:var(--sea); color:var(--paper); }
+  @media (max-width:860px) { .lengths, .route-band .wrap { grid-template-columns:1fr; } .months { grid-template-columns:repeat(6, 1fr); } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Faraway</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">The islands</a></li>
+      <li><a href="trips.html" aria-current="page">Trips</a></li>
+      <li><a href="about.html">How we travel</a></li>
+      <li><a href="index.html#faq">Questions</a></li>
+    </ul>
+    <a class="btn" href="index.html#list">Get the trip list</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap">
+  <div>
+    <h1 class="split">Seven nights, <em>or ten.</em></h1>
+    <p>Two lengths, the same small group, the same three kinds of day.</p>
+  </div>
+</section>
+
+<section class="wrap lengths">
+  <div class="card" data-reveal>
+    <h2>Seven <em>nights</em></h2>
+    <p class="muted">Enough for every kind of day, with room to stay put.</p>
+    <ul><li>Ten travellers at most</li><li>One local host</li><li>Family-run guesthouses</li><li>The headland walk</li></ul>
+  </div>
+  <div class="card" data-reveal>
+    <h2>Ten <em>nights</em></h2>
+    <p class="muted">The same trip, slower, with more of the days you liked.</p>
+    <ul><li>Ten travellers at most</li><li>One local host</li><li>Family-run guesthouses</li><li>The headland walk</li></ul>
+  </div>
+</section>
+
+<section class="route-band"><div class="wrap">
+  <div>
+    <h2 class="split">A trip, <em>drawn.</em></h2>
+    <p class="muted">Ferry in, the harbour, the village, the headland, ferry out. Ten nights has more of the middle.</p>
+  </div>
+  <svg id="routes" viewBox="0 0 560 300" role="img" aria-label="Two routes drawn on a loop: a shorter seven-night route and a longer ten-night route">
+    <path class="r" pathLength="1" stroke-dasharray="1" d="M30 250 C 120 150, 200 260, 280 170 S 420 60, 530 90" fill="none" stroke="#123f3d" stroke-width="3" stroke-linecap="round"/>
+    <path class="r" pathLength="1" stroke-dasharray="1" d="M30 250 C 90 120, 160 280, 240 190 S 300 40, 380 120 S 470 230, 530 90" fill="none" stroke="#b23a1a" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="30" cy="250" r="8" fill="#123f3d"/><circle cx="530" cy="90" r="8" fill="#123f3d"/>
+    <text x="30" y="285" font-family="Figtree, sans-serif" font-size="14" font-weight="600" fill="#123f3d">Ferry in</text>
+    <text x="530" y="70" text-anchor="end" font-family="Figtree, sans-serif" font-size="14" font-weight="600" fill="#123f3d">Ferry out</text>
+    <text x="390" y="290" font-family="Figtree, sans-serif" font-size="14" fill="#123f3d">7 nights</text>
+    <text x="470" y="290" font-family="Figtree, sans-serif" font-size="14" fill="#b23a1a">10 nights</text>
+  </svg>
+</div></section>
+
+<section class="season wrap">
+  <h2 class="split">April <em>to October.</em></h2>
+  <div class="months" aria-label="Trips run from April to October">
+    <span>Jan</span><span>Feb</span><span>Mar</span><span class="on">Apr</span><span class="on">May</span><span class="on">Jun</span><span class="on">Jul</span><span class="on">Aug</span><span class="on">Sep</span><span class="on">Oct</span><span>Nov</span><span>Dec</span>
+  </div>
+</section>
+
+<section class="cta">
+  <h2 class="split">Pick your <em>month.</em></h2>
+  <a class="btn" href="index.html#list">Get the trip list <span class="arr">→</span></a>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Faraway</div><p style="margin-top:16px;color:#cfe3df">Slow trips to small islands.</p></div>
+      <div><h4>Travel</h4><ul><li><a href="index.html">The islands</a></li><li><a href="trips.html">Trips</a></li><li><a href="about.html">How we travel</a></li></ul></div>
+      <div><h4>Plan</h4><ul><li><a href="index.html#days">Three kinds of day</a></li><li><a href="index.html#pick">Length and month</a></li><li><a href="index.html#faq">Questions</a></li></ul></div>
+      <div><h4>List</h4><ul><li><a href="index.html#list">Get the trip list</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Faraway is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>April to October.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>

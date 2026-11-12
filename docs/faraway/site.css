@@ -1,0 +1,82 @@
+/* Faraway design system (see _work/faraway/design.md). Shared by every page. */
+:root { --peach:#f6c3a0; --paper:#fff4e6; --sea:#123f3d; --rust:#5a3a2e; --coral:#b23a1a; --water:#3fb3b0;
+        --ease:cubic-bezier(.16,1,.3,1); --wrap:1220px; }
+* { box-sizing:border-box; margin:0; }
+html { background:var(--peach); color:var(--sea); font:400 17px/1.55 "Figtree", system-ui, sans-serif; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { overflow-x:clip; }
+a { color:inherit; }
+.wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
+h1, h2, h3, .display { font-family:"Instrument Serif", Georgia, serif; font-weight:400; letter-spacing:-.01em; line-height:1; }
+h1 em, h2 em, h3 em { font-style:italic; }
+.muted { color:var(--rust); }
+.eyebrowless { font-weight:600; }
+
+/* buttons: coral pills */
+.btn { display:inline-flex; align-items:center; gap:10px; padding:15px 26px; border-radius:999px; background:var(--coral); color:var(--paper);
+       font:600 16px "Figtree", sans-serif; text-decoration:none; border:0; cursor:pointer; transition:transform .4s var(--ease), background .2s; }
+.btn:hover { transform:translateY(-2px); background:#9a2f12; }
+.btn .arr { transition:transform .3s var(--ease); } .btn:hover .arr { transform:translateX(4px); }
+.btn.ghost { background:transparent; color:var(--sea); box-shadow:inset 0 0 0 1.5px var(--sea); }
+.btn.ghost:hover { background:rgb(18 63 61 / .06); }
+:focus-visible { outline:2px solid var(--coral); outline-offset:3px; }
+
+/* postcards: paper, small radius, a dashed stamp in the corner */
+.card { position:relative; background:var(--paper); border-radius:6px; padding:30px 32px 30px; box-shadow:0 24px 50px -30px rgb(18 63 61 / .45); }
+.card::after { content:""; position:absolute; top:14px; right:14px; width:46px; height:56px; border:1.5px dashed rgb(178 58 26 / .55); border-radius:3px; }
+
+/* nav */
+.nav { position:fixed; inset:0 0 auto; z-index:20; transition:background .3s; }
+.nav.solid { background:rgb(255 244 230 / .92); box-shadow:0 1px 0 rgb(18 63 61 / .1); }
+.nav .wrap { display:flex; align-items:center; gap:30px; height:70px; }
+.logo { font:400 30px/1 "Instrument Serif", serif; font-style:italic; text-decoration:none; }
+.nav ul { list-style:none; padding:0; display:flex; gap:26px; margin-left:auto; }
+.nav ul a { text-decoration:none; font-weight:600; font-size:15px; padding:6px 0; background:linear-gradient(var(--coral), var(--coral)) no-repeat 0 100% / 0 2px; transition:background-size .35s var(--ease); }
+.nav ul a:hover, .nav ul a[aria-current] { background-size:100% 2px; }
+.nav .btn { padding:10px 18px; font-size:15px; }
+.menu { display:none; background:none; border:0; font:600 15px "Figtree", sans-serif; color:inherit; cursor:pointer; padding:10px 0; margin-left:auto; }
+
+/* words that rise out of a mask */
+.split .w { display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.1em; margin-bottom:-.1em; }
+.split .w > span { display:inline-block; transform:translateY(105%); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 60ms); }
+.split.in .w > span, .f-still .split .w > span { transform:none; }
+
+/* forms */
+.field { display:grid; gap:8px; }
+.field label { font-weight:600; font-size:14px; }
+.field input, .field select { font:400 17px "Figtree", sans-serif; color:var(--sea); background:var(--paper); border:1.5px solid rgb(18 63 61 / .25); border-radius:6px; padding:13px 14px; width:100%; }
+.field input:focus, .field select:focus { outline:none; border-color:var(--coral); }
+
+/* chips */
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chips button { all:unset; cursor:pointer; padding:9px 16px; border-radius:999px; box-shadow:inset 0 0 0 1.5px rgb(18 63 61 / .3); font-weight:600; font-size:15px; transition:background .2s, color .2s, box-shadow .2s; }
+.chips button:hover { box-shadow:inset 0 0 0 1.5px var(--sea); }
+.chips button[aria-pressed="true"] { background:var(--sea); color:var(--paper); box-shadow:none; }
+.chips button:focus-visible { outline:2px solid var(--coral); outline-offset:3px; }
+
+/* footer */
+footer { background:var(--sea); color:var(--paper); padding:90px 0 34px; }
+footer .cols { display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; padding-bottom:56px; border-bottom:1px solid rgb(255 244 230 / .18); }
+footer .big { font:400 clamp(4rem, 11vw, 9rem)/.85 "Instrument Serif", serif; font-style:italic; }
+footer h4 { font-size:14px; font-weight:600; color:#cfe3df; margin-bottom:14px; }
+footer ul { list-style:none; padding:0; display:grid; gap:9px; }
+footer a { text-decoration:none; } footer a:hover { color:var(--peach); }
+footer .small { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:24px; font-size:14px; color:#cfe3df; }
+
+/* extra pages */
+.page-head { padding:20vh 0 8vh; display:grid; grid-template-columns:1.1fr 1fr; gap:5vw; align-items:end; }
+.page-head h1 { font-size:clamp(3.4rem, 8vw, 7.4rem); }
+.page-head p { font-size:1.2rem; max-width:34ch; margin-top:22px; }
+.cta { padding:16vh 0; display:grid; justify-items:center; gap:26px; text-align:center; }
+.cta h2 { font-size:clamp(2.8rem, 6vw, 5.4rem); max-width:14ch; }
+
+@media (max-width:860px) {
+  .nav ul { display:none; position:absolute; top:70px; left:0; right:0; flex-direction:column; gap:0; background:var(--paper); padding:8px 24px 22px; }
+  .nav.open ul { display:flex; }
+  .nav ul a { display:block; padding:12px 0; font-size:17px; }
+  .menu { display:block; }
+  .nav .btn { display:none; }
+  footer .cols { grid-template-columns:1fr 1fr; }
+  footer .cols > :first-child { grid-column:1 / -1; }
+  .page-head { grid-template-columns:1fr; padding-top:15vh; }
+}
