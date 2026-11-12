@@ -1,0 +1,10 @@
+{
+  "name": "3d-website-factory",
+  "description": "Build 3D websites from your content, or make an existing website 3D. Four-role pipeline: scout, sculptor, animator, builder.",
+  "version": "2.0.0",
+  "author": { "name": "Bibek Sarkar", "url": "https://github.com/bibeksarkar001" },
+  "homepage": "https://github.com/bibeksarkar001/3d-website-factory",
+  "repository": "https://github.com/bibeksarkar001/3d-website-factory",
+  "license": "MIT",
+  "keywords": ["3d", "website", "three.js", "spline", "motion-graphics", "webgl"]
+}

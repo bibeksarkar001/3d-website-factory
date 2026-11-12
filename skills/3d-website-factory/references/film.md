@@ -10,28 +10,19 @@ A film that plays forward and back as the visitor scrolls. Optional. Read this o
 - End on something the next section shows, so the page feels like one world.
 
 ## Where the footage comes from
-1. **The user's own video.** Free. A slow, steady shot from `assets/` works well. Skip to "Turn it into frames".
-2. **AI video.** Costs money. Any tool that takes a start image and an end image works. If the Higgsfield CLI
-   is installed (`npm install -g @higgsfield/cli`, the user logs in themselves), use it:
-   run `higgsfield --help` and its cost command to learn the current commands and prices. They change.
-   Do not rely on memory.
+See `references/assets.md`: the user's own footage (free), generated clips (paid, quoted first), or the free
+manual route (you write the prompts, the user generates them and drops the files in `assets/generated/`).
+For a product reveal, use the start-frame / end-frame recipe there.
 
-   **Quote the total and wait for a yes before generating anything.** Log each spend in `sites/<slug>/ledger.tsv`.
-
-   Method that avoids wasted money:
-   - Make 3 to 5 still keyframes first (cheap). Each new keyframe uses the one before it as its reference:
-     same place, same light, same camera direction, one change per step (usually distance).
-   - Look at them side by side. Remake any that turn the camera or change the room. Stills are cheap, clips are not.
-   - One clip per pair of keyframes, start and end both pinned, audio off. Start each clip on the previous
-     clip's exact last frame: `ffmpeg -sseof -0.1 -i c1.mp4 -frames:v 1 c1-last.png`.
-   - Watch every clip. A clip with a hidden jump cut is not used: move its keyframes closer and remake it.
-   - Join: `ffmpeg -f concat -safe 0 -i list.txt -an -c:v libx264 -crf 18 film.mp4`.
+If you join several clips: start each clip on the previous clip's exact last frame
+(`ffmpeg -sseof -0.1 -i c1.mp4 -frames:v 1 c1-last.png`), watch every clip for hidden jump cuts, then join with
+`ffmpeg -f concat -safe 0 -i list.txt -an -c:v libx264 -crf 18 film.mp4`.
 
 ## Turn it into frames
 
 ```sh
 mkdir -p sites/<slug>/frames
-ffmpeg -i film.mp4 -vf "fps=24,scale=1600:-2" -q:v 4 sites/<slug>/frames/f_%04d.jpg
+ffmpeg -i film.mp4 -vf "fps=24,scale=1600:-2" -q:v 4 sites/<slug>/frames/f_%04d.jpg   # 24 to 30 fps
 ls sites/<slug>/frames | wc -l        # this is `count`
 ```
 

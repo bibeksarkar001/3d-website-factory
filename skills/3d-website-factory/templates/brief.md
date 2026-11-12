@@ -13,9 +13,12 @@ customers or quotes.>
 <A real site whose look you love, e.g. https://mercury.com
 Or put screenshots in assets/style/. Leave empty and Claude picks one.>
 
-## 3D showpiece (optional)
-<A Spline community scene, e.g. https://community.spline.design/file/615b9422-9985-43f6-8593-d7d7bc3b0be1
-Leave empty and Claude picks a character or brand mark that fits.>
+## 3D (optional)
+<What should be 3D, e.g. "our logo", "the product, coming apart as you scroll", or a Spline scene link.
+Leave empty and Claude proposes objects that fit.>
+
+## Interactions (optional)
+<How the 3D should behave, e.g. "follows the cursor", "spins when I scroll", "can be dragged around".>
 
 ## Button (optional)
 <What the main button says and where it goes, e.g. "Book a call" -> https://...>

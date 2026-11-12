@@ -10,28 +10,32 @@ def visible_text(src):
 
 
 def run(path):
-    src = open(path, encoding='utf-8').read()
+    page = open(path, encoding='utf-8').read()
     root = os.path.dirname(os.path.abspath(path))
-    text = visible_text(src)
-    local = [u for u in re.findall(r'(?:src|href|poster)="([^"#?]+)', src)
+    # the page plus the local scripts it loads, so code in motion.js or 3d/*.js counts
+    js = [u for u in re.findall(r'<script[^>]*src="([^"#?]+\.js)"', page) if os.path.exists(os.path.join(root, u))]
+    src = page + ''.join(open(os.path.join(root, u), encoding='utf-8').read() for u in js)
+    text = visible_text(page)
+    local = [u for u in re.findall(r'(?:src|href|poster)="([^"#?]+)', page)
              if not re.match(r'(?i)[a-z][a-z0-9+.-]*:|//|/', u)]
     missing = sorted({u for u in local if not os.path.exists(os.path.join(root, u))})
-    scenes = re.findall(r'data-spline="[^"]+"|<spline-viewer\b', src)
+    scenes = re.findall(r'data-spline="[^"]+"|<spline-viewer\b|class="[^"]*\bf-3d\b', page)
     raw_scroll = [m for m in re.finditer(r"addEventListener\(\s*['\"](?:scroll|wheel)['\"]", src)
                   if 'passive' not in src[m.start():m.start() + 200]]
-    no_alt = [t for t in re.findall(r'<img\b[^>]*>', src) if not re.search(r'\balt=', t)]
+    no_alt = [t for t in re.findall(r'<img\b[^>]*>', page) if not re.search(r'\balt=', t)]
     return [
         ('3D scene on the page', bool(scenes), f'{len(scenes)} found'),
-        ('at most two 3D scenes', len(scenes) <= 2, ''),
-        ('motion graphic drawn in code (Factory.loop)', 'Factory.loop(' in src, ''),
-        ('runtime loaded (factory.js + factory.css)', 'factory.js' in src and 'factory.css' in src, ''),
+        ('at most three 3D objects', len(scenes) <= 3, ''),
+        ('import map for three.js if stage.js is used', 'stage.js' not in src or 'importmap' in page, ''),
+        ('motion drawn in code', any(k in src for k in ('Factory.loop(', 'Factory.scrub(', 'animation-timeline', 'stage(')), 'use Factory.loop, Factory.scrub, a 3D stage or CSS animation-timeline'),
+        ('runtime loaded (factory.js + factory.css)', 'factory.js' in page and 'factory.css' in page, ''),
         ('every local file exists', not missing, ', '.join(missing[:4])),
         ('no passive-less scroll or wheel listeners', not raw_scroll, ''),
         ('every image has alt text', not no_alt, f'{len(no_alt)} without'),
-        ('mobile viewport set', 'name="viewport"' in src, ''),
+        ('mobile viewport set', 'name="viewport"' in page, ''),
         ('no placeholder content', not re.search(r'(?i)lorem ipsum|placeholder\.(png|jpe?g)|via\.placeholder', src), ''),
         ('no hint text over the 3D', not re.search(r'(?i)move your (cursor|mouse)|click to (play|explore)|drag to rotate', text), ''),
-        ('brand is marked real or fictional', 'data-real-brand' in src or 'fictional' in text.lower(),
+        ('brand is marked real or fictional', 'data-real-brand' in page or 'fictional' in text.lower(),
          'add data-real-brand to <html>, or a footer line saying the brand is fictional'),
     ]
 

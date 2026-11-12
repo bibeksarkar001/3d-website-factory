@@ -8,6 +8,8 @@
    Factory.loop(el, draw)
         Calls draw(seconds, still) every frame, only while el is on screen.
         With reduced motion it calls draw(0, true) once: draw the finished picture.
+   Factory.scrub(track, p => ...)
+        Calls draw(p) as the visitor scrolls through `track` (a tall element with a sticky child), p from 0 to 1.
    Factory.film(canvas, { track, count, src: i => `frames/f_${String(i).padStart(4, '0')}.jpg` })
         Plays an image sequence as the visitor scrolls through `track` (a tall element). */
 (() => {
@@ -29,6 +31,21 @@
       requestAnimationFrame(tick);
     };
     watch(el, vis => { if (vis && !on) { on = true; last = performance.now(); requestAnimationFrame(tick); } else if (!vis) on = false; });
+  }
+
+  // Progress of a tall "track" element through the screen: 0 when its top reaches the top of the screen,
+  // 1 when its bottom reaches the bottom. Put a position:sticky child inside the track. Reduced motion: draw(1) once.
+  function scrub(track, draw) {
+    if (still) return draw(1);
+    let queued = false, last = -1;
+    const paint = () => {
+      queued = false;
+      const r = track.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+      if (p !== last) { last = p; draw(p); }
+    };
+    const ask = () => { if (!queued) { queued = true; requestAnimationFrame(paint); } };
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask); ask();
   }
 
   function film(canvas, { track, count, src }) {
@@ -84,6 +101,6 @@
     window.__ready = true;
   }
 
-  window.Factory = { loop, film, still };
+  window.Factory = { loop, scrub, film, still };
   document.readyState === 'loading' ? addEventListener('DOMContentLoaded', start) : start();
 })();

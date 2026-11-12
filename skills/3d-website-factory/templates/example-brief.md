@@ -14,7 +14,7 @@ No prices, customer names, numbers or reviews. Do not add any.
 ## Reference site
 https://mercury.com
 
-## 3D showpiece
+## 3D
 https://community.spline.design/file/615b9422-9985-43f6-8593-d7d7bc3b0be1
 
 ## Button

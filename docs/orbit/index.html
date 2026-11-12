@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit. Sound that goes all the way round.</title>
+<meta name="description" content="A round speaker for one room, shown layer by layer. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&family=Familjen+Grotesk:wght@400;500&family=IBM+Plex+Mono&display=swap">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<script src="factory.js" defer></script>
+<style>
+  :root { --mist:#e4e6e8; --paper:#f4f5f6; --ink:#121416; --steel:#4c535a; --signal:#e2481d; --signal-ink:#b3330d;
+          --rule:rgb(18 20 22 / .12); --ease:cubic-bezier(.16,1,.3,1); --wrap:1240px; }
+  * { box-sizing:border-box; margin:0; }
+  html { background:var(--mist); color:var(--ink); font:400 18px/1.55 "Familjen Grotesk", system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  .wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
+  h1, h2 { font-family:"Bricolage Grotesque", system-ui, sans-serif; font-weight:600; letter-spacing:-.03em; line-height:1; }
+  h1 span, h2 span { color:var(--steel); }
+  .mono { font:13px/1.4 "IBM Plex Mono", ui-monospace, monospace; color:var(--steel); }
+  .btn { display:inline-block; background:var(--ink); color:var(--paper); padding:16px 28px; border-radius:999px; text-decoration:none; font-weight:500; transition:background .15s; }
+  .btn:hover { background:var(--signal-ink); }
+
+  nav { position:absolute; inset:0 0 auto; padding:26px 0; z-index:3; }
+  nav .wrap { display:flex; justify-content:space-between; align-items:center; }
+  nav b { font:600 22px "Bricolage Grotesque", sans-serif; letter-spacing:-.03em; }
+  nav a { color:inherit; text-decoration:none; font-weight:500; padding:8px 0; border-bottom:1px solid var(--rule); }
+
+  .hero { min-height:100svh; display:grid; grid-template-columns:1.15fr 1fr; align-items:center; }
+  .hero .copy { display:grid; gap:28px; justify-items:start; }
+  .hero h1 { font-size:clamp(3rem, 6.2vw, 6rem); }
+  .hero p { max-width:28ch; color:var(--steel); font-size:1.15rem; }
+  #hero-speaker { height:88svh; }
+
+  .statement { min-height:80vh; display:grid; align-items:center; background:var(--paper); }
+  .statement h2 { font-size:clamp(2.2rem, 5.4vw, 4.8rem); max-width:17ch; }
+
+  /* the exploded view: a 320vh track with a sticky stage */
+  #inside { height:320vh; }
+  #inside .stick { position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1.2fr 1fr; align-items:center; }
+  #inside-speaker { height:100svh; }
+  #inside h2 { font-size:clamp(2rem, 3.6vw, 3.2rem); margin-bottom:36px; }
+  #inside ol { list-style:none; padding:0; display:grid; }
+  #inside li { padding:16px 0 16px 18px; border-top:1px solid var(--rule); color:var(--steel); position:relative; transition:color .6s var(--ease); }
+  #inside li::before { content:""; position:absolute; left:0; top:24px; width:8px; height:8px; border-radius:50%; background:var(--signal); transform:scale(0); transition:transform .5s var(--ease); }
+  #inside li.on { color:var(--ink); }
+  #inside li.on::before { transform:none; }
+  #inside li b { display:block; font-weight:500; }
+  #inside li .mono { margin-top:2px; }
+
+  #turn { min-height:100svh; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:6vw; }
+  #turn h2 { font-size:clamp(2.2rem, 4.6vw, 4rem); margin-bottom:20px; }
+  #turn p { color:var(--steel); max-width:32ch; }
+  .dial-wrap { display:grid; justify-items:center; gap:20px; }
+  #dial { width:min(380px, 78vw); aspect-ratio:1; border-radius:50%; touch-action:none; cursor:grab; outline:none;
+          background:radial-gradient(circle at 50% 35%, #fbfcfc, #d3d6d9 70%); box-shadow:inset 0 2px 0 #fff, 0 30px 60px -30px rgb(18 20 22 / .45); }
+  #dial:active { cursor:grabbing; }
+  #dial:focus-visible { box-shadow:0 0 0 3px var(--paper), 0 0 0 6px var(--signal-ink); }
+  #dial svg { width:100%; height:100%; display:block; }
+  .level { stroke-dasharray:1; transition:stroke-dashoffset .12s; }
+  .knob { transform-origin:100px 100px; transition:transform .12s; }
+  #dial.paused .level { stroke:var(--steel); }
+
+  .materials { padding:16vh 0; border-top:1px solid var(--rule); }
+  .materials h2 { font-size:clamp(2rem, 4.4vw, 3.8rem); }
+
+  #notify { min-height:80svh; display:grid; place-items:center; text-align:center; background:var(--ink); color:var(--paper); }
+  #notify h2 { font-size:clamp(2.6rem, 6vw, 5.4rem); margin-bottom:32px; }
+  #notify h2 span { color:#9aa1a8; }
+  #notify .btn { background:var(--paper); color:var(--ink); }
+  #notify .btn:hover { background:var(--signal); color:var(--ink); }
+  footer { background:var(--ink); color:#9aa1a8; padding:24px 0 36px; font-size:14px; }
+  footer .wrap { display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; border-top:1px solid rgb(244 245 246 / .12); padding-top:24px; }
+
+  @media (max-width:860px) {
+    .hero, #turn { grid-template-columns:1fr; }
+    .hero .copy { padding-top:110px; }
+    #hero-speaker { height:52svh; }
+    #inside .stick { grid-template-columns:1fr; grid-template-rows:58svh auto; align-content:start; }
+    #inside-speaker { height:58svh; }
+    #inside h2 { margin-bottom:12px; font-size:1.6rem; }
+    #inside li { padding:8px 0; }
+    #inside li .mono { display:none; }
+    #turn { padding:12vh 0; }
+  }
+</style>
+</head>
+<body>
+<nav><div class="wrap"><b>Orbit</b><a href="#notify">Get notified</a></div></nav>
+
+<header class="hero wrap">
+  <div class="copy">
+    <h1 data-reveal>Sound that goes<br><span>all the way round.</span></h1>
+    <p data-reveal>A round speaker for one room. Put it anywhere; there is no wrong side.</p>
+    <a class="btn" href="#notify" data-reveal>Get notified</a>
+  </div>
+  <div id="hero-speaker" class="f-3d" data-title="The Orbit speaker, turning slowly"></div>
+</header>
+
+<section class="statement">
+  <div class="wrap"><h2 data-reveal>One woofer faces down. <span>The room does the rest.</span></h2></div>
+</section>
+
+<section id="inside">
+  <div class="stick wrap">
+    <div id="inside-speaker" class="f-3d" data-title="The Orbit speaker coming apart into its five layers"></div>
+    <div>
+      <h2>Five layers, <span>one sound.</span></h2>
+      <ol>
+        <li data-at="0.15"><b>Touch dial</b><div class="mono">turn for volume, tap to pause</div></li>
+        <li data-at="0.35"><b>Six tweeters</b><div class="mono">a ring just under the top</div></li>
+        <li data-at="0.55"><b>Fabric body</b><div class="mono">sound passes straight through</div></li>
+        <li data-at="0.75"><b>Woofer</b><div class="mono">faces down into the base</div></li>
+        <li data-at="0.92"><b>Aluminium base</b><div class="mono">spreads the low end all the way around</div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="turn" class="wrap">
+  <div>
+    <h2 data-reveal>The top is the remote.</h2>
+    <p data-reveal>Turn it for volume. Tap it to pause. Try it here.</p>
+  </div>
+  <div class="dial-wrap">
+    <div id="dial" role="slider" tabindex="0" aria-label="Orbit dial: turn for volume, press Enter to pause" aria-valuemin="0" aria-valuemax="100">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#c4c8cc" stroke-width="4" pathLength="1" stroke-dasharray=".75 1" transform="rotate(135 100 100)" stroke-linecap="round"/>
+        <circle class="level" cx="100" cy="100" r="78" fill="none" stroke="#e2481d" stroke-width="4" pathLength="1" transform="rotate(135 100 100)" stroke-linecap="round"/>
+        <g class="knob"><rect x="98" y="34" width="4" height="22" rx="2" fill="#121416"/></g>
+      </svg>
+    </div>
+    <div id="dial-read" class="mono" aria-hidden="true">Volume 40</div>
+  </div>
+</section>
+
+<section class="materials">
+  <div class="wrap"><h2 data-reveal>Fabric body. <span>Aluminium base.</span></h2></div>
+</section>
+
+<section id="notify">
+  <div><h2 data-reveal>Orbit is coming. <span>Hear it first.</span></h2><a class="btn" href="#notify" data-reveal>Get notified</a></div>
+</section>
+<footer><div class="wrap"><span>Orbit is a fictional speaker, made to demo 3D Website Factory.</span><span>Every 3D part is built in code.</span></div></footer>
+
+<script type="module" src="3d/hero.js"></script>
+<script type="module" src="3d/inside.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

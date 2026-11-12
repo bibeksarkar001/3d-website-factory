@@ -1,69 +1,111 @@
 # 3D Website Factory
 
-A Claude Code skill that builds 3D websites from a folder of your content, or adds 3D to a website you already have.
+**Real 3D websites from a folder of content, or your existing website made 3D.**
+An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other coding agents.
 
-- **Live 3D hero.** A Spline character or logo that reacts to the visitor.
-- **Motion graphics.** Looping diagrams, drawn in code, that explain your product.
-- **Scroll film (optional).** One camera move that plays as the visitor scrolls.
+[![Orbit: a speaker built in 3D code](docs/previews/orbit.jpg)](https://bibeksarkar001.github.io/3d-website-factory/orbit/)
 
-No build step. No dependencies. The finished site is a plain folder you can upload anywhere.
+| | |
+|---|---|
+| [![Orbit opening into its layers](docs/previews/orbit-inside.jpg)](https://bibeksarkar001.github.io/3d-website-factory/orbit/) | [![Kiln: a logo made into a fired-clay object](docs/previews/kiln.jpg)](https://bibeksarkar001.github.io/3d-website-factory/kiln/) |
+| **Orbit.** A speaker built from code. It tilts to your cursor, opens into five labelled layers as you scroll, and its dial turns on the page. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/orbit/) | **Kiln.** A flat SVG logo made into a fired-clay object with a glowing flame. It follows the cursor and turns as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/kiln/) |
+
+Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
+Both brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+
+## What it does
+
+You put your words, logo and pictures in a folder and say **"build me this as a website"**. A five-role pipeline
+does the rest:
+
+```
+           ┌──> Sculptor ── makes the 3D objects ──┐
+Scout ─────┤                                       ├──> Builder ── stitches the site ──> Critic ──┐
+interview, └──> Animator ── makes the motion ──────┘       ^                                       │
+design system,                                             └───────── fixes, at most 3 rounds ─────┘
+hero concepts
+```
+
+| Role | Job |
+|---|---|
+| **Scout** | Interviews you in multiple choice (vibe, what the visitor must believe, journey, real vs generated assets, the signature move). Finds three reference sites, you pick one. Writes the design system. Proposes three hero concepts, you pick one. |
+| **Sculptor** | Makes each 3D object: your logo extruded, your product rebuilt from shapes, your `.glb` model, a model generated from a photo, or a Spline scene. Exploded views, feature tours, free rotation with hotspots. |
+| **Animator** | Studio-style motion: scroll-driven moments you control, looping explainers, count-ups, maps that fill, drawing lines, the product's own action you can do yourself. One rhythm, sensible pacing. |
+| **Builder** | Stitches it all into one site on your design system, wires the interactions you asked for ("follow the cursor", "spin when I scroll"), edits the copy and shows you every change. |
+| **Critic** | Screenshots the whole scroll journey and judges it against thirteen fixed questions. Sends fixes back until it passes. |
+
+The roles hand over through files, so any part can be redone alone: "make the logo glossier" only reruns the sculptor.
+If your agent can run sub-agents, each role gets its own; otherwise one agent plays them in order.
+
+**Already have a website?** Run it inside your project and say **"make my website 3D"**. It reads your stack
+(plain HTML, React, Next, Vue, Svelte, Astro, WordPress), proposes what goes where, waits for your yes, and changes
+as few files as possible on a new branch. Your design and words stay yours.
 
 ## Install
 
-```sh
-git clone https://github.com/bibeksarkar001/3d-website-factory ~/.claude/skills/3d-website-factory
+**Claude Code** (plugin):
+```
+/plugin marketplace add bibeksarkar001/3d-website-factory
+/plugin install 3d-website-factory@3d-website-factory
 ```
 
-Needs [Claude Code](https://claude.com/claude-code), Chrome, Python 3 and Node 22+. The optional film also needs ffmpeg.
+**Cursor, Codex, Antigravity, Hermes, Claude Code and 40+ other agents** (skill):
+```sh
+npx skills add bibeksarkar001/3d-website-factory -g
+```
+
+**Or by hand:** copy `skills/3d-website-factory/` into your agent's skills folder
+(for Claude Code: `~/.claude/skills/3d-website-factory`).
+
+Needs Chrome, Python 3 and Node 22+. Films also need ffmpeg.
 
 ## Use
 
-Open Claude Code in any folder and say:
+Open your agent in any folder and say:
 
 | Say | What happens |
 |---|---|
-| "Set up the website factory" | Creates a `website-factory/` folder with places for your content, logo, images and style references. |
-| "Build me this as a website" | Builds a site for every file in `content/`. Result lands in `sites/<name>/`. |
-| "Make my existing website 3D" | Run inside your own site's folder. Claude proposes what to add, waits for your yes, and changes as little as possible. |
-| "Add a scroll film to `<site>`" | Adds the film layer. Claude quotes any cost first. |
+| "Set up the website factory" | Makes a `website-factory/` folder: `content/`, `assets/logo/`, `assets/images/`, `assets/models/`, `assets/style/`, `sites/` |
+| "Build me this as a website" | Builds a site for every file in `content/`. The result is a plain folder in `sites/<name>/` you can host anywhere. |
+| "Make my existing website 3D" | Inside your own project. Proposes first, changes little, never pushes. |
+| "Make the logo follow the cursor" | Changes a built site. Only the role that owns it reruns. |
+| "Add a scroll film" | Adds a photoreal, scroll-scrubbed film section. |
+| "Publish it" | Deploys through a connected host (Hostinger, Netlify, Vercel, GitHub Pages), only when you ask. |
 
 ## What it costs
 
-| Layer | Cost |
-|---|---|
-| 3D with a Spline community scene | Free, no account |
-| Motion graphics | Free |
-| Custom 3D built through the Spline connector | Spline account. The connector has a daily call limit that depends on your plan. |
-| AI scroll film | Paid credits at the video tool you use. Your own footage is free. |
+Code-built 3D, Spline community scenes and all motion are **free**. Optional paid extras (AI images, AI video,
+3D models generated from a photo) go through Higgsfield or any generator you connect. The agent **quotes the
+credits and shows your balance before every paid step**, makes stills before clips and offers one-of-three
+choices. There is also a free manual route: it writes the prompts, you generate in a free tool like Google Flow,
+drop the files in, and it carries on.
 
-Claude never spends money without showing you the cost and getting a yes.
-
-## Optional connections
-
+Optional connections:
 ```sh
-claude mcp add --transport http spline https://mcp.spline.design/mcp -s user   # custom 3D scenes
-npm install -g @higgsfield/cli                                                 # AI images and video
+npm install -g @higgsfield/cli && higgsfield auth login                        # AI images, video, image-to-3D
+claude mcp add --transport http spline https://mcp.spline.design/mcp -s user   # build Spline scenes
 ```
 
-## What is inside
+## Quality built in
+
+- **No AI slop.** A ban list of generated-looking tells (purple gradients, three feature cards, eyebrow labels,
+  reflex cream backgrounds, overused fonts) and of generated-sounding words.
+- **Facts only.** Never invents numbers, prices, customers, quotes or logos.
+- **Checked like a human would.** `probe.mjs` loads the page in headless Chrome, waits for the 3D, scrolls with
+  the mouse over every 3D object, checks the phone layout and the console, and saves a contact sheet of the whole
+  scroll journey for the critic.
+- **Accessible.** Reduced motion gets a finished still page. Contrast checked. Alt text everywhere.
+
+## Inside
 
 | Path | What |
 |---|---|
-| `SKILL.md` | The instructions Claude follows. |
-| `references/film.md` | The scroll film method. |
-| `runtime/factory.js`, `factory.css` | The small script every built site uses: lazy 3D, reveals, motion loop, film scrubber. |
-| `scripts/init.sh` | Creates the workspace. |
-| `scripts/browser.sh` | Finds a Spline scene's embed link and screenshots reference sites. |
-| `scripts/check.py` | The gate a finished page must pass. `--selftest` checks the checker. |
-| `scripts/probe.mjs` | Opens the page in headless Chrome: screenshots, scroll over the 3D, phone width, console errors. |
-| `templates/` | The brief template, the workspace readme and an example brief. |
-
-## Credits
-
-The three-layer idea (live 3D, film, motion graphics) comes from Jack Roberts' video
-["I Built the Ultimate Website Design Skill"](https://www.youtube.com/watch?v=DCwh7SIfWL4). This skill is an
-independent implementation and shares no code or text with his.
-3D scenes come from [Spline](https://spline.design) and its community. Scene authors are credited on each site.
+| `skills/3d-website-factory/SKILL.md` | The conductor: jobs, pipeline, gates, rules |
+| `skills/3d-website-factory/roles/` | Scout, sculptor, animator, builder, critic |
+| `skills/3d-website-factory/references/` | Taste and slop list, motion patterns, asset routes and providers, film method |
+| `skills/3d-website-factory/runtime/` | `stage.js` (three.js stage: studio light, cursor, scroll, logo extrude, model loader), `factory.js` (reveals, loops, scroll scrub, lazy Spline, film), `factory.css` |
+| `skills/3d-website-factory/scripts/` | `init.sh` (workspace), `check.py` (page gate), `probe.mjs` (browser test and journey sheet), `browser.sh` |
+| `docs/` | The live demos |
 
 ## Licence
 

@@ -3,6 +3,7 @@
 // Opens the page in headless Chrome the way a visitor would and reports what a screenshot alone cannot:
 //   - desk.png (1440x900) and phone.png (390x844, real phone emulation), taken after the 3D has loaded (second visit)
 //   - whether the mouse wheel still scrolls the page while the cursor is over each 3D scene
+//   - journey-<depth>.jpg at 0/25/50/75/100 % of the page and journey.png, a contact sheet of them
 //   - sideways overflow on the phone, and console errors
 // Exit 1 if anything fails. Needs Node 22+ and Chrome. No packages.
 import { spawn } from 'node:child_process';
@@ -25,6 +26,7 @@ const proc = spawn(chrome, ['--headless=new', '--remote-debugging-port=0', `--us
   '--enable-unsafe-swiftshader', '--no-first-run', 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const fails = [];
+const SEL = "'[data-spline], .f-3d'"; // every 3D box, quoted for use inside page code: Spline scenes and code-built objects
 // Ready = the runtime started, or the page has loaded and has no runtime (a site before the upgrade).
 const READY = `window.__ready === true || (document.readyState === 'complete' && !window.Factory)`;
 
@@ -56,8 +58,8 @@ try {
     await cdp('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: mobile ? 2 : 1, mobile });
     await cdp('Page.navigate', { url });
     for (let i = 0; i < 60 && !(await js(READY)); i++) await sleep(250);
-    const has3d = await js(`document.querySelectorAll('[data-spline]').length`);
-    for (let i = 0; i < 100 && has3d && !(await js(`!!document.querySelector('.f-3d.f-on')`)); i++) await sleep(250);
+    const has3d = await js(`document.querySelectorAll(${SEL}).length`);
+    for (let i = 0; i < 100 && has3d && !(await js(`[...document.querySelectorAll(${SEL})].every(e => e.classList.contains('f-on'))`)); i++) await sleep(250);
     await sleep(has3d ? +(process.env.PROBE_WAIT || 8000) : 1200); // let the scene draw; raise PROBE_WAIT on a slow machine
   };
   const shot = async name => {
@@ -67,14 +69,14 @@ try {
 
   await load(1440, 900, false);
   // A first visit downloads the whole Spline viewer (slow, dark loading screen). Load again so the shots show the scene.
-  if (await js(`document.querySelectorAll('[data-spline]').length`)) { console.log('  loaded once to warm the 3D cache'); await load(1440, 900, false); }
+  if (await js(`document.querySelectorAll(${SEL}).length`)) { console.log('  loaded once to warm the 3D cache'); await load(1440, 900, false); }
   if (!(await js(READY))) fails.push('page never finished loading (or factory.js never set window.__ready)');
   await shot('desk.png');
 
-  const scenes = await js(`document.querySelectorAll('[data-spline]').length`);
+  const scenes = await js(`document.querySelectorAll(${SEL}).length`);
   for (let i = 0; i < scenes; i++) {
     const p = JSON.parse(await js(`(async () => {
-      const el = document.querySelectorAll('[data-spline]')[${i}];
+      const el = document.querySelectorAll(${SEL})[${i}];
       el.scrollIntoView({ block: 'center', behavior: 'instant' }); await new Promise(r => setTimeout(r, 400));
       const r = el.getBoundingClientRect();
       return JSON.stringify({ x: r.left + r.width / 2, y: Math.min(innerHeight - 40, Math.max(40, r.top + r.height / 2)), y0: scrollY,
@@ -90,6 +92,21 @@ try {
     console.log(`  scene ${i + 1}: wheel over the 3D moved the page ${Math.round(moved)}px`);
     if (moved < 50) fails.push(`3D scene ${i + 1} traps the scroll: add data-shield to its box`);
   }
+
+  // The journey: shots down the page, then one contact sheet so the whole scroll story can be judged at a glance.
+  const depths = [0, 0.25, 0.5, 0.75, 1], journey = [];
+  for (const d of depths) {
+    await js(`scrollTo({ top: (document.documentElement.scrollHeight - innerHeight) * ${d}, behavior: 'instant' })`);
+    await sleep(900);
+    const { data } = await cdp('Page.captureScreenshot', { format: 'jpeg', quality: 70 });
+    journey.push(data);
+    writeFileSync(join(out, `journey-${Math.round(d * 100)}.jpg`), Buffer.from(data, 'base64'));
+  }
+  await js(`document.open(); document.write('<body style="margin:0;background:#888;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px;align-content:start">' +
+    ${JSON.stringify(journey)}.map((d, i) => '<figure style="margin:0;font:12px system-ui;color:#fff"><img style="width:100%;display:block" src="data:image/jpeg;base64,' + d + '">' + ['0', '25', '50', '75', '100'][i] + ' %</figure>').join('') + '</body>'); document.close(); 1`);
+  await sleep(600);
+  await shot('journey.png');
+  console.log(`  saved journey-0..100.jpg (${depths.length} depths)`);
 
   await load(390, 844, true);
   await shot('phone.png');

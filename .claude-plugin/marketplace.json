@@ -1,0 +1,25 @@
+{
+  "name": "3d-website-factory",
+  "owner": {
+    "name": "Bibek Sarkar",
+    "url": "https://github.com/bibeksarkar001"
+  },
+  "metadata": {
+    "description": "3D websites from a folder of content, or 3D added to the site you already have."
+  },
+  "plugins": [
+    {
+      "name": "3d-website-factory",
+      "description": "Build 3D websites from your content, or make an existing website 3D. Four-role pipeline: scout, sculptor, animator, builder.",
+      "source": "./",
+      "category": "design",
+      "tags": [
+        "3d",
+        "website",
+        "three.js",
+        "spline",
+        "motion-graphics"
+      ]
+    }
+  ]
+}
