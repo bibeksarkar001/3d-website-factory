@@ -1,0 +1,75 @@
+/* Hush design system (see _work/hush/brief.md). Shared by every page. */
+:root { --fog:#e8eaed; --card:#dfe2e6; --ink:#14171c; --slate:#59606b; --teal:#0b6f6a; --rule:rgb(20 23 28 / .14);
+        --ease:cubic-bezier(.16,1,.3,1); --wrap:1220px; }
+* { box-sizing:border-box; margin:0; }
+html { background:var(--fog); color:var(--ink); font:400 17px/1.6 "Red Hat Text", system-ui, sans-serif; -webkit-font-smoothing:antialiased; scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+body { overflow-x:clip; }
+a { color:inherit; }
+.wrap { width:min(var(--wrap), 100% - 48px); margin-inline:auto; }
+h1, h2, h3, .display { font-family:"Red Hat Display", system-ui, sans-serif; font-weight:700; letter-spacing:-.03em; line-height:.96; }
+h1 .q, h2 .q { color:var(--slate); font-weight:400; }
+.label { font:400 12px/1.4 "Azeret Mono", ui-monospace, monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); }
+.muted { color:var(--slate); }
+.dark { background:var(--ink); color:var(--fog); }
+.dark .muted, .dark .label { color:#a9b0ba; }
+
+.btn { display:inline-flex; align-items:center; gap:12px; padding:15px 24px; border-radius:999px; background:var(--ink); color:var(--fog); border:0; cursor:pointer;
+       font:600 15px "Red Hat Text", sans-serif; text-decoration:none; transition:transform .35s var(--ease), background .2s; }
+.btn::before { content:""; width:8px; height:8px; border-radius:50%; background:#19d3c5; }
+.btn:hover { transform:translateY(-2px); background:#262a31; }
+.dark .btn { background:var(--fog); color:var(--ink); }
+:focus-visible { outline:2px solid var(--teal); outline-offset:3px; }
+
+.nav { position:fixed; inset:0 0 auto; z-index:20; transition:background .3s, box-shadow .3s; }
+.nav.solid { background:rgb(232 234 237 / .92); box-shadow:0 1px 0 var(--rule); }
+.nav .wrap { display:flex; align-items:center; gap:30px; height:70px; }
+.logo { font:700 24px/1 "Red Hat Display", sans-serif; letter-spacing:-.03em; text-decoration:none; display:flex; align-items:center; gap:8px; }
+.logo i { width:26px; height:10px; border:2.5px solid var(--ink); border-bottom:0; border-radius:14px 14px 0 0; }
+.nav ul { list-style:none; padding:0; display:flex; gap:26px; margin-left:auto; }
+.nav ul a { text-decoration:none; font-weight:500; font-size:15px; padding:6px 0; background:linear-gradient(var(--teal), var(--teal)) no-repeat 0 100% / 0 2px; transition:background-size .35s var(--ease); }
+.nav ul a:hover, .nav ul a[aria-current] { background-size:100% 2px; }
+.nav .btn { padding:10px 16px; font-size:14px; }
+.menu { display:none; background:none; border:0; font:600 15px "Red Hat Text", sans-serif; color:inherit; cursor:pointer; padding:10px 0; margin-left:auto; }
+
+.split .w { display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em; margin-bottom:-.08em; }
+.split .w > span { display:inline-block; transform:translateY(105%); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 60ms); }
+.split.in .w > span, .f-still .split .w > span { transform:none; }
+
+.field { display:grid; gap:8px; }
+.field label { font:400 12px "Azeret Mono", monospace; letter-spacing:.06em; text-transform:uppercase; }
+.field input, .field select { font:400 17px "Red Hat Text", sans-serif; color:inherit; background:rgb(232 234 237 / .06); border:1px solid rgb(232 234 237 / .3); border-radius:12px; padding:13px 16px; width:100%; }
+.field input:focus, .field select:focus { outline:none; border-color:#19d3c5; }
+.field select option { color:var(--ink); }
+
+.seg { display:flex; flex-wrap:wrap; gap:8px; }
+.seg button { all:unset; cursor:pointer; display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--rule); font-weight:600; font-size:15px; transition:box-shadow .2s, background .2s; }
+.seg button:hover { box-shadow:inset 0 0 0 1px var(--ink); }
+.seg button[aria-pressed="true"] { box-shadow:inset 0 0 0 2px var(--ink); }
+.seg button i { width:16px; height:16px; border-radius:50%; display:block; box-shadow:inset 0 0 0 1px rgb(0 0 0 / .2); }
+.seg button:focus-visible { outline:2px solid var(--teal); outline-offset:3px; }
+
+footer { background:var(--ink); color:var(--fog); padding:90px 0 34px; }
+footer .cols { display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; padding-bottom:56px; border-bottom:1px solid rgb(232 234 237 / .14); }
+footer .big { font:700 clamp(4.4rem, 12vw, 10rem)/.8 "Red Hat Display", sans-serif; letter-spacing:-.05em; }
+footer h4 { font:400 12px "Azeret Mono", monospace; letter-spacing:.06em; text-transform:uppercase; color:#a9b0ba; margin-bottom:14px; font-weight:400; }
+footer ul { list-style:none; padding:0; display:grid; gap:9px; }
+footer a { text-decoration:none; } footer a:hover { color:#19d3c5; }
+footer .small { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:24px; font-size:14px; color:#a9b0ba; }
+
+.page-head { padding:20vh 0 8vh; display:grid; grid-template-columns:1fr 1.1fr; gap:5vw; align-items:center; }
+.page-head h1 { font-size:clamp(3.4rem, 7.6vw, 7rem); }
+.page-head p { font-size:1.2rem; max-width:34ch; margin-top:22px; }
+.cta { padding:16vh 0; display:grid; justify-items:center; gap:26px; text-align:center; }
+.cta h2 { font-size:clamp(3rem, 7vw, 6rem); max-width:12ch; }
+
+@media (max-width:860px) {
+  .nav ul { display:none; position:absolute; top:70px; left:0; right:0; flex-direction:column; gap:0; background:var(--fog); padding:8px 24px 22px; box-shadow:0 1px 0 var(--rule); }
+  .nav.open ul { display:flex; }
+  .nav ul a { display:block; padding:12px 0; font-size:17px; }
+  .menu { display:block; }
+  .nav .btn { display:none; }
+  footer .cols { grid-template-columns:1fr 1fr; }
+  footer .cols > :first-child { grid-column:1 / -1; }
+  .page-head { grid-template-columns:1fr; padding-top:15vh; }
+}

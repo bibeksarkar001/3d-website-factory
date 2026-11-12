@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Hush One goes quiet. A sound and its opposite.</title>
+<meta name="description" content="How active noise cancelling works in Hush One: six microphones hear the noise, the headphones play its opposite, and the two add up to quiet. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&family=Red+Hat+Text:wght@400;500;600&family=Azeret+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314171c'/%3E%3Cpath d='M8 20v-4a8 8 0 0 1 16 0v4' fill='none' stroke='%2319d3c5' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  .draw-wave { display:grid; grid-template-columns:1fr 1.3fr; gap:5vw; align-items:center; padding:2vh 0 14vh; }
+  #cancel { width:100%; height:auto; overflow:visible; }
+  #cancel path { fill:none; stroke-width:2.5; stroke-linecap:round; }
+  #cancel text { font:400 12px "Azeret Mono", monospace; fill:#59606b; letter-spacing:.06em; }
+  .three { padding:14vh 0; }
+  .three .wrap { display:grid; grid-template-columns:repeat(3, 1fr); gap:4vw; }
+  .three h3 { font-size:2rem; margin-bottom:10px; }
+  .three b { font:700 1rem "Azeret Mono", monospace; color:#7ce8de; display:block; margin-bottom:14px; }
+  @media (max-width:860px) { .draw-wave, .three .wrap { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Hush</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html">Hush One</a></li>
+      <li><a href="quiet.html" aria-current="page">How quiet works</a></li>
+      <li><a href="cushions.html">Cushions</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="index.html#wait">Join the waitlist</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="page-head wrap" style="padding-bottom:4vh">
+  <div><h1 class="split">A sound and its <span class="q">opposite.</span></h1><p>Noise cancelling, drawn. Watch the bottom line.</p></div>
+</section>
+<section class="wrap draw-wave">
+  <p class="muted" style="font-size:1.15rem;max-width:32ch">The top line is the room. The middle line is what Hush One plays back: the same sound, upside down. Add them together and you get the bottom line.</p>
+  <svg id="cancel" viewBox="0 0 560 300" role="img" aria-label="A noisy wave, its opposite, and their sum, which flattens to a straight line">
+    <text x="0" y="20">THE ROOM</text><path id="w1" stroke="#14171c"/>
+    <text x="0" y="120">ITS OPPOSITE</text><path id="w2" stroke="#0b6f6a"/>
+    <text x="0" y="220">WHAT YOU HEAR</text><path id="sum" stroke="#59606b"/>
+  </svg>
+</section>
+<section class="three dark"><div class="wrap">
+  <div><b>01</b><h3>Listen</h3><p class="muted">Six microphones hear the noise around you.</p></div>
+  <div><b>02</b><h3>Flip</h3><p class="muted">The headphones make the same sound, upside down.</p></div>
+  <div><b>03</b><h3>Cancel</h3><p class="muted">The two meet in your ear and mostly cancel out.</p></div>
+</div></section>
+<section class="cta"><h2 class="split">Hear <span class="q">less.</span></h2><a class="btn" href="index.html#wait">Join the waitlist</a></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Hush</div><p style="margin-top:18px;color:#a9b0ba">Turn the world down.</p></div>
+      <div><h4>Hush One</h4><ul><li><a href="index.html">Hush One</a></li><li><a href="quiet.html">How quiet works</a></li><li><a href="cushions.html">Cushions</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="index.html#colour">Colours</a></li><li><a href="index.html#specs">Specs</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+      <div><h4>Get them</h4><ul><li><a href="index.html#wait">Join the waitlist</a></li><li><a href="#main">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Hush is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>250 g.</span></div>
+  </div>
+</footer>
+
+<script src="motion.js" defer></script>
+</body>
+</html>

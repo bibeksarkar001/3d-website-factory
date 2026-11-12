@@ -23,9 +23,11 @@ An agent skill for Claude Code, Cursor, Codex, Antigravity, Hermes and other cod
 | **Ridgeline.** An e-MTB tour: motor, battery, fork and tyres, then drag it round and tap its parts. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ridgeline/) | **Optra.** A camera lens. Its eleven aperture blades close as you scroll, then the glass comes apart. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/optra/) |
 | [![Vela: a candle lit by scrolling](docs/previews/vela.jpg)](https://bibeksarkar001.github.io/3d-website-factory/vela/) | [![Ferro: a cast-iron pan heating on a flame](docs/previews/ferro.jpg)](https://bibeksarkar001.github.io/3d-website-factory/ferro/) |
 | **Vela.** A candle you light by scrolling. The page darkens to candlelight; at the end smoke rises. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/vela/) | **Ferro.** A cast-iron pan, cast glowing hot, machined, seasoned and heated as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/ferro/) |
+| [![Hush: headphones in front of a noise field](docs/previews/hush.jpg)](https://bibeksarkar001.github.io/3d-website-factory/hush/) | |
+| **Hush.** Noise-cancelling headphones. The noise field behind them settles to silence as you scroll. [Live demo →](https://bibeksarkar001.github.io/3d-website-factory/hush/) | |
 
 Every 3D object above is built in code: no video, no paid assets, sharp at any size, and it reacts to the visitor.
-All fourteen brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
+All fifteen brands are fictional. [All demos →](https://bibeksarkar001.github.io/3d-website-factory/)
 
 ## What it does
 

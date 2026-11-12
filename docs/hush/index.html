@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hush One. Turn the world down.</title>
+<meta name="description" content="Hush One, over-ear wireless headphones with active noise cancelling: six microphones, up to 30 hours, cups that turn flat. A fictional demo brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&family=Red+Hat+Text:wght@400;500;600&family=Azeret+Mono&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314171c'/%3E%3Cpath d='M8 20v-4a8 8 0 0 1 16 0v4' fill='none' stroke='%2319d3c5' stroke-width='3'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="factory.css">
+<link rel="stylesheet" href="site.css">
+<script src="factory.js" defer></script>
+<style>
+  #quiet { height:540vh; position:relative; }
+  #quiet .stick { position:sticky; top:0; height:100svh; overflow:hidden; }
+  #phones-3d { position:absolute; inset:0; }
+  #quiet .shade { position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, #e8eaed 0%, rgb(232 234 237 / .9) 32%, rgb(232 234 237 / 0) 52%); }
+  .ch { position:absolute; left:max(24px, calc((100% - var(--wrap)) / 2)); bottom:12vh; width:min(460px, 40%); }
+  .ch h1, .ch h2 { font-size:clamp(3rem, 6vw, 6rem); }
+  .ch .big { display:block; font:700 clamp(5rem, 11vw, 9.6rem)/.85 "Red Hat Display", sans-serif; letter-spacing:-.05em; font-variant-numeric:tabular-nums; }
+  .ch .big small { font-size:.3em; letter-spacing:0; color:var(--slate); margin-left:6px; font-weight:400; }
+  .ch p { margin-top:18px; font-size:1.12rem; max-width:32ch; }
+  .ch .btn { margin-top:24px; }
+  .ch p, .ch .btn, .ch .big { opacity:0; transform:translateY(12px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+  .ch.on p, .ch.on .btn, .ch.on .big { opacity:1; transform:none; transition-delay:.15s; }
+  .ch:not(.on) { visibility:hidden; transition:visibility 0s .8s; }
+  .meter { position:absolute; right:max(24px, calc((100% - var(--wrap)) / 2)); bottom:12vh; display:grid; gap:10px; justify-items:end; }
+  .meter .bars { display:flex; gap:4px; align-items:flex-end; height:46px; }
+  .meter .bars i { width:6px; border-radius:3px; background:var(--ink); height:calc(6px + var(--n, 1) * 40px); transition:height .15s; }
+  .f-still #quiet { height:auto; } .f-still #quiet .stick { height:100svh; } .f-still .ch { visibility:hidden; } .f-still .ch.last { visibility:visible; }
+
+  #colour { padding:16vh 0; }
+  #colour .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; align-items:center; }
+  #colour h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:16px; }
+  #colour .phones-small { height:min(62vh, 560px); }
+
+  #specs { padding:16vh 0; }
+  #specs h2 { font-size:clamp(3rem, 6vw, 5.4rem); margin-bottom:8vh; max-width:12ch; }
+  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:0; border-top:1px solid rgb(232 234 237 / .16); }
+  .grid > div { padding:30px 30px 34px 0; border-bottom:1px solid rgb(232 234 237 / .16); }
+  .grid b { display:block; font:700 clamp(2.4rem, 4.6vw, 4rem)/1 "Red Hat Display", sans-serif; letter-spacing:-.04em; margin-bottom:10px; }
+
+  #faq { padding:16vh 0; }
+  #faq .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; }
+  #faq h2 { font-size:clamp(3rem, 6vw, 5.4rem); }
+  details { border-top:1px solid var(--rule); } details:last-child { border-bottom:1px solid var(--rule); }
+  summary { list-style:none; cursor:pointer; padding:22px 40px 22px 0; font:700 1.4rem/1.2 "Red Hat Display", sans-serif; letter-spacing:-.02em; position:relative; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:4px; top:50%; translate:0 -50%; font:400 1.4rem "Azeret Mono", monospace; color:var(--teal); transition:rotate .3s var(--ease); }
+  details[open] summary::after { rotate:45deg; }
+  details p { padding:0 0 22px; max-width:56ch; }
+
+  #wait { padding:16vh 0; }
+  #wait .wrap { display:grid; grid-template-columns:5fr 7fr; gap:5vw; }
+  #wait h2 { font-size:clamp(3.2rem, 7vw, 6.2rem); }
+  #wait form { display:grid; gap:18px; }
+  #wait .done { display:none; } #wait.sent form { display:none; } #wait.sent .done { display:block; }
+  #wait .done h3 { font-size:2.8rem; margin-bottom:10px; }
+
+  @media (max-width:860px) {
+    #quiet .shade { background:linear-gradient(180deg, #e8eaed 0%, rgb(232 234 237 / .92) 38%, rgb(232 234 237 / 0) 56%); }
+    .ch { bottom:auto; top:92px; width:auto; right:24px; }
+    .ch h1, .ch h2 { font-size:2.7rem; } .ch .big { font-size:4.4rem; } .ch p { font-size:1rem; margin-top:10px; }
+    .meter { bottom:24px; }
+    #colour .wrap, #faq .wrap, #wait .wrap { grid-template-columns:1fr; }
+    #colour .phones-small { height:44vh; order:-1; }
+    .grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Hush</a>
+    <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
+    <ul id="menu">
+      <li><a href="index.html" aria-current="page">Hush One</a></li>
+      <li><a href="quiet.html">How quiet works</a></li>
+      <li><a href="cushions.html">Cushions</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn" href="#wait">Join the waitlist</a>
+  </div>
+</nav>
+
+<main id="top">
+<section id="quiet" aria-label="Hush One headphones in front of a field of noise that settles to silence as you scroll">
+  <div class="stick">
+    <div id="phones-3d" class="f-3d" style="position:absolute" data-title="The Hush One headphones in 3D in front of rows of noisy waveforms; the noise settles to a flat line as you scroll, and the cups turn flat"></div>
+    <div class="shade" aria-hidden="true"></div>
+    <div class="ch first" data-from="0" data-to="0.16">
+      <h1 class="split">Turn the world <span class="q">down.</span></h1>
+      <p>Hush One are over-ear wireless headphones with active noise cancelling.</p>
+      <a class="btn" href="#wait">Join the waitlist</a>
+    </div>
+    <div class="ch" data-from="0.16" data-to="0.36">
+      <span class="label">Microphones listening</span>
+      <span class="big" id="mics">0<small>of 6</small></span>
+      <p>Six microphones hear the room, so the headphones can cancel it.</p>
+    </div>
+    <div class="ch" data-from="0.36" data-to="0.6">
+      <h2 class="split">And then, <span class="q">quiet.</span></h2>
+      <p>The noise around you is met with its opposite. What is left is your music, or nothing at all.</p>
+    </div>
+    <div class="ch" data-from="0.6" data-to="0.8">
+      <span class="label">Battery</span>
+      <span class="big" data-to="30">0<small>hours</small></span>
+      <p>Up to thirty hours of listening, with noise cancelling on. USB-C to charge.</p>
+    </div>
+    <div class="ch last" data-from="0.8" data-to="1.01">
+      <h2 class="split">Flat, for <span class="q">the bag.</span></h2>
+      <p>The cups turn flat to fit a slim case. 250 g.</p>
+      <a class="btn" href="#colour">Pick a colour</a>
+    </div>
+    <div class="meter" aria-hidden="true"><span class="label">Noise</span><div class="bars" id="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  </div>
+</section>
+
+<section id="colour">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Fog or <span class="q">Ink.</span></h2>
+      <p class="muted">Two colours. Pick one to see it.</p>
+      <div class="seg" role="group" aria-label="Colour" style="margin-top:24px">
+        <button type="button" data-colour="fog" aria-pressed="true"><i style="background:#d9dcdf"></i>Fog</button>
+        <button type="button" data-colour="ink" aria-pressed="false"><i style="background:#23272d"></i>Ink</button>
+      </div>
+    </div>
+    <div class="f-3d phones-small" data-title="The Hush One in the colour you pick, turning toward your cursor"></div>
+  </div>
+</section>
+
+<section id="specs" class="dark">
+  <div class="wrap">
+    <h2 class="split">Plainly put.</h2>
+    <div class="grid">
+      <div><b>6</b><p class="muted">microphones for noise cancelling</p></div>
+      <div><b>30 h</b><p class="muted">of listening with cancelling on</p></div>
+      <div><b>250 g</b><p class="muted">on your head</p></div>
+      <div><b>USB-C</b><p class="muted">to charge</p></div>
+      <div><b>Flat</b><p class="muted">the cups turn to fit a slim case</p></div>
+      <div><b>2</b><p class="muted">colours, Fog and Ink</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2 class="split">Questions.</h2>
+    <div>
+      <details><summary>How long does the battery last?</summary><p>Up to thirty hours of listening with noise cancelling on.</p></details>
+      <details><summary>How does noise cancelling work?</summary><p>Six microphones hear the noise around you and the headphones play its opposite, so the two cancel. <a href="quiet.html">See it drawn.</a></p></details>
+      <details><summary>Can I replace the ear cushions?</summary><p>Yes. The memory-foam cushions come off and new ones go on.</p></details>
+      <details><summary>Do they fold?</summary><p>The cups turn flat, so they fit a slim case.</p></details>
+      <details><summary>How do they charge?</summary><p>With USB-C.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="wait" class="dark">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Join the waitlist.</h2>
+      <p class="muted" style="margin-top:18px;max-width:30ch">One email when Hush One is ready.</p>
+    </div>
+    <div>
+      <form novalidate>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="f-colour">Colour</label><select id="f-colour" name="colour"><option>Fog</option><option>Ink</option></select></div>
+        <p class="err" aria-live="polite" style="min-height:1.4em;color:#7ce8de"></p>
+        <div><button class="btn" type="submit">Save my place</button></div>
+      </form>
+      <div class="done" role="status"><h3>You're on the list.</h3><p>One email, when they are ready.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><div class="big">Hush</div><p style="margin-top:18px;color:#a9b0ba">Turn the world down.</p></div>
+      <div><h4>Hush One</h4><ul><li><a href="index.html">Hush One</a></li><li><a href="quiet.html">How quiet works</a></li><li><a href="cushions.html">Cushions</a></li></ul></div>
+      <div><h4>Choose</h4><ul><li><a href="#colour">Colours</a></li><li><a href="#specs">Specs</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Get them</h4><ul><li><a href="#wait">Join the waitlist</a></li><li><a href="#top">Back to the top</a></li></ul></div>
+    </div>
+    <div class="small"><span>Hush is fictional, made to demo 3D Website Factory. Every 3D object is built in code.</span><span>250 g.</span></div>
+  </div>
+</footer>
+
+<script type="module" src="3d/phones.js"></script>
+<script src="motion.js" defer></script>
+</body>
+</html>
